@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Ingredient implements AggregateRoot, RecipeItem , Serializable {
 
     private IngredientID id;
-//lombok
+
     @Setter(AccessLevel.PROTECTED)
     private String description;
 
