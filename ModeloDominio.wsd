@@ -1,0 +1,135 @@
+@startuml
+
+title Frozen Foods
+
+left to right direction
+
+class IngredientID{
+    -UUID id 
+}
+
+class RecipeID{
+    -UUID id 
+}
+
+class ClientID{
+    -UUID id 
+}
+
+enum Unit{
+    - KG
+    - G 
+    - ML 
+    - L     
+}
+
+class Ingredient {
+    -IngredientID ingredientID
+    -String description
+}
+
+class Portion{
+    -Unit unit
+    -Double amount    
+}
+
+class RecipeItem{
+    -RecipeItemID recipeItemID
+    -String recipeItemDescription
+    -Portion portion 
+}
+
+class Recipe{
+    - RecipeID recipeID
+    - String recipeName
+    - String procedure
+    - RecipeVersion version
+    - List<RecipeItem> items       
+}
+
+class RecipeRepository{
+
+}
+
+class IngredientRepository{
+
+}
+
+class Menu{
+}
+
+class SaleItem{
+    - RecipeID id
+    - int quantity    
+}
+
+class ClientSales{
+    -ClientID clientID 
+    -SaleItem saleItem
+    -SaleID saleID
+    -Date saleHour     
+}
+
+class Production{
+    -SaleID saleID
+    -StatusProduction statusProduction     
+}
+
+enum StatusProduction{
+    - Ready
+    - Not ready 
+}
+
+enum StatusDelivery{
+    - Delivered
+    - Not delivered 
+}
+
+class Delivery{
+    -ClientID clientID 
+    -SaleID saleID
+    -StatusDelivery statusDelivery 
+    -Date deliveryHour
+}
+
+class Client{
+    - ClientID clientID
+    - String nome
+    - String NIF 
+    - Address adress
+    - CreditCard CreditCard
+}
+
+class Address{
+    -String street 
+    -String doorNumber
+    -String postalCode
+}
+
+class CreditCard{
+    - String name 
+    - String cardNumber    
+}
+
+Unit--Portion
+IngredientID--Ingredient
+RecipeID -- Recipe 
+Ingredient-- RecipeItem
+Recipe-- RecipeItem
+RecipeRepository - Recipe 
+IngredientRepository -- Ingredient
+RecipeRepository -up-- Menu
+Menu -down- ClientSales
+ClientSales -down- Production
+IngredientRepository -up-Production
+Production -down-- Delivery
+(Ingredient, RecipeItem).Portion
+(Recipe, RecipeItem).Portion
+CreditCard -- Client 
+ClientID -- Client 
+Address -- Client
+SaleItem -- ClientSales 
+StatusProduction -- Production
+StatusDelivery -- Delivery
+ClientSales -down- Client
+@enduml
