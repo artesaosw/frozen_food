@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Getter
 public class Ingredient implements AggregateRoot, RecipeItem , Serializable {
-
+//
     private IngredientID id;
 
     @Setter(AccessLevel.PROTECTED)
