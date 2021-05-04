@@ -26,7 +26,7 @@ public class NIF {
         if (!nif.matches(NIF_REGEX)) {
             throw new InvalidElementException("NIF must have 9 digits.");
         }
-        int controlDigit = Character.getNumericValue(nif.charAt(8));
+        int controlDigit = Character.getNumericValue(nif.charAt(nif.length() - 1));
         int sum = 0;
         for (int i = 0; i < nif.length() - 1; i++) {
             sum += Character.getNumericValue(nif.charAt(i)) * (nif.length() - i);
