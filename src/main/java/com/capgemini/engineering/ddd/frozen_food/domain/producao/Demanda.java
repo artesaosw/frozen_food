@@ -12,4 +12,6 @@ public class Demanda {
 
     public Demanda (){};
 
+    public void addDemanda();
+
 }
