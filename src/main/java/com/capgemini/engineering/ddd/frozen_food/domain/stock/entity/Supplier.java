@@ -19,30 +19,18 @@ public class Supplier implements AggregateRoot, Serializable {
 
     private String name;
 
-    private Integer nif;
+    private NIF nif;
 
     protected Supplier() {
     }
 
-    public Supplier(@NotBlank String name, @NotNull Integer nif) {
+    public Supplier(@NotBlank String name, @NotNull NIF nif) {
         this.id = Identificator.newInstance(SupplierID.class);
         this.name = name;
-        setNif(nif);
+        this.nif = nif;
     }
 
     public SupplierID id() {
         return this.id;
-    }
-
-    private void setNif(Integer nif) {
-        if (verifyRegex(String.valueOf(nif), NIF_REGEX)) {
-            this.nif = nif;
-        } else {
-            throw new InvalidElementException("NIF must have 9 digits.");
-        }
-    }
-
-    private static boolean verifyRegex(String regex, String validRegex) {
-        return regex.matches(validRegex);
     }
 }
