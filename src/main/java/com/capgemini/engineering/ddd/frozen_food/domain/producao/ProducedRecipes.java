@@ -36,6 +36,7 @@ public class ProducedRecipes {
     private LocalDate dataProducao;
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
+    //atualizacao do lote é manual ou autmatico?
     public ProducedRecipes(Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade){
         this.id = Identificator.newInstance(RecipeID.class);
         this.unit = unit;
@@ -48,5 +49,7 @@ public class ProducedRecipes {
     public void setLocalDate(){
         this.dataProducao = LocalDate.now();
     }
+    
+
 
 }
