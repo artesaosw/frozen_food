@@ -1,2 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.delivery;public class DeliveryItem {
+package com.capgemini.engineering.ddd.frozen_food.domain.delivery;
+
+public class DeliveryItem {
+    private StatusDelivery status;
+
 }
