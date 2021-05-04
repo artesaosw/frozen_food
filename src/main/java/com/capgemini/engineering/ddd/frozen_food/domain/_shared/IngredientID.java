@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
-import com.sun.istack.NotNull;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 

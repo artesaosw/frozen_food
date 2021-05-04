@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.Entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.MetadataException;
-import com.sun.istack.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
