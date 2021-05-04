@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Getter
 public class Ingredient implements AggregateRoot, Serializable {
 
+    // TODO o id tem de ser igual ao id do Ingredient do package menu
+
     private IngredientID id;
 
     private String name;

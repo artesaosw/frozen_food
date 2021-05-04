@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.repository;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.Supplier;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class SuppliersImpl implements Suppliers {
     }
 
     @Override
-    public boolean existsWithNIF(Integer nif) {
+    public boolean existsWithNIF(NIF nif) {
         // TODO
         return false;
     }

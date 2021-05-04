@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.SupplierRegistered;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.Supplier;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Suppliers;
 
@@ -16,7 +17,7 @@ public class SuppliersService implements DomainServices {
         return Domain.suppliers();
     }
 
-    public void registerNewSupplier(@NotBlank String name, @NotNull Integer nif) {
+    public void registerNewSupplier(@NotBlank String name, @NotNull NIF nif) {
         if (suppliers().existsWithNIF(nif)) {
             throw new IllegalArgumentException("Already exists another supplier with the same NIF.");
         }
