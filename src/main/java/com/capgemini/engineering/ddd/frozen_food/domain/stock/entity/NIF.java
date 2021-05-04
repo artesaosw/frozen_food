@@ -19,6 +19,8 @@ public class NIF {
     private void setNif(String nif) {
         if (nifValidation(nif)) {
             this.nif = nif;
+        } else {
+            throw new InvalidElementException("NIF not valid.");
         }
     }
 
