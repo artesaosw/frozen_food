@@ -1,5 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain._shared;
+package com.capgemini.engineering.ddd.frozen_food.domain._shared.ids;
 
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.sun.istack.NotNull;
 
 import java.io.Serializable;

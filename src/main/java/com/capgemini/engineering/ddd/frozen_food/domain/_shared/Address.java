@@ -1,24 +1,19 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-@Getter
+@AllArgsConstructor
 public class Address implements Serializable {
 
-    @Setter
+    @Getter @Setter
     private String street;
-    @Setter
+    @Getter @Setter
     private String doorNumber;
-    @Setter
-    private String postalCode;
+    @Getter @Setter
+    private PostalCode postalCode;
 
-    public Address(@NotBlank String street, @NotBlank String doorNumber, @NotBlank String postalCode){
-        this.street = street;
-        this.doorNumber = doorNumber;
-        this.postalCode = postalCode;
-    }
 }
