@@ -3,7 +3,7 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.exception.InvalidElementException;
 import lombok.Getter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class NIF {
@@ -12,7 +12,7 @@ public class NIF {
 
     String nif;
 
-    public NIF(@NotEmpty String nif) {
+    public NIF(@NotBlank String nif) {
         setNif(nif);
     }
 

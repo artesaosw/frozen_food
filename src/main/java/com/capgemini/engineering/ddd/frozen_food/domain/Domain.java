@@ -1,8 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.domain;
 
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Orders;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Ingredients;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.OrdersSuppliers;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Requirements;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Suppliers;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -16,12 +17,16 @@ public class Domain implements ApplicationContextAware {
         return applicationContext.getBean(Recipes.class);
     }
 
-    public static Orders orders() {
-        return applicationContext.getBean(Orders.class);
-    }
-
     public static Ingredients ingredients() {
         return applicationContext.getBean(Ingredients.class);
+    }
+
+    public static OrdersSuppliers ordersSuppliers() {
+        return applicationContext.getBean(OrdersSuppliers.class);
+    }
+
+    public static Requirements requirements() {
+        return applicationContext.getBean(Requirements.class);
     }
 
     public static Suppliers suppliers() {

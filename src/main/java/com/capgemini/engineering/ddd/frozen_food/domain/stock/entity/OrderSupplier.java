@@ -2,9 +2,9 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderSupplierID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.OrderSupplierStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +15,13 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @Getter
-public class Order implements AggregateRoot, Serializable {
+public class OrderSupplier implements AggregateRoot, Serializable {
 
-    private OrderID id;
+    private OrderSupplierID id;
 
     private String orderReference;
 
-    private Map<Ingredient, Integer> orders;
+    private Map<Requirement, Integer> orders;
 
     private SupplierID supplierID;
 
@@ -30,22 +30,22 @@ public class Order implements AggregateRoot, Serializable {
     private Integer purchaseValue;
 
     @Setter
-    private OrderStatus orderStatus;
+    private OrderSupplierStatus orderSupplierStatus;
 
-    protected Order() {
+    protected OrderSupplier() {
     }
 
-    public Order(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull Integer purchaseValue) {
+    public OrderSupplier(@NotEmpty String orderReference, @NotEmpty Map<Requirement, Integer> orders, @NotNull SupplierID supplierID, @NotNull Integer purchaseValue) {
         this.orderReference = orderReference;
-        this.id = Identificator.newInstance(OrderID.class);
+        this.id = Identificator.newInstance(OrderSupplierID.class);
         this.orders = orders;
         this.supplierID = supplierID;
         this.purchaseDate = LocalDate.now();
         this.purchaseValue = purchaseValue;
-        this.orderStatus = OrderStatus.UNDELIVERED;
+        this.orderSupplierStatus = OrderSupplierStatus.UNDELIVERED;
     }
 
-    public OrderID id() {
+    public OrderSupplierID id() {
         return this.id;
     }
 }

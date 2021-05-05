@@ -8,11 +8,11 @@ public class RequirementID implements Identificator, Serializable {
 
     private UUID id;
 
-    IngredientID(@NotNull UUID id){
+    RequirementID(@NotNull UUID id){
         this.id = id;
     }
 
-    public IngredientID() {
+    public RequirementID() {
         this.id = UUID.randomUUID();
     }
 
