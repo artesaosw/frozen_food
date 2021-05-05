@@ -50,6 +50,8 @@ public class ProducedRecipes {
         this.dataProducao = LocalDate.now();
     }
 
+    //Criacao de Lista com ReceitasProduzidas?
+
 
 
 }
