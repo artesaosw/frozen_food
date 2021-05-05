@@ -1,7 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.producao;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
-//Demanda é apenas de um ingrediente ou conjunto de ingredientes?
+
+import javax.validation.constraints.Positive;
+
+//Cada objecto Demanda é apenas de um ingrediente ou conjunto de ingredientes?
 public class Demanda {
 
     private Unit unit;
@@ -10,7 +13,7 @@ public class Demanda {
 
     private Ingredient ingredient;
 
-    public Demanda (Ingredient ingredient, int quantity, Unit unit){
+    public Demanda (Ingredient ingredient, @Positive int quantity, Unit unit){
         this.quantity= quantity;
         this.unit = unit;
         this.ingredient = ingredient;
@@ -18,8 +21,10 @@ public class Demanda {
     }
 
     //Como aplico padrao observer em stocks?
-    public void addDemanda( Demanda demanda){
+    public void addDemanda(Demanda demanda){
 
     };
+
+    public void removeDemanda(Demanda demanda)
 
 }
