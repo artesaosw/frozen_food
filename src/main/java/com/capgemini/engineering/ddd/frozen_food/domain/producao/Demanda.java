@@ -1,11 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.producao;
 
+import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
 
 import javax.validation.constraints.Positive;
 
 //Cada objecto Demanda é apenas de um ingrediente ou conjunto de ingredientes?
-public class Demanda {
+public class Demanda implements AggregateRoot {
+
+    private RecipeID id;
 
     private Unit unit;
 
@@ -28,5 +32,7 @@ public class Demanda {
     public void removeDemanda(Demanda demanda){
 
     }
+
+    public void updateDemanda(Demanda demanda)
 
 }
