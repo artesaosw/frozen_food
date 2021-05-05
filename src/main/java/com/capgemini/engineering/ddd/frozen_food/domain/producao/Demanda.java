@@ -8,10 +8,18 @@ public class Demanda {
 
     private int quantity;
 
-    private Ingredient;
+    private Ingredient ingredient;
 
-    public Demanda (){};
+    public Demanda (Ingredient ingredient, int quantity, Unit unit){
+        this.quantity= quantity;
+        this.unit = unit;
+        this.ingredient = ingredient;
 
-    public void addDemanda();
+    }
+
+    //Como aplico padrao observer em stocks?
+    public void addDemanda( Demanda demanda){
+
+    };
 
 }
