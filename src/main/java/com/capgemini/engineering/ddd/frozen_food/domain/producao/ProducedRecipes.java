@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
@@ -37,7 +38,7 @@ public class ProducedRecipes {
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
     //atualizacao do lote é manual ou autmatico?
-    public ProducedRecipes(Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade){
+    public ProducedRecipes(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade){
         this.id = Identificator.newInstance(RecipeID.class);
         this.unit = unit;
         this.quantity = quantity;
