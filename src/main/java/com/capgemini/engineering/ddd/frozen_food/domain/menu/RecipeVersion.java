@@ -35,7 +35,7 @@ public class RecipeVersion implements ValueObject, Serializable {
     public static RecipeVersion initial(){
         RecipeVersion rv = new RecipeVersion();
         rv.major = MAJOR_INITIAL;
-        rv.minor = MAJOR_INITIAL;
+        rv.minor = MINOR_INITIAL;
         return rv;
     }
 

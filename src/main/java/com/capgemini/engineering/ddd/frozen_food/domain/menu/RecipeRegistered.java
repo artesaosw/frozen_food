@@ -8,10 +8,12 @@ import lombok.Getter;
 public class RecipeRegistered extends DomainEvent {
 
     private RecipeID recipeID;
+    private Recipe recipe;
 
-    public RecipeRegistered(RecipeID recipeID) {
+    public RecipeRegistered(RecipeID recipeID, Recipe recipe) {
         super();
         this.recipeID = recipeID;
+        this.recipe = recipe;
     }
 
 }

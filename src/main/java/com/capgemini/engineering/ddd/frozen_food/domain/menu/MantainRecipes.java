@@ -30,7 +30,7 @@ public class MantainRecipes implements DomainServices {
         recipes().registerNew(recipe);
 
         //reports event
-        Events.report(new RecipeRegistered(recipe.id()));
+        Events.report(new RecipeRegistered(recipe.id(), recipe));
     }
 
     public void updatePortion(@NotNull RecipeID recipeID, @NotNull Portion portion, boolean majorUpdate){
@@ -50,7 +50,7 @@ public class MantainRecipes implements DomainServices {
         recipes().update(recipe);
 
         //reports event
-        Events.report(new RecipeUpdated(recipeID));
+        Events.report(new RecipeUpdated(recipeID, recipe));
     }
 
 }
