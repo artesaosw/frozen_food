@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.producao;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
 
@@ -25,14 +26,14 @@ public class Demanda implements AggregateRoot {
     }
 
     //Como aplico padrao observer em stocks?
-    public void addDemanda(Demanda demanda){
+    public void addDemanda(Demanda demanda){};
 
-    };
+    public void removeDemanda(Demanda demanda){};
 
-    public void removeDemanda(Demanda demanda){
+    public void updateDemanda(Demanda demanda){};
 
+    @Override
+    public Identificator id() {
+        return this.id;
     }
-
-    public void updateDemanda(Demanda demanda)
-
 }
