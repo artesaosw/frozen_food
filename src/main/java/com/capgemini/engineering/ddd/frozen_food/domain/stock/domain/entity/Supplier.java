@@ -1,9 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.stock.entity;
+package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.exception.InvalidElementException;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;

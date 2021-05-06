@@ -4,11 +4,11 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class RequirementID implements Identificator, Serializable {
+public class IngredientID implements Identificator, Serializable {
 
     private UUID id;
 
-    IngredientID(@NotNull UUID id){
+    IngredientID(@NotNull UUID id) {
         this.id = id;
     }
 

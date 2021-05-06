@@ -7,7 +7,7 @@ public class DomainEventID implements Identificator {
 
     private UUID id;
 
-    DomainEventID(@NotNull UUID id){
+    DomainEventID(@NotNull UUID id) {
         this.id = id;
     }
 

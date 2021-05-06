@@ -1,19 +1,19 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.stock.repository;
+package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RequirementID;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.Requirement;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 
 import java.util.List;
 
-public class RequirementsImpl implements Requirements {
+public class IngredientsImpl implements Ingredients {
     @Override
-    public List<Requirement> all() {
+    public List<Ingredient> all() {
         // TODO
         return null;
     }
 
     @Override
-    public Requirement withId(RequirementID id) {
+    public Ingredient withId(RequirementID id) {
         // TODO
         return null;
     }
@@ -25,12 +25,12 @@ public class RequirementsImpl implements Requirements {
     }
 
     @Override
-    public void registerNew(Requirement aggregateRoot) {
+    public void registerNew(Ingredient aggregateRoot) {
         // TODO
     }
 
     @Override
-    public void update(Requirement aggregateRoot) {
+    public void update(Ingredient aggregateRoot) {
         // TODO
     }
 

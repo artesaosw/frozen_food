@@ -1,10 +1,10 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.stock.entity;
+package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.RequirementID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.RequirementStatus;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +13,11 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
-public class Requirement implements AggregateRoot, Serializable {
+public class Ingredient implements AggregateRoot, Serializable {
 
     // TODO o id tem de ser igual ao id do Ingredient do package menu
 
-    private RequirementID id;
+    private IngredientID id;
 
     private String name;
 
@@ -27,20 +27,20 @@ public class Requirement implements AggregateRoot, Serializable {
     private Integer minimumStockValue;
 
     @Setter
-    private RequirementStatus requirementStatus;
+    private IngredientStatus ingredientStatus;
 
-    protected Requirement() {
+    protected Ingredient() {
     }
 
-    public Requirement(@NotBlank String name, @NotNull Unit unit, Integer minimumStockValue) {
-        this.id = Identificator.newInstance(RequirementID.class);
+    public Ingredient(@NotBlank String name, @NotNull Unit unit, Integer minimumStockValue) {
+        this.id = Identificator.newInstance(IngredientID.class);
         this.name = name;
         this.unit = unit;
         this.minimumStockValue = minimumStockValue;
-        this.requirementStatus = RequirementStatus.INUSE;
+        this.ingredientStatus = IngredientStatus.INUSE;
     }
 
-    public RequirementID id() {
+    public IngredientID id() {
         return this.id;
     }
 }

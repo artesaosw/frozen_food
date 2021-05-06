@@ -1,12 +1,12 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.stock.service;
+package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.SupplierRegistered;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.NIF;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.entity.Supplier;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.repository.Suppliers;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.SupplierRegistered;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Supplier;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.Suppliers;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

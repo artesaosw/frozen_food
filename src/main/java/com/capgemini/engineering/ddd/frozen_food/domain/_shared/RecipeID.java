@@ -8,7 +8,7 @@ public class RecipeID implements Identificator, Serializable {
 
     private UUID id;
 
-    RecipeID(@NotNull UUID id){
+    RecipeID(@NotNull UUID id) {
         this.id = id;
     }
 

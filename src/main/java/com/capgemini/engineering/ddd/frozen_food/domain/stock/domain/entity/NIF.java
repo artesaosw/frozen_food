@@ -1,6 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.stock.entity;
+package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.exception.InvalidElementException;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.InvalidElementException;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;

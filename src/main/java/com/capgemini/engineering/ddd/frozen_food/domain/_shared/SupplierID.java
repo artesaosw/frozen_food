@@ -8,7 +8,7 @@ public class SupplierID implements Identificator, Serializable {
 
     private UUID id;
 
-    SupplierID(@NotNull UUID id){
+    SupplierID(@NotNull UUID id) {
         this.id = id;
     }
 
