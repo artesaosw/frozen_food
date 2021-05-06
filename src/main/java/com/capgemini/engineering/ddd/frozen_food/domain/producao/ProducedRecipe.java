@@ -62,6 +62,11 @@ public class ProducedRecipe implements AggregateRoot {
         this.dataProducao = LocalDate.now();
     }
 
+    @Override
+    public Identificator id() {
+        return null;
+    }
+
     //Criacao de Lista com ReceitasProduzidas?
 
 
