@@ -48,7 +48,7 @@ public class ProducedRecipe implements AggregateRoot {
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
     //atualizacao do lote é manual ou automatico?
-    public ProducedRecipe(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade, String tipoReceita){
+    public ProducedRecipe(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
         this.id = Identificator.newInstance(RecipeID.class);
         this.unit = unit;
         this.quantity = quantity;
