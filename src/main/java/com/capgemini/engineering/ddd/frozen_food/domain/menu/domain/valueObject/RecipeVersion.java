@@ -1,6 +1,7 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.menu;
+package com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.ValueObject;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.exception.RecipeVersionOverflowException;
 
 import java.io.Serializable;
 
@@ -22,12 +23,12 @@ public class RecipeVersion implements ValueObject, Serializable {
         }
     }
 
-    void incrementMajor(){
+    public void incrementMajor(){
         checkOverflow(major);
         major++;
     }
 
-    void incrementMinor(){
+    public void incrementMinor(){
         checkOverflow(minor);
         minor++;
     }
