@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.producao;
 
+import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ProducedRecipe {
+public class ProducedRecipe implements AggregateRoot {
 
     //ID da Receita Produzida
     private String recipeID;
