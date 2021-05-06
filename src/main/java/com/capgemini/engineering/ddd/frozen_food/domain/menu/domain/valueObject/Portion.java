@@ -1,6 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.menu;
+package com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.ValueObject;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.RecipeItem;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 

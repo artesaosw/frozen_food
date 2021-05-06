@@ -1,9 +1,14 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.menu;
+package com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject.Portion;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Recipe;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.RecipeRegistered;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.RecipeUpdated;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.repository.Recipes;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

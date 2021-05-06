@@ -1,7 +1,7 @@
-package com.capgemini.engineering.ddd.frozen_food.domain;
+package com.capgemini.engineering.ddd.frozen_food.domain.menu;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.repository.Ingredients;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.repository.Recipes;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

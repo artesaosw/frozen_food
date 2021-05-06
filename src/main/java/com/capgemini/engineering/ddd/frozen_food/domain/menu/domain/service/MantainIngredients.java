@@ -1,7 +1,9 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.menu;
+package com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Ingredient;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.repository.Ingredients;
 
 import javax.validation.constraints.NotBlank;
 
