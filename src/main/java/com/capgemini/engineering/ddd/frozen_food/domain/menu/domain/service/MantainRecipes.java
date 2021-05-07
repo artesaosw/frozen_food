@@ -4,6 +4,8 @@ import com.capgemini.engineering.ddd.frozen_food.domain.menu.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.DTO.Recipe_SalesDTO;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.converter.Recipe_SalesConverter;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.RecipeRegistered;
@@ -21,7 +23,7 @@ public class MantainRecipes implements DomainServices {
         return Domain.recipes();
     }
 
-    public void registerNew(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure){
+    public void registerNew(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure, boolean integratesCatalog){
 
         //Validation
         if (recipes().existsWithName(name)){
@@ -29,13 +31,18 @@ public class MantainRecipes implements DomainServices {
         }
 
         //Instantiate aggregate
-        Recipe recipe = new Recipe(name, items, procedure);
+        Recipe recipe = new Recipe(name, items, procedure, integratesCatalog);
 
         //persists
         recipes().registerNew(recipe);
 
         //reports event
-        Events.report(new RecipeRegistered(recipe.id(), recipe));
+        Recipe_SalesDTO recipe_SalesDTO = Recipe_SalesConverter.recipe2Recipe_SalesDTO(recipe);
+
+        if(integratesCatalog){
+            Events.report(new RecipeRegistered(recipe_SalesDTO));
+        }
+
     }
 
     public void updatePortion(@NotNull RecipeID recipeID, @NotNull Portion portion, boolean majorUpdate){
