@@ -13,6 +13,8 @@ public class DomainEvent {
 
     private LocalDateTime dateTime;
 
+    private String eventData;
+
     public DomainEvent() {
         this.id = Identificator.newInstance(DomainEventID.class);
         this.dateTime = LocalDateTime.now();

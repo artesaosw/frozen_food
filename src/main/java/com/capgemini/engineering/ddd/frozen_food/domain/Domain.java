@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.Customers;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.Orders;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.Products;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -26,6 +27,10 @@ public class Domain implements ApplicationContextAware {
 
     public static Orders orders(){
         return applicationContext.getBean(Orders.class);
+    }
+
+    public static Products products(){
+        return applicationContext.getBean(Products.class);
     }
 
     @Override
