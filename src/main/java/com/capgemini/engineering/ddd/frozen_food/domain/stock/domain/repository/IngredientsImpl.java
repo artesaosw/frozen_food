@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.RequirementID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 
 import java.util.List;
@@ -13,13 +13,13 @@ public class IngredientsImpl implements Ingredients {
     }
 
     @Override
-    public Ingredient withId(RequirementID id) {
+    public Ingredient withId(IngredientID id) {
         // TODO
         return null;
     }
 
     @Override
-    public boolean existsWithId(RequirementID id) {
+    public boolean existsWithId(IngredientID id) {
         // TODO
         return false;
     }
