@@ -29,15 +29,18 @@ public class Recipe implements AggregateRoot, RecipeItem, Serializable {
 
     private RecipeVersion version;
 
+    private boolean integratesCatalog;
+
     //Just to support ORM frameworks
     protected Recipe() {}
 
-    public Recipe(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure) {
+    public Recipe(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure, boolean integratesCatalog) {
         this.id = Identificator.newInstance(RecipeID.class);
         this.name = name;
         this.items = mapOf(items);
         this.procedure = procedure;
         this.version = RecipeVersion.initial();
+        this.integratesCatalog = integratesCatalog;
     }
 
     private Map<RecipeItem, Portion> mapOf(Set<Portion> items) {
