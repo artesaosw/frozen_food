@@ -37,7 +37,7 @@ public class MantainRecipes implements DomainServices {
 
         //Validation
         if (!recipes().existsWithId(recipeID)){
-            throw new IllegalArgumentException("There is not exists a recipe with id = " + recipeID.toString());
+            throw new IllegalArgumentException("There is not a recipe with id = " + recipeID.toString());
         }
 
         //loads the aggregate instance from DB
