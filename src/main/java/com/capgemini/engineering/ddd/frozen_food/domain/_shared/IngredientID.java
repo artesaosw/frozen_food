@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
-import com.sun.istack.NotNull;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -9,7 +8,7 @@ public class IngredientID implements Identificator, Serializable {
 
     private UUID id;
 
-    IngredientID(@NotNull UUID id){
+    IngredientID(@NotNull UUID id) {
         this.id = id;
     }
 

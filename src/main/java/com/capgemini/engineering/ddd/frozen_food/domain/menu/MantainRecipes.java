@@ -1,6 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.menu;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
