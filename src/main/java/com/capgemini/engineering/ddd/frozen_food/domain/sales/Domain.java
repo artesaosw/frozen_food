@@ -1,10 +1,12 @@
-package com.capgemini.engineering.ddd.frozen_food.domain;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.Customers;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.Orders;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.Products;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.ProductionOrder;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Customers;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Orders;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.ProductionOrders;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Products;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -12,14 +14,6 @@ import org.springframework.context.ApplicationContextAware;
 public class Domain implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
-
-    public static Recipes recipes(){
-        return applicationContext.getBean(Recipes.class);
-    }
-
-    public static Ingredients ingredients(){
-        return applicationContext.getBean(Ingredients.class);
-    }
 
     public static Customers customers(){
         return applicationContext.getBean(Customers.class);
@@ -31,6 +25,10 @@ public class Domain implements ApplicationContextAware {
 
     public static Products products(){
         return applicationContext.getBean(Products.class);
+    }
+
+    public static ProductionOrders productionOrders(){
+        return applicationContext.getBean(ProductionOrders.class);
     }
 
     @Override

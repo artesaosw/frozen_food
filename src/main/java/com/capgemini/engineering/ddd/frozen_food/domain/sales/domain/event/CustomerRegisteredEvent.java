@@ -1,10 +1,7 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.sales;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Customer;
 import org.springframework.context.ApplicationEvent;
-
-import java.util.UUID;
 
 public class CustomerRegisteredEvent extends ApplicationEvent {
 

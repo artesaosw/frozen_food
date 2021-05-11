@@ -1,8 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.sales;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import org.aspectj.weaver.ast.Or;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Order;
 import org.springframework.context.ApplicationEvent;
 
 public class OrderUpdatedEvent extends ApplicationEvent {

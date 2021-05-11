@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
-import com.sun.istack.NotNull;
-
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class DomainEventID implements Identificator {
@@ -19,5 +18,10 @@ public class DomainEventID implements Identificator {
     @Override
     public UUID id() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return id + "";
     }
 }

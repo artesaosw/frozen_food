@@ -1,7 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.sales;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Order;
 import org.springframework.context.ApplicationEvent;
 
 public class OrderRegisteredEvent extends ApplicationEvent {

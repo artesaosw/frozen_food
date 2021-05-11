@@ -1,24 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class ProductID implements Identificator, Serializable {
+public class ProductCatalogID implements Identificator, Serializable {
 
     private UUID id;
 
-    ProductID(@NotNull UUID id){
-        this.id = id;
-    }
-
-    public ProductID() {
-        this.id = UUID.randomUUID();
-    }
-
     @Override
     public UUID id() {
-        return this.id;
+        return null;
     }
 
     @Override

@@ -1,13 +1,11 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.sales;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
+import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -16,22 +14,82 @@ import java.util.Map;
 // #1: sera que deve incluir preço total?
 public class Order implements AggregateRoot, Serializable {
 
-    private OrderID id;
+    @Id
+    private String id;
+
+    private OrderID orderID;
 
     // lista de receitas do menu pedidas
     // problema1: vai incluir as receitas "intermedias" (ex.: cebola refogada)
-    private Map<Recipe, Integer> itemsOrdered = new HashMap<>();
+    private Map<Product, Integer> itemsOrdered = new HashMap<>();
 
     private Customer orderedBy;
 
+    private OrderState orderState;
+
+    private Double totalCost;
+
+    public Order() {
+
+    }
+
     public Order(@NotNull Customer orderedBy) {
-        this.id = Identificator.newInstance(OrderID.class);
+        this.orderID = Identificator.newInstance(OrderID.class);
         this.orderedBy = orderedBy;
+        this.orderState = OrderState.Processing;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public OrderID getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(OrderID orderID) {
+        this.orderID = orderID;
     }
 
     @Override
     public Identificator id() {
-        return this.id;
+        return this.orderID;
+    }
+
+    public Map<Product, Integer> getItemsOrdered() {
+        return itemsOrdered;
+    }
+
+    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
+    }
+
+    public Customer getOrderedBy() {
+        return orderedBy;
+    }
+
+    public void setOrderedBy(Customer orderedBy) {
+        this.orderedBy = orderedBy;
+    }
+
+    public OrderState getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
+    }
+
+    public Double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Double totalCost) {
+        this.totalCost = totalCost;
     }
 
     @Override
@@ -44,7 +102,7 @@ public class Order implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-    public void addItemToOrder(Recipe item, int quantity) {
+    public void addItemToOrder(Product item, int quantity) {
         //check for null quantities
         if(quantity <= 0) {
             return;
@@ -65,7 +123,7 @@ public class Order implements AggregateRoot, Serializable {
         this.itemsOrdered.remove(item);
     }
 
-    public void decrementItemInOrder(Recipe item, int quantity) {
+    public void decrementItemInOrder(Product item, int quantity) {
         //check if item exists and if available amount is >= than quantity
         if(this.itemsOrdered.containsKey(item) && this.itemsOrdered.get(item) >= 0) {
             int newQuantity = this.itemsOrdered.get(item) - quantity;

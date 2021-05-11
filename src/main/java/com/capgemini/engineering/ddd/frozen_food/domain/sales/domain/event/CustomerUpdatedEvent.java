@@ -1,5 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.sales;
+package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event;
 
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Customer;
 import org.springframework.context.ApplicationEvent;
 
 public class CustomerUpdatedEvent extends ApplicationEvent {
