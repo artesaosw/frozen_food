@@ -4,8 +4,9 @@ import com.capgemini.engineering.ddd.frozen_food.domain.menu.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.DTO.Recipe_SalesDTO;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.converter.Recipe_SalesConverter;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.DTO.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.converter.RecipeConverter;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.ExperimentRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.RecipeRegistered;
@@ -23,6 +24,13 @@ public class MantainRecipes implements DomainServices {
         return Domain.recipes();
     }
 
+    public void createExperimentRecipe(Set<Portion> items) {
+        ExperimentRecipe experimentRecipe = new ExperimentRecipe(items);
+
+        //Events.report();
+    }
+
+
     public void registerNew(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure, boolean integratesCatalog){
 
         //Validation
@@ -37,10 +45,10 @@ public class MantainRecipes implements DomainServices {
         recipes().registerNew(recipe);
 
         //reports event
-        Recipe_SalesDTO recipe_SalesDTO = Recipe_SalesConverter.recipe2Recipe_SalesDTO(recipe);
+        RecipeDTO recipeDTO = RecipeConverter.recipe2RecipeDTO(recipe);
 
         if(integratesCatalog){
-            Events.report(new RecipeRegistered(recipe_SalesDTO));
+            Events.report(new RecipeRegistered(recipeDTO));
         }
 
     }
