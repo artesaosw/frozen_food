@@ -1,20 +1,19 @@
 package com.capgemini.engineering.ddd.frozen_food.domain._shared;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
+import com.sun.istack.NotNull;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class IngredientID implements Identificator, Serializable {
+public class BatchID implements Identificator, Serializable {
 
     private UUID id;
 
-    IngredientID(@NotNull UUID id) {
+    BatchID(@NotNull UUID id){
         this.id = id;
     }
 
-    public IngredientID() {
+    public BatchID() {
         this.id = UUID.randomUUID();
     }
 

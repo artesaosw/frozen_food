@@ -13,8 +13,11 @@ public class DomainEvent {
 
     private LocalDateTime dateTime;
 
-    public DomainEvent() {
+    private String eventData;
+
+    public DomainEvent(String eventData) {
         this.id = Identificator.newInstance(DomainEventID.class);
         this.dateTime = LocalDateTime.now();
+        this.eventData = eventData;
     }
 }
