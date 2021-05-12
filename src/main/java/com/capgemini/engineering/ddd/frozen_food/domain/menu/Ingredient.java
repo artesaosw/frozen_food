@@ -2,7 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.domain.menu;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.ids.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

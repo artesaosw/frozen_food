@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.__metadata;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.ids.DomainEventID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.DomainEventID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import lombok.Getter;
 

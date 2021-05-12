@@ -64,7 +64,7 @@ class SaleItem{
 }
 
 class ClientSales{
-    -ClientID clientID 
+    -ClientID customerID
     -SaleItem saleItem
     -SaleID saleID
     -Date saleHour     
@@ -86,14 +86,14 @@ enum StatusDelivery{
 }
 
 class Delivery{
-    -ClientID clientID 
+    -ClientID customerID
     -SaleID saleID
     -StatusDelivery statusDelivery 
     -Date deliveryHour
 }
 
 class Client{
-    - ClientID clientID
+    - ClientID customerID
     - String nome
     - String NIF 
     - Address adress

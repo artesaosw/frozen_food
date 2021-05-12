@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain._shared.client;
+package com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.customer;
 
 import java.lang.Math;
 
@@ -16,8 +16,9 @@ public class CreditCard {
         double exp;
         for(int i = 0; i < size; i++){
             exp = (double) (i+1);
-            ccNum[size-i] = (int) number % Math.pow(10,exp);    
+            ccNum[size-i] = (int) (number % (Math.pow(10,exp)));
         }
+
         for(int i = 0; i < size;i++){
             if(i % 2 == 0){
                 int doubleValue = ccNum[i];
@@ -35,14 +36,12 @@ public class CreditCard {
         for(int i = 0; i < size; i++){
             sum = sum + ccNumRevSum[i];
         }
+
         if(sum % 10 == 0){
             check =true;
         }
-        
         return check;
     }
-    
-     
-    
+
     
 }
