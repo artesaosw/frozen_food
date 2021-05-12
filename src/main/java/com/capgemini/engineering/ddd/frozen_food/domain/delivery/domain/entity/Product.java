@@ -10,9 +10,10 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 
 @AllArgsConstructor
-public class Product implements AggregateRoot {
+public class Product implements AggregateRoot, Serializable {
 
     @Id @Getter
     private ProductID productID;

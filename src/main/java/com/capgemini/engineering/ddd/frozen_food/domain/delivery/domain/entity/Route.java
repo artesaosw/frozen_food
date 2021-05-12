@@ -5,9 +5,10 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.ids.RouteID;
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.DeliveryPackage;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Route implements AggregateRoot {
+public class Route implements AggregateRoot, Serializable {
 
         private RouteID routeID;
 

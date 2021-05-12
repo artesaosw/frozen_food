@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared;
+package com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.customer;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.domain.exception.*;
 import lombok.Getter;
