@@ -5,8 +5,9 @@ import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.DTO.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.IngredientsRequested;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.converter.RecipeConverter;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.ExperimentRecipe;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject.ExperimentRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.RecipeRegistered;
@@ -27,7 +28,7 @@ public class MantainRecipes implements DomainServices {
     public void createExperimentRecipe(Set<Portion> items) {
         ExperimentRecipe experimentRecipe = new ExperimentRecipe(items);
 
-        //Events.report();
+        Events.report(new IngredientsRequested(experimentRecipe));
     }
 
 
