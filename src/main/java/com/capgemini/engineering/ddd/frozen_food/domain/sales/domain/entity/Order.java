@@ -3,7 +3,6 @@ package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +35,7 @@ public class Order implements AggregateRoot, Serializable {
     public Order(@NotNull Customer orderedBy) {
         this.orderID = Identificator.newInstance(OrderID.class);
         this.orderedBy = orderedBy;
-        this.orderState = OrderState.Processing;
+        this.orderState = OrderState.PROCESSING;
     }
 
     public String getId() {
@@ -119,11 +118,12 @@ public class Order implements AggregateRoot, Serializable {
         }
     }
 
-    public void removeItemFromOrder(Recipe item) {
+    public void removeItemFromOrder(Product item) {
         this.itemsOrdered.remove(item);
     }
 
     public void decrementItemInOrder(Product item, int quantity) {
+
         //check if item exists and if available amount is >= than quantity
         if(this.itemsOrdered.containsKey(item) && this.itemsOrdered.get(item) >= 0) {
             int newQuantity = this.itemsOrdered.get(item) - quantity;

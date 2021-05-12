@@ -1,8 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.sales;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Customers;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Orders;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.ProductionOrders;

@@ -29,6 +29,14 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.productionOrderID = productionOrderID;
     }
 
+    public Map<Product, Integer> getItemsOrdered() {
+        return itemsOrdered;
+    }
+
+    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
+    }
+
     public String getId() {
         return id;
     }
