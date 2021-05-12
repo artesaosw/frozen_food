@@ -1,7 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.service;
 
+import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.IngredientRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.domain.repository.Ingredients;
 
@@ -24,7 +26,7 @@ public class MantainIngredients implements DomainServices {
         //persists
         ingredients().registerNew(ingredient);
 
-
+        Events.report(new IngredientRegistered (ingredient.getId()));
     }
 
 }
