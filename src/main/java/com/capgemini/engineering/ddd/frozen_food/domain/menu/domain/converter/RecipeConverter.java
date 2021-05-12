@@ -9,7 +9,7 @@ public class RecipeConverter {
         RecipeDTO recipeDTO = new RecipeDTO();
         recipeDTO.setId(recipe.getId());
         recipeDTO.setName(recipe.getName());
-        //recipeDTO.setItems();
+        recipeDTO.setItems(recipe.getItems());
         return recipeDTO;
     }
 }
