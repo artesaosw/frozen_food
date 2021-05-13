@@ -4,7 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainService
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
 
-public class MantainProducedRecipes extends DomainServices {
+public class MantainProducedRecipes implements DomainServices {
 
     public void registerNew(){};
 
