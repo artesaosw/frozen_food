@@ -2,18 +2,22 @@ package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
+import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-// SERA NECESSARIO ??????????
 public class ProductionOrder implements AggregateRoot, Serializable {
 
+    @Id
     private String id;
 
-    private ProductionOrderID productionOrderID;
+    @NotNull
+    private ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class);
 
     private Map<Product, Integer> itemsOrdered = new HashMap<>();
 

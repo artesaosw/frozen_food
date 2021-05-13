@@ -1,8 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.*;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event.*;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.ProductionOrderRepository;
@@ -12,28 +9,28 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
 public class ProductionOrderService {
 
     @Autowired
     private ProductionOrderRepository productionOrderRepository;
 
-    public ResponseEntity<ProductionOrder> createProductionOrder(@NotNull Map<Product, Integer> itemsOrdered) {
+    public ResponseEntity<?> createProductionOrder(@NotNull ProductionOrder productionOrder) {
 
-        ProductionOrder productionOrder = new ProductionOrder();
+        if (productionOrder.getItemsOrdered().isEmpty()) {
+            return new ResponseEntity<String>("Production orders must contain one or more ordered items.", HttpStatus.BAD_REQUEST);
+        }
 
-        //this is required since the ProductionOrder class only contains an empty default constructor
-        //because JPA requires it
-        productionOrder.setProductionOrderID(Identificator.newInstance(ProductionOrderID.class));
-        productionOrder.setItemsOrdered(itemsOrdered);
+//        ProductionOrder productionOrder = new ProductionOrder();
+//
+//        //this is needed since the ProductionOrder class only contains an empty default constructor
+//        //since JPA requires it
+//        productionOrder.setProductionOrderID(Identificator.newInstance(ProductionOrderID.class));
+//        productionOrder.setItemsOrdered(itemsOrdered);
 
-        //persist the new production order
-        productionOrder = this.productionOrderRepository.save(productionOrder);
-
-        //prodctionOrder now has an id, let's publish the event
+        //persist the new production order and issue the event
         ProductionOrderIssuedEventPublisher eventPublisher = new ProductionOrderIssuedEventPublisher();
-        eventPublisher.publishEvent(productionOrder);
+        eventPublisher.publishEvent(this.productionOrderRepository.save(productionOrder));
 
         return new ResponseEntity<ProductionOrder>(productionOrder, HttpStatus.OK);
     }
@@ -59,4 +56,7 @@ public class ProductionOrderService {
         }
     }
 
+    public ProductionOrderRepository getProductionOrderRepository() {
+        return productionOrderRepository;
+    }
 }

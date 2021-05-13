@@ -4,4 +4,6 @@ import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Prod
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ProductRepository extends MongoRepository<Product, String>, Products {
+
+    public boolean existsProductByName(String name);
 }

@@ -33,7 +33,7 @@ public class OrderService implements DomainServices {
         return Domain.orders();
     }
 
-    public void createNewOrder(@NotNull Customer orderedBy, Map<Product, Integer> itemsOrdered) {
+    public void createNewOrder(@NotNull Order order) {
 
         //TODO
         // 1- VER SE OS PRODUTOS NO MAPA itemsOrdered EXISTEM
@@ -41,12 +41,10 @@ public class OrderService implements DomainServices {
         // CASO UM DOS PASSOS FALHE, DEVE ATIRAR EXCEÇAO
         // PROVAVELMENTE VAI TER QUE COMUNICAR COM O CONTEXT DE STOCK --- fica mais complicado
 
-        //criar novo pedido e persistir na base de dados
-        Order newOrder = null;
-
+        //create and persist new order on the database
         //issue a OrderRegisteredEvent
         OrderRegisteredEventPublisher eventPublisher = new OrderRegisteredEventPublisher();
-        eventPublisher.publishEvent(newOrder);
+        eventPublisher.publishEvent(this.orderRepository.save(order));
 
         //must return ResponseEntity<Order>
     }
@@ -100,7 +98,7 @@ public class OrderService implements DomainServices {
 
     }
 
-    private double computeOrderCost(Map<Order, Integer> itemsOrdered) {
-        return 0;
+    public OrderRepository getOrderRepository() {
+        return orderRepository;
     }
 }
