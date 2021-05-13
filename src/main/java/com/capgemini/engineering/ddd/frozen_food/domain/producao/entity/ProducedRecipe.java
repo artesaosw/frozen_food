@@ -41,6 +41,8 @@ public class ProducedRecipe implements AggregateRoot {
     //Tipo de Receita
     private String tipoReceita;
 
+    private String status;
+
     private static final String primaryRecipe = "PRIMARY";
     private static final String secondaryRecipe = "SECONDARY";
 
@@ -65,6 +67,10 @@ public class ProducedRecipe implements AggregateRoot {
 
     public void setLocalDate(){
         this.dataProducao = LocalDate.now();
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 
     @Override

@@ -23,12 +23,20 @@ public class Demanda implements AggregateRoot {
 
     private Ingredient ingredient;
 
+    private String status;
+
+    private static final String Open = "OPEN";
+    private static final String Closed = "CLOSED";
+
     public Demanda (Ingredient ingredient, @Positive int quantity, Unit unit){
         this.id = Identificator.newInstance(DemandaID.class);
         this.quantity= quantity;
         this.unit = unit;
         this.ingredient = ingredient;
+    }
 
+    public void setStatus(String status){
+        this.status = status;
     }
 
     @Override
