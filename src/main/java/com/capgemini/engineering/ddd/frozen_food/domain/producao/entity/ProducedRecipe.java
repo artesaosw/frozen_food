@@ -44,7 +44,9 @@ public class ProducedRecipe implements AggregateRoot {
     private static final String primaryRecipe = "PRIMARY";
     private static final String secondaryRecipe = "SECONDARY";
 
-    private static final String
+    //Criar Status?
+    private static final String Open = "OPEN";
+    private static final String Closed = "CLOSED";
 
     //Just to support ORM frameworks
     protected ProducedRecipe() {}
@@ -52,7 +54,7 @@ public class ProducedRecipe implements AggregateRoot {
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
     //atualizacao do lote é manual ou automatico?
     public ProducedRecipe(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
-        this.id = Identificator.newInstance(RecipeID.class);
+        this.id = Identificator.newInstance(BatchID.class);
         this.unit = unit;
         this.quantity = quantity;
         this.recipeID = recipeID;

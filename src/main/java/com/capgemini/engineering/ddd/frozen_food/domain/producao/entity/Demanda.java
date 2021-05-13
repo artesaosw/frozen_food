@@ -24,6 +24,7 @@ public class Demanda implements AggregateRoot {
     private Ingredient ingredient;
 
     public Demanda (Ingredient ingredient, @Positive int quantity, Unit unit){
+        this.id = Identificator.newInstance(DemandaID.class);
         this.quantity= quantity;
         this.unit = unit;
         this.ingredient = ingredient;
