@@ -44,6 +44,8 @@ public class ProducedRecipe implements AggregateRoot {
     private static final String primaryRecipe = "PRIMARY";
     private static final String secondaryRecipe = "SECONDARY";
 
+    private static final String
+
     //Just to support ORM frameworks
     protected ProducedRecipe() {}
 
@@ -67,8 +69,6 @@ public class ProducedRecipe implements AggregateRoot {
     public Identificator id() {
         return null;
     }
-
-    //Criacao de Lista com ReceitasProduzidas?
 
 
 

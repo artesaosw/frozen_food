@@ -9,6 +9,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
 
 import javax.validation.constraints.Positive;
 
+//tenho de implementar map portion
 //Cada objecto Demanda é apenas de um ingrediente ou conjunto de ingredientes?
 public class Demanda implements AggregateRoot {
 
@@ -28,13 +29,6 @@ public class Demanda implements AggregateRoot {
         this.ingredient = ingredient;
 
     }
-
-    //Como aplico padrao observer em stocks?
-    public void addDemanda(Demanda demanda){};
-
-    public void removeDemanda(Demanda demanda){};
-
-    public void updateDemanda(Demanda demanda){};
 
     @Override
     public Identificator id() {
