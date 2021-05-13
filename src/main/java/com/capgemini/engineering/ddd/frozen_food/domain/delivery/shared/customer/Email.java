@@ -11,9 +11,9 @@ package com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.custome
  */
 
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.domain.exception.*;
+//import org.apache.commons.validator.EmailValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.regex.Matcher;
@@ -41,6 +41,7 @@ public class Email {
       * @param email 
       */
     public void setEmail(String email){
+       // EmailValidator emailValidator = EmailValidator.getInstance();
         if(isEmailValid(email)){
             this.email = email;
         }

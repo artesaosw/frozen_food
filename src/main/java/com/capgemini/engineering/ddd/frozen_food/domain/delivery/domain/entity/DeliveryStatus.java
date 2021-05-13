@@ -1,7 +1,11 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.delivery;
+package com.capgemini.engineering.ddd.frozen_food.domain.delivery.domain.entity;
 
-public enum StatusDelivery {
+public enum DeliveryStatus {
 
+    /**
+     * Sale order received and products being separed for packaging
+     */
+    PACKAGE_PREPARATION,
     /**
      * Package ready for delivery
      */

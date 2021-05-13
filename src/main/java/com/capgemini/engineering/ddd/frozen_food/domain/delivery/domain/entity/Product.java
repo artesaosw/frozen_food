@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.delivery.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.ids.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
@@ -20,6 +21,9 @@ public class Product implements AggregateRoot, Serializable {
 
     @Getter @Setter
     private RecipeID recipeID;
+
+    @Getter @Setter
+    private BatchID batchID;
 
     @Getter @Setter @Positive
     private float weight;

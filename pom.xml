@@ -52,11 +52,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
+		<!--
+		<dependency>
             <groupId>com.capgemini.engineering.ddd</groupId>
             <artifactId>frozen_food</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        -->
     </dependencies>
 
 	<build>

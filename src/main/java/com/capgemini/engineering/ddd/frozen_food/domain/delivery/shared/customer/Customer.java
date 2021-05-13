@@ -23,6 +23,7 @@ public class Customer implements AggregateRoot, Serializable {
     @Getter @Setter @NonNull
     private NIF nif;
 
+    @Getter @Setter
     private String email;
 
     @Getter @Setter @NonNull
