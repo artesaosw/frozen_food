@@ -3,6 +3,7 @@ package com.capgemini.engineering.ddd.frozen_food.domain.delivery.domain.entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.Units;
 import com.capgemini.engineering.ddd.frozen_food.domain.delivery.shared.ids.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,26 @@ public class Product implements AggregateRoot, Serializable {
     @Getter @Setter
     private BatchID batchID;
 
+    @Getter @Setter
+    private Units weightUnit;
+
     @Getter @Setter @Positive
     private float weight;
+
+    @Getter @Setter
+    private Units volumeUnit;
 
     @Getter @Setter @Positive
     private float volume;
 
+    @Getter @Setter
+    private Units heightUnit;
+
     @Getter @Setter @Positive
     private float height;
+
+    @Getter @Setter
+    private Units widthUnit;
 
     @Getter @Setter @Positive
     private float width;

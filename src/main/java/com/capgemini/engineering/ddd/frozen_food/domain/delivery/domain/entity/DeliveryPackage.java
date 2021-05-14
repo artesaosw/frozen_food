@@ -18,16 +18,16 @@ public class DeliveryPackage implements AggregateRoot {
 
     @Id @Getter
     private DeliveryPackageID deliveryPackageID;
+
     @Getter
     private SaleOrderID saleOrderID;
+
     @Getter
-    private Date saleOrderDate;
-    @Getter
-    private CustomerID customerID;
-    @Getter
-    private List<Product> productList;
+    private OrderDimensions orderDimensions;
+
     @Getter @Setter
     private DeliveryStatus deliveryStatus;
+
     @Getter @Setter
     private Date deliveryDate;
 
@@ -35,8 +35,12 @@ public class DeliveryPackage implements AggregateRoot {
             customerID, List<Product> productList, DeliveryStatus deliveryStatus){
         this.deliveryPackageID = Identificator.newInstance(DeliveryPackageID.class);
         this.saleOrderID = saleOrderID;
-        this.customerID = customerID;
+
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public void updatePackagingStatus(){
+        
     }
 
     @Override

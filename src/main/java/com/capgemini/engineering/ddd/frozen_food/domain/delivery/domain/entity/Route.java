@@ -34,6 +34,8 @@ public class Route implements AggregateRoot, Serializable {
         @Getter @Setter
         private Date deliveryScheduledDate;
 
+
+
         @Override
         public Identificator id() {
                 return null;
