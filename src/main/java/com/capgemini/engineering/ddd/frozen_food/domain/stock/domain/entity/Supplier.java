@@ -30,4 +30,14 @@ public class Supplier implements AggregateRoot, Serializable {
     public SupplierID id() {
         return this.id;
     }
+
+    @Override
+    public boolean isEqualsTo(Object other) {
+        return AggregateRoot.super.isEqualsTo(other);
+    }
+
+    @Override
+    public int hashcode() {
+        return AggregateRoot.super.hashcode();
+    }
 }

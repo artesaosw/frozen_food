@@ -1,0 +1,23 @@
+package com.capgemini.engineering.ddd.frozen_food.domain._shared;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.UUID;
+
+public class ChefOrderID implements Identificator, Serializable {
+
+    private UUID id;
+
+    ChefOrderID(@NotNull UUID id) {
+        this.id = id;
+    }
+
+    public ChefOrderID() {
+        this.id = UUID.randomUUID();
+    }
+
+    @Override
+    public UUID id() {
+        return id;
+    }
+}

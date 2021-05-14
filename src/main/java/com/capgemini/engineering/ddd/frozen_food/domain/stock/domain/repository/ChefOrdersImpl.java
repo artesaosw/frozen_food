@@ -1,36 +1,36 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Order;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ChefOrder;
 
 import java.util.List;
 
-public class OrdersImpl implements Orders {
+public class ChefOrdersImpl implements ChefOrders {
     @Override
-    public List<Order> all() {
+    public List<ChefOrder> all() {
         // TODO
         return null;
     }
 
     @Override
-    public Order withId(OrderID id) {
+    public ChefOrder withId(ChefOrderID id) {
         // TODO
         return null;
     }
 
     @Override
-    public boolean existsWithId(OrderID id) {
+    public boolean existsWithId(ChefOrderID id) {
         // TODO
         return false;
     }
 
     @Override
-    public void registerNew(Order aggregateRoot) {
+    public void registerNew(ChefOrder aggregateRoot) {
         // TODO
     }
 
     @Override
-    public void update(Order aggregateRoot) {
+    public void update(ChefOrder aggregateRoot) {
         // TODO
     }
 

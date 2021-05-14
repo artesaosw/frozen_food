@@ -4,15 +4,15 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class OrderID implements Identificator, Serializable {
+public class SupplierOrderID implements Identificator, Serializable {
 
     private UUID id;
 
-    OrderID(@NotNull UUID id) {
+    SupplierOrderID(@NotNull UUID id) {
         this.id = id;
     }
 
-    public OrderID() {
+    public SupplierOrderID() {
         this.id = UUID.randomUUID();
     }
 
