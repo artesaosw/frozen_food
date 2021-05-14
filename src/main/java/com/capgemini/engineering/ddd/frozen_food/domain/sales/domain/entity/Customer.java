@@ -20,15 +20,12 @@ public class Customer implements AggregateRoot, Serializable {
     @NotNull
     private CustomerID customerID = Identificator.newInstance(CustomerID.class);
 
-    @Setter(AccessLevel.PROTECTED)
     @NotBlank
     private String name;
 
-    @Setter(AccessLevel.PROTECTED)
     @NotBlank
     private String address;
 
-    @Setter(AccessLevel.PROTECTED)
     @NotBlank
     private String billingInfo;
 
@@ -49,16 +46,32 @@ public class Customer implements AggregateRoot, Serializable {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public CustomerID getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(CustomerID customerID) {
-        this.customerID = customerID;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBillingInfo() {
+        return billingInfo;
+    }
+
+    public void setBillingInfo(String billingInfo) {
+        this.billingInfo = billingInfo;
     }
 
     public boolean isActivated() {

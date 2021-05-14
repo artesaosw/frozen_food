@@ -66,10 +66,6 @@ public class Order implements AggregateRoot, Serializable {
         return itemsOrdered;
     }
 
-    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
-        this.itemsOrdered = itemsOrdered;
-    }
-
     public Customer getOrderedBy() {
         return orderedBy;
     }
