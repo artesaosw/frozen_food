@@ -4,12 +4,12 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.I
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 public class NIF {
 
-    private static final String NIF_REGEX = "[0-9]{9}";
-
+    @Pattern(regexp = "[0-9]{9}", message = "NIF must have 9 digits.")
     String nif;
 
     public NIF(@NotBlank String nif) {
@@ -25,9 +25,6 @@ public class NIF {
     }
 
     private boolean nifValidation(String nif) {
-        if (!nif.matches(NIF_REGEX)) {
-            throw new InvalidElementException("NIF must have 9 digits.");
-        }
         int controlDigit = Character.getNumericValue(nif.charAt(nif.length() - 1));
         int sum = 0;
         for (int i = 0; i < nif.length() - 1; i++) {

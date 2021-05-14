@@ -7,7 +7,9 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderI
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.InvalidElementException;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
 public class ChefOrder implements AggregateRoot, Serializable {
 
     private ChefOrderID id;
@@ -28,9 +31,6 @@ public class ChefOrder implements AggregateRoot, Serializable {
     private LocalDate orderDate;
 
     private OrderStatus orderStatus;
-
-    public ChefOrder() {
-    }
 
     public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
         this.orderReference = orderReference;

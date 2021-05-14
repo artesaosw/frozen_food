@@ -6,12 +6,14 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 public class Ingredient implements AggregateRoot, Serializable {
 
     private static final Integer INGREDIENT_STOCK_ON_CREATION = 0;
@@ -28,9 +30,6 @@ public class Ingredient implements AggregateRoot, Serializable {
     private IngredientStatus ingredientStatus;
 
     private Integer ingredientStock;
-
-    public Ingredient() {
-    }
 
     public Ingredient(@NotBlank String name, @NotNull Unit unit, Integer minimumStockValue) {
         this.id = Identificator.newInstance(IngredientID.class);
