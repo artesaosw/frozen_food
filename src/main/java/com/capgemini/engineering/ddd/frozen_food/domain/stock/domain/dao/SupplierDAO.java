@@ -5,9 +5,13 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Supplier;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SupplierDAO extends AbstractStockDAO {
@@ -37,6 +41,12 @@ public class SupplierDAO extends AbstractStockDAO {
         Supplier supplier = null;
         // TODO
         return supplier;
+    }
+
+    public List<Supplier> getSuppliers() {
+        List<Supplier> suppliers = new ArrayList<>();
+        suppliersCollection.find().sort(Sorts.ascending()).iterator().forEachRemaining(suppliers::add);
+        return suppliers;
     }
 
     public long getSuppliersCount() {

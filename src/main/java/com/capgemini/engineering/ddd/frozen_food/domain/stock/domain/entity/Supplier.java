@@ -5,6 +5,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Supplier implements AggregateRoot, Serializable {
 
+    @BsonProperty(value = "_id")
     private SupplierID id;
 
     private String name;

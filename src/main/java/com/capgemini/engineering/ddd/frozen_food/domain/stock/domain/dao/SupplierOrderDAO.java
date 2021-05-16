@@ -2,9 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.SupplierOrder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,12 @@ public class SupplierOrderDAO extends AbstractStockDAO {
         suppliersOrdersCollection = db.getCollection(SUPPLIERSORDERS_COLLECTION, SupplierOrder.class);
     }
 
+    public List<SupplierOrder> getSuppliersOrders() {
+        List<SupplierOrder> supplierOrders = new ArrayList<>();
+        suppliersOrdersCollection.find().sort(Sorts.ascending()).iterator().forEachRemaining(supplierOrders::add);
+        return supplierOrders;
+    }
+
     public SupplierOrder getSupplierOrderById(SupplierOrderID supplierOrderID) {
         SupplierOrder supplierOrder = null;
         // TODO
@@ -36,22 +44,10 @@ public class SupplierOrderDAO extends AbstractStockDAO {
         return supplierOrder;
     }
 
-    public List<SupplierOrder> getDeliveredSuppliersOrders() {
-        List<SupplierOrder> suppliersOrders = new ArrayList<>();
+    public List<SupplierOrder> getAllSuppliersOrdersByOrderStatus(OrderStatus orderStatus) {
+        List<SupplierOrder> supplierOrders = new ArrayList<>();
         // TODO
-        return suppliersOrders;
-    }
-
-    public List<SupplierOrder> getUndeliveredSuppliersOrders() {
-        List<SupplierOrder> suppliersOrders = new ArrayList<>();
-        // TODO
-        return suppliersOrders;
-    }
-
-    public List<SupplierOrder> getCanceledSuppliersOrders() {
-        List<SupplierOrder> suppliersOrders = new ArrayList<>();
-        // TODO
-        return suppliersOrders;
+        return supplierOrders;
     }
 
     public boolean addSupplierOrder(SupplierOrder supplierOrder) {

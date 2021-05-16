@@ -1,21 +1,25 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao.IngredientDAO;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class IngredientsImpl implements Ingredients {
+
+    @Autowired
+    IngredientDAO ingredientDAO;
+
     @Override
     public List<Ingredient> all() {
-        // TODO
-        return null;
+        return ingredientDAO.getIngredients();
     }
 
     @Override
     public Ingredient withId(IngredientID id) {
-        // TODO
-        return null;
+        return ingredientDAO.getIngredientById(id);
     }
 
     @Override
@@ -26,12 +30,12 @@ public class IngredientsImpl implements Ingredients {
 
     @Override
     public void registerNew(Ingredient aggregateRoot) {
-        // TODO
+        ingredientDAO.addIngredient(aggregateRoot);
     }
 
     @Override
     public void update(Ingredient aggregateRoot) {
-        // TODO
+        ingredientDAO.updateIngredient(aggregateRoot);
     }
 
     @Override
@@ -44,5 +48,10 @@ public class IngredientsImpl implements Ingredients {
     public boolean existsMinimumStock(String name) {
         // TODO
         return false;
+    }
+
+    @Override
+    public boolean delete(IngredientID id) {
+        return ingredientDAO.deleteIngredient(withId(id));
     }
 }

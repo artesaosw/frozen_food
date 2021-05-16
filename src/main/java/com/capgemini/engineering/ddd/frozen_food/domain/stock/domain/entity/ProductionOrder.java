@@ -7,6 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.InvalidElementException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ProductionOrder implements AggregateRoot, Serializable {
 
+    @BsonProperty(value = "_id")
     private ProductionOrderID id;
 
     private String orderReference;

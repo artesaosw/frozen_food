@@ -8,8 +8,8 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.InvalidElementException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -22,6 +22,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ChefOrder implements AggregateRoot, Serializable {
 
+    @BsonProperty(value = "_id")
     private ChefOrderID id;
 
     private String orderReference;

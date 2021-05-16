@@ -1,22 +1,26 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao.SupplierDAO;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Supplier;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class SuppliersImpl implements Suppliers {
+
+    @Autowired
+    SupplierDAO supplierDAO;
+
     @Override
     public List<Supplier> all() {
-        // TODO
-        return null;
+        return supplierDAO.getSuppliers();
     }
 
     @Override
     public Supplier withId(SupplierID id) {
-        // TODO
-        return null;
+        return supplierDAO.getSupplierById(id);
     }
 
     @Override
@@ -27,17 +31,22 @@ public class SuppliersImpl implements Suppliers {
 
     @Override
     public void registerNew(Supplier aggregateRoot) {
-        // TODO
+        supplierDAO.addSupplier(aggregateRoot);
     }
 
     @Override
     public void update(Supplier aggregateRoot) {
-        // TODO
+        supplierDAO.updateSupplier(aggregateRoot);
     }
 
     @Override
     public boolean existsWithNIF(NIF nif) {
         // TODO
         return false;
+    }
+
+    @Override
+    public boolean delete(SupplierID id) {
+        return supplierDAO.deleteSupplier(withId(id));
     }
 }

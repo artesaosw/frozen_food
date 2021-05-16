@@ -1,10 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.SupplierOrder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,12 @@ public class ProductionOrderDAO extends AbstractStockDAO {
         productionOrdersCollection = db.getCollection(PRODUCTIONORDERS_COLLECTION, ProductionOrder.class);
     }
 
+    public List<ProductionOrder> getProductionOrders() {
+        List<ProductionOrder> productionOrders = new ArrayList<>();
+        productionOrdersCollection.find().sort(Sorts.ascending()).iterator().forEachRemaining(productionOrders::add);
+        return productionOrders;
+    }
+
     public ProductionOrder getProductionOrderById(ProductionOrderID productionOrderID) {
         ProductionOrder productionOrder = null;
         // TODO
@@ -36,19 +43,7 @@ public class ProductionOrderDAO extends AbstractStockDAO {
         return productionOrder;
     }
 
-    public List<ProductionOrder> getDeliveredProductionOrders() {
-        List<ProductionOrder> productionOrders = new ArrayList<>();
-        // TODO
-        return productionOrders;
-    }
-
-    public List<ProductionOrder> getUndeliveredProductionOrders() {
-        List<ProductionOrder> productionOrders = new ArrayList<>();
-        // TODO
-        return productionOrders;
-    }
-
-    public List<ProductionOrder> getConceledProductionOrders() {
+    public List<ProductionOrder> getAllProductionOrdersByOrderStatus(OrderStatus orderStatus) {
         List<ProductionOrder> productionOrders = new ArrayList<>();
         // TODO
         return productionOrders;

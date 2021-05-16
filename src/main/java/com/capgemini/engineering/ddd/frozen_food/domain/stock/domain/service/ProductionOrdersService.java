@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
@@ -9,15 +10,35 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.ProductionO
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ProductionOrders;
+import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ProductionOrdersImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Map;
 
 public class ProductionOrdersService {
 
     private ProductionOrders productionOrders() {
         return Domain.productionOrders();
+    }
+
+    public ProductionOrder getProductionOrderById(ProductionOrderID id) {
+        // TODO
+        return null;
+    }
+
+    public List<ProductionOrder> getAllProductionOrders() {
+        return productionOrders().all();
+    }
+
+    public List<ProductionOrder> getAllProductionOrdersByOrderStatus(OrderStatus orderStatus) {
+        return productionOrders().getAllProductionOrdersByOrderStatus(orderStatus);
+    }
+
+    public void registerNewProductionOrder(ProductionOrder productionOrder) {
+        // TODO
     }
 
     public void registerNewOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
@@ -53,5 +74,17 @@ public class ProductionOrdersService {
         productionOrder.setOrders(orders);
         productionOrders().update(productionOrder);
         Events.report(new ProductionOrderUpdated(productionOrderID));
+    }
+
+    public void updateProductionOrder(ProductionOrder productionOrder) {
+        // TODO
+    }
+
+    public void deleteProductionOrder(ProductionOrderID id) {
+        // TODO
+    }
+
+    public void updateProductionOrderStatus(ProductionOrderID productionOrderID, OrderStatus orderStatus) {
+        // TODO
     }
 }

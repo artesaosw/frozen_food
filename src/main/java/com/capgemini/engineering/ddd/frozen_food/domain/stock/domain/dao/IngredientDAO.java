@@ -30,7 +30,7 @@ public class IngredientDAO extends AbstractStockDAO {
         return ingredient;
     }
 
-    public Ingredient getIngredientById(IngredientID ingredientID) {
+    public Ingredient getIngredientById(IngredientID id) {
         Ingredient ingredient = null;
         // TODO
         return ingredient;

@@ -14,6 +14,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class IngredientsService implements DomainServices {
 
@@ -21,13 +22,36 @@ public class IngredientsService implements DomainServices {
         return Domain.ingredients();
     }
 
-    public void registerNewIngredient(@NotBlank String name, @NotNull Unit unit, Integer minimumStockValue) {
-        if (ingredients().existsWithName(name)) {
+    public Ingredient getIngredientById(@NotNull IngredientID id) {
+        Ingredient ingredient = null;
+        // TODO
+        return ingredient;
+    }
+
+    public Ingredient getIngredientByName(@NotBlank String name) {
+        Ingredient ingredient = null;
+        // TODO
+        return ingredient;
+    }
+
+    public List<Ingredient> getAllIngredients() {
+        return ingredients().all();
+    }
+
+    public void registerNewIngredient(@NotNull Ingredient ingredient) {
+        if (ingredients().existsWithName(ingredient.getName())) {
             throw new IllegalArgumentException("Already exists another requirement with the same name.");
         }
-        Ingredient ingredient = new Ingredient(name, unit, minimumStockValue);
         ingredients().registerNew(ingredient);
         Events.report(new IngredientRegistered(ingredient.id()));
+    }
+
+    public void updateIngredient(@NotNull Ingredient ingredient){
+        if (!ingredients().existsWithId(ingredient.getId())) {
+            throw new IllegalArgumentException("There is no ingredient with id = " + ingredient.getId().toString());
+        }
+        ingredients().update(ingredient);
+        Events.report(new IngredientUpdate(ingredient.id()));
     }
 
     public void updateIngredientUseStatus(@NotNull IngredientID ingredientID, @NotNull IngredientStatus ingredientStatus) {
@@ -77,5 +101,12 @@ public class IngredientsService implements DomainServices {
         ingredient.setIngredientStock(newIngredientStock);
         ingredients().update(ingredient);
         Events.report(new IngredientStockUpdate(ingredientID));
+    }
+
+    public void deleteIngredient(@NotNull IngredientID ingredientID) {
+        if (!ingredients().existsWithId(ingredientID)) {
+            throw new IllegalArgumentException("There is no ingredient with id = " + ingredientID.toString());
+        }
+        ingredients().delete(ingredientID);
     }
 }

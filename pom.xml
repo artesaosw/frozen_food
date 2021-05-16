@@ -57,7 +57,11 @@
 			<artifactId>mongodb-driver-sync</artifactId>
 			<version>3.9.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

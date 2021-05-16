@@ -14,12 +14,30 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Map;
 
 public class SuppliersOrdersService implements DomainServices {
 
     private SuppliersOrders suppliersOrders() {
         return Domain.suppliersOrders();
+    }
+
+    public SupplierOrder getSupplierOrderById(SupplierOrderID id) {
+        // TODO
+        return null;
+    }
+
+    public List<SupplierOrder> getAllSuppliersOrders() {
+        return suppliersOrders().all();
+    }
+
+    public List<SupplierOrder> getAllSuppliersOrdersByOrderStatus(OrderStatus orderStatus) {
+        return suppliersOrders().getAllSuppliersOrdersByOrderStatus(orderStatus);
+    }
+
+    public void registerNewSupplierOrder(SupplierOrder supplierOrder) {
+        // TODO
     }
 
     public void registerNewOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull Integer purchaseValue) {
@@ -42,5 +60,17 @@ public class SuppliersOrdersService implements DomainServices {
         supplierOrder.setOrderStatus(orderStatus);
         suppliersOrders().update(supplierOrder);
         Events.report(new SupplierOrderUpdate(supplierOrderID));
+    }
+
+    public void updateSupplierOrder(SupplierOrder supplierOrder) {
+        // TODO
+    }
+
+    public void deleteSupplierOrder(SupplierOrderID id) {
+        // TODO
+    }
+
+    public void updateSupplierOrderStatus(SupplierOrderID supplierOrderID, OrderStatus orderStatus) {
+        // TODO
     }
 }

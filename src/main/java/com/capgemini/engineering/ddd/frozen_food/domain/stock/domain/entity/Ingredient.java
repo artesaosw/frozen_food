@@ -7,6 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class Ingredient implements AggregateRoot, Serializable {
     private static final Integer INGREDIENT_STOCK_ON_CREATION = 0;
 
     // TODO o id tem de ser igual ao id do Ingredient do package menu
+    @BsonProperty(value = "_id")
     private IngredientID id;
 
     private String name;
