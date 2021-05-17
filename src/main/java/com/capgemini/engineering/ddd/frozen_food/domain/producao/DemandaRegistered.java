@@ -8,7 +8,7 @@ public class DemandaRegistered extends DomainEvent {
     private DemandaID demandaID;
 
 
-    public DemandaClosed(DemandaID demandaID){
+    public DemandaRegistered(DemandaID demandaID){
         super();
         this.demandaID = demandaID;
     }

@@ -59,7 +59,10 @@ public class MantainProducedRecipe implements DomainServices {
 
 
     public boolean verifyClosedRecipe(@NotNull BatchID batchID){
+        //instantiate
+        ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
 
+        if(producedRecipe)
     }
 
 
