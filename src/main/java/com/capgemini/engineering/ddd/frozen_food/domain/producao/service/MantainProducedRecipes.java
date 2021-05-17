@@ -33,9 +33,9 @@ public class MantainProducedRecipe implements DomainServices {
     }
 
     //Modifica status da Receita Produzida
-    public void closeProducedRecipe(BatchID batchID){}
+    public void closeProducedRecipe(@NotNull BatchID batchID){}
 
-    public boolean verifyClosedRecipe(BatchID batchID){}
+    public boolean verifyClosedRecipe(@NotNull BatchID batchID){}
 
 
 }
