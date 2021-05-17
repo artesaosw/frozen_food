@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.menu;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.Domain;
+import com.capgemini.engineering.ddd.frozen_food.domain.Producao;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class MantainRecipes implements DomainServices {
 
     private Recipes recipes(){
-        return Domain.recipes();
+        return Producao.recipes();
     }
 
     public void registerNew(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure){
