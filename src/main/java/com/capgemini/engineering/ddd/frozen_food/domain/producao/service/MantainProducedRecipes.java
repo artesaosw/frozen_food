@@ -44,7 +44,7 @@ public class MantainProducedRecipe implements DomainServices {
         ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
 
         //performs domain operation
-        producedRecipe.putOrUpdateItem();
+        producedRecipe.setClosedStatus();
 
         //persists
         producedRecipes().update(producedRecipe);

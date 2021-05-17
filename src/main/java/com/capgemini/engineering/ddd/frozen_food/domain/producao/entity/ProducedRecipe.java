@@ -64,15 +64,15 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
         setOpenStatus();
     }
 
-    private void setOpenStatus() {
+    public void setOpenStatus() {
         this.status = Status.OPEN;
     }
 
-    private void setClosedStatus() {
+    public void setClosedStatus() {
         this.status = Status.CLOSED;
     }
 
-    private void setCanceledStatus() {
+    public void setCanceledStatus() {
         this.status = Status.CANCELED;
     }
 
