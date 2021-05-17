@@ -3,6 +3,7 @@ package com.capgemini.engineering.ddd.frozen_food.domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipes;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +21,7 @@ public class Domain implements ApplicationContextAware {
         return applicationContext.getBean(Ingredients.class);
     }
 
-    public static ProducedRecipes producedRecipes() { return applicationContext.getBean(ProducedRecipes.class);}
+    public static ProducedRecipe producedRecipe() { return applicationContext.getBean(ProducedRecipes.class);}
 
     public static Demanda demanda() { return applicationContext.getBean(Demanda.class);}
 
