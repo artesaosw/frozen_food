@@ -14,11 +14,12 @@ import org.apache.tomcat.jni.Local;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ProducedRecipe implements AggregateRoot {
+public class ProducedRecipe implements AggregateRoot, Serializable {
 
     //ID da Receita Produzida
     private String recipeID;

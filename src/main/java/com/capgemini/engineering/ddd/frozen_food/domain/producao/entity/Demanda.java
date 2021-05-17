@@ -8,10 +8,11 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
 
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 
 //tenho de implementar map portion
 //Cada objecto Demanda é apenas de um ingrediente ou conjunto de ingredientes?
-public class Demanda implements AggregateRoot {
+public class Demanda implements AggregateRoot, Serializable {
 
     private DemandaID dID;
 
