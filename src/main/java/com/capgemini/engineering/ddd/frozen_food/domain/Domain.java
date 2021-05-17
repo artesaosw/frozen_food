@@ -21,7 +21,7 @@ public class Domain implements ApplicationContextAware {
         return applicationContext.getBean(Ingredients.class);
     }
 
-    public static ProducedRecipe producedRecipe() { return applicationContext.getBean(ProducedRecipes.class);}
+    public static ProducedRecipes producedRecipes() { return applicationContext.getBean(ProducedRecipes.class);}
 
     public static Demanda demanda() { return applicationContext.getBean(Demanda.class);}
 

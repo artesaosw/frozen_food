@@ -63,6 +63,7 @@ public class ProducedRecipe implements AggregateRoot {
         this.prazoValidade = prazoValidade;
         this.tipoReceita = tipoReceita;
         setLocalDate();
+        setStatus(Open);
     }
 
     public void setLocalDate(){
