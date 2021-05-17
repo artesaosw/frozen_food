@@ -7,6 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.Status;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
@@ -42,14 +43,10 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
     //Tipo de Receita
     private String tipoReceita;
 
-    private String status;
+    private Status status;
 
     private static final String primaryRecipe = "PRIMARY";
     private static final String secondaryRecipe = "SECONDARY";
-
-    //Criar Status?
-    private static final String Open = "OPEN";
-    private static final String Closed = "CLOSED";
 
     //Just to support ORM frameworks
     protected ProducedRecipe() {}
@@ -64,15 +61,23 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
         this.prazoValidade = prazoValidade;
         this.tipoReceita = tipoReceita;
         setLocalDate();
-        setStatus(Open);
+        setOpenStatus();
+    }
+
+    private void setOpenStatus() {
+        this.status = Status.OPEN;
+    }
+
+    private void setClosedStatus() {
+        this.status = Status.CLOSED;
+    }
+
+    private void setCanceledStatus() {
+        this.status = Status.CANCELED;
     }
 
     public void setLocalDate(){
         this.dataProducao = LocalDate.now();
-    }
-
-    public void setStatus(String status){
-        this.status = status;
     }
 
     @Override
