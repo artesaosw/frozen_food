@@ -78,6 +78,11 @@ public class ProducedRecipe implements AggregateRoot {
         return null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return AggregateRoot.super.isEqualsTo(obj);
+    }
+
 
 
 }
