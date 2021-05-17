@@ -8,16 +8,15 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.ChefOrderUp
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ChefOrders;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ChefOrdersImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class ChefOrdersService {
 
     private ChefOrders chefOrders() {

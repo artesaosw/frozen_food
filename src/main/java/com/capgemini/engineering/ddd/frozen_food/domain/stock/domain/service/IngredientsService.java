@@ -3,7 +3,6 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientStockUpdate;
@@ -11,11 +10,13 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientU
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.Ingredients;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class IngredientsService implements DomainServices {
 
     private Ingredients ingredients() {

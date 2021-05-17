@@ -131,41 +131,41 @@ public class IngredientController {
         }
     }
 
-    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
-        try {
-            ingredientsService.updateIngredientMinimumStockValue(id, minimumStockValue);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
-        }
-    }
-
-    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer increaseIngredientStock) {
-        try {
-            ingredientsService.increaseIngredientStock(id, increaseIngredientStock);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
-        }
-    }
-
-    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer decreaseIngredientStock) {
-        try {
-            ingredientsService.decreaseIngredientStock(id, decreaseIngredientStock);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
-        }
-    }
+//    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+//    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
+//        try {
+//            ingredientsService.updateIngredientMinimumStockValue(id, minimumStockValue);
+//            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+//        } catch (NonExistentIngredientException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
+//        }catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+//        }
+//    }
+//
+//    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+//    public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer increaseIngredientStock) {
+//        try {
+//            ingredientsService.increaseIngredientStock(id, increaseIngredientStock);
+//            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+//        } catch (NonExistentIngredientException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
+//        }catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+//        }
+//    }
+//
+//    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+//    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer decreaseIngredientStock) {
+//        try {
+//            ingredientsService.decreaseIngredientStock(id, decreaseIngredientStock);
+//            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+//        } catch (NonExistentIngredientException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
+//        }catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+//        }
+//    }
 
     @DeleteMapping(path = "/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> deleteIngredient(@PathVariable @Valid IngredientID id) {

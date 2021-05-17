@@ -2,25 +2,22 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class IngredientDAO extends AbstractStockDAO {
 
     public static String INGREDIENT_COLLECTION = "ingredient";
 
     private MongoCollection<Ingredient> ingredientsCollection;
 
-    public IngredientDAO(MongoClient mongoClient, @Value("${spring.mongodb.database}") String databaseName) {
-        super(mongoClient, databaseName);
+    public IngredientDAO() {
         ingredientsCollection = db.getCollection(INGREDIENT_COLLECTION, Ingredient.class);
     }
 

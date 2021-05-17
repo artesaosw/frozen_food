@@ -11,12 +11,14 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.SupplierOrd
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.SuppliersOrders;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class SuppliersOrdersService implements DomainServices {
 
     private SuppliersOrders suppliersOrders() {

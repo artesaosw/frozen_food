@@ -2,22 +2,19 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.SupplierRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Supplier;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.Suppliers;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.SuppliersImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class SuppliersService implements DomainServices {
 
     private Suppliers suppliers() {

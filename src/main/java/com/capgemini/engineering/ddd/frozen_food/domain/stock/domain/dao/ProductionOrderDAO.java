@@ -3,25 +3,22 @@ package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.dao;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class ProductionOrderDAO extends AbstractStockDAO {
 
     public static String PRODUCTIONORDERS_COLLECTION = "productionorders";
 
     private MongoCollection<ProductionOrder> productionOrdersCollection;
 
-    public ProductionOrderDAO(MongoClient mongoClient, @Value("${spring.mongodb.database}") String databaseName) {
-        super(mongoClient, databaseName);
+    public ProductionOrderDAO() {
         productionOrdersCollection = db.getCollection(PRODUCTIONORDERS_COLLECTION, ProductionOrder.class);
     }
 

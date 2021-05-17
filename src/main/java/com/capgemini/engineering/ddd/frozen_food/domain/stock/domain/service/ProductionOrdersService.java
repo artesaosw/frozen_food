@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
@@ -10,14 +9,14 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.ProductionO
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ProductionOrders;
-import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository.ProductionOrdersImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class ProductionOrdersService {
 
     private ProductionOrders productionOrders() {

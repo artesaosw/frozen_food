@@ -9,6 +9,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.I
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ChefOrder implements AggregateRoot, Serializable {
 
+    @Id
     @BsonProperty(value = "_id")
     private ChefOrderID id;
 
