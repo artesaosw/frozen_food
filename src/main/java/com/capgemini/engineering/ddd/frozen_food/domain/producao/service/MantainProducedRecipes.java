@@ -56,13 +56,14 @@ public class MantainProducedRecipe implements DomainServices {
         Events.report(new RecipeProductionClosed(batchID));
     }
 
-
-
     public boolean verifyClosedRecipe(@NotNull BatchID batchID){
         //instantiate
         ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
 
-        if(producedRecipe)
+        if(producedRecipe.getStatus().equals("OPEN")){
+            return true;
+        }
+        return false;
     }
 
 
