@@ -7,6 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.RecipeRegistered;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 
 import javax.validation.constraints.NotBlank;
@@ -29,7 +30,7 @@ public class MantainProducedRecipe implements DomainServices {
         producedRecipe().registerNew(producedRecipe);
 
         //reports event
-        Events.report(new ProducedRecipeRegistered(producedRecipe.id()));
+        Events.report(new RecipeProductionRegistered());
     }
 
     //Modifica status da Receita Produzida
