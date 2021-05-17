@@ -5,6 +5,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionCanceled;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionClosed;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
@@ -51,6 +52,25 @@ public class MantainProducedRecipe implements DomainServices {
 
         //reports event
         Events.report(new RecipeProductionClosed(batchID));
+    }
+
+    public void updateStatusCanceled(@NotNull BatchID batchID){
+        //Validation
+        if (!producedRecipes().existsWithId(batchID)){
+            throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
+        }
+
+        //loads the aggregate instance from DB
+        ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
+
+        //performs domain operation
+        producedRecipe.setCanceledStatus();
+
+        //persists
+        producedRecipes().update(producedRecipe);
+
+        //reports event
+        Events.report(new RecipeProductionCanceled(batchID));
     }
 
     public boolean verifyClosedRecipe(@NotNull BatchID batchID){
