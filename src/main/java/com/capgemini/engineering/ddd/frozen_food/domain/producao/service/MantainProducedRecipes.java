@@ -31,7 +31,7 @@ public class MantainProducedRecipe implements DomainServices {
         producedRecipes().registerNew(producedRecipe);
 
         //reports event
-        Events.report(new RecipeProductionRegistered(producedRecipe.getId());
+        Events.report(new RecipeProductionRegistered(producedRecipe.getId()));
     }
 
     //Modifica status da Receita Produzida
