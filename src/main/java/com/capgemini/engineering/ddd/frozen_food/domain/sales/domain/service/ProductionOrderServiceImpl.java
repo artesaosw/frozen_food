@@ -8,11 +8,13 @@ import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
+@Service
 public class ProductionOrderServiceImpl {
 
     @Autowired

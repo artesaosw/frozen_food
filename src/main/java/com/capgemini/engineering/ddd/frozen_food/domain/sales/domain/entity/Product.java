@@ -16,7 +16,6 @@ public class Product implements AggregateRoot, Serializable {
 
     //igual a RecipeID ???
     // ******** VER MELHOR ******************
-    @NotNull
     private ProductID productID = Identificator.newInstance(ProductID.class);
 
     private double unitPrice;

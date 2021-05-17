@@ -16,7 +16,6 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
     private ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class);
 
     private Map<Product, Integer> itemsOrdered = new HashMap<>();

@@ -3,21 +3,25 @@ package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event.CustomerRegisteredEventPublisher;
-import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event.CustomerUpdatedEventPublisher;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.event.*;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.CustomerRepository;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.repository.Customers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class CustomerServiceImpl implements DomainServices, CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     private Customers customers() {
         return Domain.customers();
@@ -28,14 +32,13 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         // can't have two customers with the same billing info
         // IS THIS CORRECT ??????????
         if (customerRepository.existsCustomerByBillingInfo(customer.getBillingInfo())) {
-            throw new BillingInfoAlreadyExistsException("A customer with the same billing information already exists.");
+            throw new BillingInfoAlreadyExistsException("Customer creation failed. A customer with the same billing information already exists.");
         }
 
         //persist new customer into the database and issue an event
         customer = this.customerRepository.save(customer);
 
-        CustomerRegisteredEventPublisher eventPublisher = new CustomerRegisteredEventPublisher();
-        eventPublisher.publishEvent(customer);
+        eventPublisher.publishEvent(new CustomerRegisteredEvent(this, customer));
 
         return customer;
     }
@@ -44,8 +47,7 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         //update the customer and issue an event
         customer = this.customerRepository.save(customer);
 
-        CustomerUpdatedEventPublisher eventPublisher = new CustomerUpdatedEventPublisher();
-        eventPublisher.publishEvent(customer);
+        eventPublisher.publishEvent(new CustomerUpdatedEvent(this, customer));
 
         return customer;
     }
@@ -63,6 +65,7 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
     @Override
     public void deleteCustomer(String id) {
         this.customerRepository.deleteById(id);
+        eventPublisher.publishEvent(new CustomerDeletedEvent(this, id));
     }
 
     /*
@@ -70,34 +73,15 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
      */
     public void disableCustomer(@NotBlank String id) {
 
-//        try {
-//            Customer customer = this.customerRepository.findById(id).get();
-//
-//            //first check if customer is already disabled
-//            if(customer.isActivated()) {
-//                customer.setActivated(false);
-//
-//                CustomerUpdatedEventPublisher eventPublisher = new CustomerUpdatedEventPublisher();
-//                eventPublisher.publishEvent(this.customerRepository.save(customer));
-//
-//                return new ResponseEntity<String>("Customer with ID " + id + " has been disabled.", HttpStatus.OK);
-//            }
-//
-//            return new ResponseEntity<String>("Customer with ID " + id + " is already disabled.", HttpStatus.OK);
-//        }
-//        catch (Exception e) {
-//            return new ResponseEntity<String>("An error has occurred: " + e.toString(), HttpStatus.BAD_REQUEST);
-//        }
-
         Customer customer = this.customerRepository.findById(id).get();
 
         //first check if customer is already disabled
         if(customer.isActivated()) {
             customer.setActivated(false);
 
-            CustomerUpdatedEventPublisher eventPublisher = new CustomerUpdatedEventPublisher();
-            eventPublisher.publishEvent(this.customerRepository.save(customer));
-
+            CustomerUpdatedEvent updateEvent =
+                    new CustomerUpdatedEvent(this, this.customerRepository.save(customer));
+            eventPublisher.publishEvent(updateEvent);
         }
     }
 
@@ -106,33 +90,15 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
      */
     public void enableCustomer(@NotBlank String id) {
 
-//        try {
-//            Customer customer = this.customerRepository.findById(id).get();
-//
-//            //first check if customer is already enabled
-//            if(!customer.isActivated()) {
-//                customer.setActivated(true);
-//
-//                CustomerUpdatedEventPublisher eventPublisher = new CustomerUpdatedEventPublisher();
-//                eventPublisher.publishEvent(this.customerRepository.save(customer));
-//
-//                return new ResponseEntity<String>("Customer with ID " + id + " has been enabled.", HttpStatus.OK);
-//            }
-//
-//            return new ResponseEntity<String>("Customer with ID " + id + " is already enabled.", HttpStatus.OK);
-//        }
-//        catch (Exception e) {
-//            return new ResponseEntity<String>("An error has occurred: " + e.toString(), HttpStatus.BAD_REQUEST);
-//        }
-
         Customer customer = this.customerRepository.findById(id).get();
 
         //first check if customer is already enabled
         if(!customer.isActivated()) {
             customer.setActivated(true);
 
-            CustomerUpdatedEventPublisher eventPublisher = new CustomerUpdatedEventPublisher();
-            eventPublisher.publishEvent(this.customerRepository.save(customer));
+            CustomerUpdatedEvent updateEvent =
+                    new CustomerUpdatedEvent(this, this.customerRepository.save(customer));
+            eventPublisher.publishEvent(updateEvent);
         }
 
     }

@@ -16,7 +16,6 @@ public class Order implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
     private OrderID orderID = Identificator.newInstance(OrderID.class);
 
     // lista de receitas do menu pedidas

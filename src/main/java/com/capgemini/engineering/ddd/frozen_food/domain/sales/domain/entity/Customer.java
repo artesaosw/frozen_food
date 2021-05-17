@@ -3,13 +3,9 @@ package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import lombok.AccessLevel;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class Customer implements AggregateRoot, Serializable {
@@ -17,7 +13,6 @@ public class Customer implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
     private CustomerID customerID = Identificator.newInstance(CustomerID.class);
 
     @NotBlank
@@ -25,7 +20,7 @@ public class Customer implements AggregateRoot, Serializable {
 
     @NotBlank
     private String address;
-
+    
     @NotBlank
     private String billingInfo;
 
@@ -45,9 +40,17 @@ public class Customer implements AggregateRoot, Serializable {
     public String getId() {
         return id;
     }
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public CustomerID getCustomerID() {
         return customerID;
+    }
+
+    public void setCustomerID(CustomerID customerID) {
+        this.customerID = customerID;
     }
 
     public String getName() {

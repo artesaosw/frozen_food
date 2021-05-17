@@ -16,6 +16,14 @@ public class ProductID implements Identificator, Serializable {
         this.id = UUID.randomUUID();
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public UUID id() {
         return this.id;
