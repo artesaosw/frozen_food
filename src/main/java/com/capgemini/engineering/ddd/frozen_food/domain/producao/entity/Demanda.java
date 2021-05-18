@@ -42,4 +42,9 @@ public class Demanda implements AggregateRoot, Serializable {
     public Identificator id() {
         return this.dID;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return AggregateRoot.super.isEqualsTo(obj);
+    }
 }

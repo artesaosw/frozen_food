@@ -64,6 +64,7 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
         setOpenStatus();
     }
 
+    //Interface?
     public void setOpenStatus() {
         this.status = Status.OPEN;
     }

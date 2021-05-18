@@ -10,6 +10,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductio
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipes;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.exceptions.IllegalStatusException;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -58,6 +59,11 @@ public class MantainProducedRecipe implements DomainServices {
         //Validation
         if (!producedRecipes().existsWithId(batchID)){
             throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
+        }
+
+        //validates object
+        if (!verifyClosedRecipe(batchID)){
+            throw new IllegalStatusException("Batch" + batchID.toString() "This batch is already Closed or Canceled");
         }
 
         //loads the aggregate instance from DB
