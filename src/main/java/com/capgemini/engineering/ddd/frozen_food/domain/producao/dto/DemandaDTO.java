@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Getter
 @Setter
+//Preciso enviar Demandaid?
 public class DemandaDTO {
 
     @JsonProperty(value = "id")
