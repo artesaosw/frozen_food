@@ -53,4 +53,14 @@ public class MantainDemanda implements DomainServices {
         //reports event
         Events.report(new RecipeProductionClosed(batchID));
     }
+
+    public boolean verifyClosedDemanda(@NotNull DemandaID demandaID) {
+        //instantiate
+        Demanda demanda = demandas().withId(demandaID);
+
+        if (demanda.getStatus().equals("OPEN")) {
+            return true;
+        }
+        return false;
+    }
 }
