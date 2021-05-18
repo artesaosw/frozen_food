@@ -19,48 +19,48 @@ import java.util.Map;
 
 public class MantainDemanda implements DomainServices {
 
-    private Demandas demandas() {
-        return Producao.Demandas();
-    }
-
-    public void registerNew((Map<Ingredient, Integer> articles, Unit unit){
-
-        //Instantiate aggregate
-        Demanda demanda = new Demanda(articles, unit);
-
-        //persists
-        demanda().registerNew(demanda);
-
-        //reports event
-        Events.report(new DemandaRegistered(demanda.getId()));
-    }
-
-    public void updateStatusClosed(@NotNull DemandaID demandaID) {
-        //Validation
-        if (!demandas().existsWithId(demandaID)) {
-            throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
-        }
-
-        //loads the aggregate instance from DB
-        ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
-
-        //performs domain operation
-        producedRecipe.setClosedStatus();
-
-        //persists
-        producedRecipes().update(producedRecipe);
-
-        //reports event
-        Events.report(new RecipeProductionClosed(batchID));
-    }
-
-    public boolean verifyClosedDemanda(@NotNull DemandaID demandaID) {
-        //instantiate
-        Demanda demanda = demandas().withId(demandaID);
-
-        if (demanda.getStatus().equals("OPEN")) {
-            return true;
-        }
-        return false;
-    }
-}
+//    private Demandas demandas() {
+//        return Producao.Demandas();
+//    }
+//
+//    public void registerNew((Map<Ingredient, Integer> articles, Unit unit){
+//
+//       //Instantiate aggregate
+//       Demanda demanda = new Demanda(articles, unit);
+//
+//        //persists
+//        demanda().registerNew(demanda);
+//
+//        //reports event
+//        Events.report(new DemandaRegistered(demanda.getId()));
+//    }
+//
+//    public void updateStatusClosed(@NotNull DemandaID demandaID) {
+//        //Validation
+//       if (!demandas().existsWithId(demandaID)) {
+//            throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
+//        }
+//
+//        //loads the aggregate instance from DB
+//        ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
+//
+//           //performs domain operation
+//        producedRecipe.setClosedStatus();
+//
+//        //persists
+//        producedRecipes().update(producedRecipe);
+//
+//        //reports event
+//        Events.report(new RecipeProductionClosed(batchID));
+//    }
+//
+//    public boolean verifyClosedDemanda(@NotNull DemandaID demandaID) {
+//       //instantiate
+//        Demanda demanda = demandas().withId(demandaID);
+//
+//        if (demanda.getStatus().equals("OPEN")) {
+//            return true;
+//        }
+//        return false;
+//    }
+//}
