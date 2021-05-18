@@ -42,7 +42,7 @@ public class ProducedRecipeDTO {
         this.recipeID = recipeID;
         this.id = id;
         this.unit = unit;
-        this.quantity = quantity
+        this.quantity = quantity;
         this.prazoValidade = prazoValidade;
         this.dataProducao = dataProducao;
         this.tipoReceita = tipoReceita;
