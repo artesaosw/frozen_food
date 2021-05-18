@@ -21,6 +21,7 @@ import java.util.Map;
 //Duvidas no mapper
 //tenho de implementar map portion
 //Cada objecto Demanda é apenas de um ingrediente ou conjunto de ingredientes?
+//String name?
 public class Demanda implements AggregateRoot, Serializable, SetStatus {
 
     private DemandaID dID;

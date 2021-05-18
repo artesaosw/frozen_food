@@ -7,7 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
 public class DemandaDTOConverter {
 
 
-    //public DemandaDTO Demanda2DemandaDTO(Demanda demanda){
+    //public DemandaDTO demanda2DemandaDTO(Demanda demanda){
     //
     //    DemandaDTO demandaDTO = new DemandaDTO();
     //
@@ -16,5 +16,5 @@ public class DemandaDTOConverter {
     //    demandaDTO.setDemandaID(demanda.getDID());
 
     //    return demandaDTO;
-    }
+    //}
 }

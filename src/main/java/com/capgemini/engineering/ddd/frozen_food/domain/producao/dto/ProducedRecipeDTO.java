@@ -22,6 +22,9 @@ public class ProducedRecipeDTO {
     @JsonProperty(value = "unit")
     private Unit unit;
 
+    @JsonProperty(value = "name")
+    private String name;
+
     @JsonProperty(value = "quantity")
     private int quantity;
 
@@ -38,10 +41,11 @@ public class ProducedRecipeDTO {
 
     }
 
-    public ProducedRecipeDTO(RecipeID recipeID, BatchID id, Unit unit, int quantity, LocalDate prazoValidade, LocalDate dataProducao, String tipoReceita ){
+    public ProducedRecipeDTO(RecipeID recipeID, BatchID id, Unit unit, String name, int quantity, LocalDate prazoValidade, LocalDate dataProducao, String tipoReceita ){
         this.recipeID = recipeID;
         this.id = id;
         this.unit = unit;
+        this.name = name;
         this.quantity = quantity;
         this.prazoValidade = prazoValidade;
         this.dataProducao = dataProducao;
