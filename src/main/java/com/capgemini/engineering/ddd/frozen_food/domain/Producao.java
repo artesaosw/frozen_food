@@ -3,7 +3,6 @@ package com.capgemini.engineering.ddd.frozen_food.domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipes;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

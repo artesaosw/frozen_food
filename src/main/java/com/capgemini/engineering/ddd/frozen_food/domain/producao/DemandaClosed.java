@@ -6,12 +6,12 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
 import lombok.Getter;
 
 @Getter
-public class DemandaClosedHandler extends DomainEvent {
+public class DemandaClosed extends DomainEvent {
 
     private DemandaID demandaID;
 
 
-        public DemandaClosedHandler(DemandaID demandaID){
+        public DemandaClosed(DemandaID demandaID){
             super();
             this.demandaID = demandaID;
         }

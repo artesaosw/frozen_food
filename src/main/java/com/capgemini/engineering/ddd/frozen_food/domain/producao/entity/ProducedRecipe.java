@@ -7,6 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.SetStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.Status;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,10 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ProducedRecipe implements AggregateRoot, Serializable {
+//Needs String of reference?
+public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
 
+    //Duvida aqui
     //ID da Receita Produzida
     private String recipeID;
 
@@ -52,7 +55,6 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
     protected ProducedRecipe() {}
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
-    //atualizacao do lote é manual ou automatico?
     public ProducedRecipe(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
         this.id = Identificator.newInstance(BatchID.class);
         this.unit = unit;
@@ -65,14 +67,15 @@ public class ProducedRecipe implements AggregateRoot, Serializable {
     }
 
     //Interface?
+    @Override
     public void setOpenStatus() {
         this.status = Status.OPEN;
     }
-
+    @Override
     public void setClosedStatus() {
         this.status = Status.CLOSED;
     }
-
+    @Override
     public void setCanceledStatus() {
         this.status = Status.CANCELED;
     }

@@ -9,8 +9,8 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductio
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionClosed;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipes;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.exceptions.IllegalStatusException;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.ProducedRecipes;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
