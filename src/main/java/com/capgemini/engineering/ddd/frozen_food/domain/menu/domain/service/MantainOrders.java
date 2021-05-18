@@ -20,18 +20,24 @@ public class MantainOrders implements DomainServices {
 
     public void registerNew(@NotBlank String orderReference, Map<Ingredient, Integer> articles){
 
+        //Validation
         if (orders().existsWithOrderReference(orderReference)){
             throw new IllegalArgumentException("There is already an order with this reference");
         }
 
+        //Instantiate aggregate
         Order order = new Order(orderReference, articles);
 
+        //persists
         orders().registerNew(order);
 
+        //converts order to orderDTO
         OrderDTO orderDTO = OrderConverter.order2orderDTO(order);
 
-        //event!!!
-       // new StockOrderRegisteredEvent(orderDTO));
-    }
+        //reports event
+        StockOrderRegisteredPublisher eventPublisher = new
+                StockOrderRegisteredPublisher();
 
+        eventPublisher.publishEvent(orderDTO);
+    }
 }
