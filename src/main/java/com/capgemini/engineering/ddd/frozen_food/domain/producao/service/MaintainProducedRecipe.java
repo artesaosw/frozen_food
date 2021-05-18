@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.Producao;
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionCanceled;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionClosed;
@@ -23,10 +24,10 @@ public class MantainProducedRecipe implements DomainServices {
         return Producao.producedRecipes();
     }
 
-    public void registerNew(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita) {
+    public void registerNew(@NotNull Unit unit, String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita) {
 
         //Instantiate aggregate
-        ProducedRecipe producedRecipe = new ProducedRecipe(unit, quantity, recipeID, prazoValidade, tipoReceita);
+        ProducedRecipe producedRecipe = new ProducedRecipe(unit, name, quantity, recipeID, prazoValidade, tipoReceita);
 
         //persists
         producedRecipes().registerNew(producedRecipe);

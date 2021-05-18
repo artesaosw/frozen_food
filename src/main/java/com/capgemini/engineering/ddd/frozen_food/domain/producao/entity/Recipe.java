@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+//Class que recebe Receita do Menu e Suporta o Handler
 public class Recipe {
 
 

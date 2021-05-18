@@ -26,7 +26,10 @@ public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
 
     //Duvida aqui
     //ID da Receita Produzida
-    private String recipeID;
+    private RecipeID recipeID;
+
+    //nome da Receita
+    private String name;
 
     //ID do Lote Produzido
     private BatchID id;
@@ -55,9 +58,10 @@ public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
     protected ProducedRecipe() {}
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
-    public ProducedRecipe(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
+    public ProducedRecipe(@NotNull Unit unit,@NotNull String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
         this.id = Identificator.newInstance(BatchID.class);
         this.unit = unit;
+        this.name = name;
         this.quantity = quantity;
         this.recipeID = recipeID;
         this.prazoValidade = prazoValidade;
