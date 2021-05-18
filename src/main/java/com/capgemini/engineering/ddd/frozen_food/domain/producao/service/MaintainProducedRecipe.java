@@ -19,14 +19,14 @@ import java.time.LocalDate;
 
 public class MantainProducedRecipe implements DomainServices {
 
-    private ProducedRecipes producedRecipes(){
+    private ProducedRecipes producedRecipes() {
         return Producao.producedRecipes();
     }
 
-    public void registerNew(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita){
+    public void registerNew(@NotNull Unit unit, @Positive int quantity, @NotBlank String recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita) {
 
         //Instantiate aggregate
-        ProducedRecipe producedRecipe = new ProducedRecipe(unit,quantity,recipeID,prazoValidade,tipoReceita);
+        ProducedRecipe producedRecipe = new ProducedRecipe(unit, quantity, recipeID, prazoValidade, tipoReceita);
 
         //persists
         producedRecipes().registerNew(producedRecipe);
@@ -36,9 +36,9 @@ public class MantainProducedRecipe implements DomainServices {
     }
 
     //Modifica status da Receita Produzida
-    public void updateStatusClosed(@NotNull BatchID batchID){
+    public void updateStatusClosed(@NotNull BatchID batchID) {
         //Validation
-        if (!producedRecipes().existsWithId(batchID)){
+        if (!producedRecipes().existsWithId(batchID)) {
             throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
         }
 
@@ -55,15 +55,15 @@ public class MantainProducedRecipe implements DomainServices {
         Events.report(new RecipeProductionClosed(batchID));
     }
 
-    public void updateStatusCanceled(@NotNull BatchID batchID){
+    public void updateStatusCanceled(@NotNull BatchID batchID) {
         //Validation
-        if (!producedRecipes().existsWithId(batchID)){
+        if (!producedRecipes().existsWithId(batchID)) {
             throw new IllegalArgumentException("There is not exists a produced recipe with id = " + batchID.toString());
         }
 
         //validates object
-        if (!verifyClosedRecipe(batchID)){
-            throw new IllegalStatusException("Batch" + batchID.toString() "This batch is already Closed or Canceled");
+        if (!verifyClosedRecipe(batchID)) {
+            throw new IllegalStatusException("Batch" + batchID.toString() + "This batch is already Closed or Canceled");
         }
 
         //loads the aggregate instance from DB
@@ -79,16 +79,16 @@ public class MantainProducedRecipe implements DomainServices {
         Events.report(new RecipeProductionCanceled(batchID));
     }
 
-    public boolean verifyClosedRecipe(@NotNull BatchID batchID){
+    public boolean verifyClosedRecipe(@NotNull BatchID batchID) {
         //instantiate
         ProducedRecipe producedRecipe = producedRecipes().withId(batchID);
 
-        if(producedRecipe.getStatus().equals("OPEN")){
+        if (producedRecipe.getStatus().equals("OPEN")) {
             return true;
         }
         return false;
     }
-
-
-
 }
+
+
+
