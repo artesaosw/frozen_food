@@ -17,8 +17,8 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.Dema
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-public class MantainDemanda implements DomainServices {
-
+//public class MantainDemanda implements DomainServices {
+//
 //    private Demandas demandas() {
 //        return Producao.Demandas();
 //    }
