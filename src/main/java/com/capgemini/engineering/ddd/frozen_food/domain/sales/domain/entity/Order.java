@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,6 @@ public class Order implements AggregateRoot, Serializable {
 
     private OrderID orderID = Identificator.newInstance(OrderID.class);
 
-    // lista de receitas do menu pedidas
-    // problema1: vai incluir as receitas "intermedias" (ex.: cebola refogada)
     private Map<Product, Integer> itemsOrdered = new HashMap<>();
 
     @NotNull
@@ -28,16 +27,10 @@ public class Order implements AggregateRoot, Serializable {
     @NotNull
     private OrderState orderState = OrderState.PROCESSING;
 
-    //we compute the total cost of the order separately, whenever we need it. Safer this way.
-    //private Double totalCost;
+    private LocalDate date = LocalDate.now();
 
     public Order() {
 
-    }
-
-    public Order(@NotNull Customer orderedBy) {
-        this.orderedBy = orderedBy;
-        this.orderState = OrderState.PROCESSING;
     }
 
     public String getId() {
@@ -65,6 +58,10 @@ public class Order implements AggregateRoot, Serializable {
         return itemsOrdered;
     }
 
+    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
+    }
+
     public Customer getOrderedBy() {
         return orderedBy;
     }
@@ -81,13 +78,13 @@ public class Order implements AggregateRoot, Serializable {
         this.orderState = orderState;
     }
 
-//    public Double getTotalCost() {
-//        return totalCost;
-//    }
-//
-//    public void setTotalCost(Double totalCost) {
-//        this.totalCost = totalCost;
-//    }
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     @Override
     public boolean isEqualsTo(Object other) {

@@ -6,7 +6,6 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductID;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class Product implements AggregateRoot, Serializable {
@@ -19,6 +18,8 @@ public class Product implements AggregateRoot, Serializable {
     private ProductID productID = Identificator.newInstance(ProductID.class);
 
     private double unitPrice;
+
+    private Units units;
 
     @NotBlank
     private String name;
@@ -57,6 +58,10 @@ public class Product implements AggregateRoot, Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Units getUnits() {
+        return units;
     }
 
     @Override
