@@ -16,8 +16,6 @@ public class Demanda implements AggregateRoot, Serializable {
 
     private DemandaID dID;
 
-    private RecipeID id;
-
     private Unit unit;
 
     private int quantity;
@@ -30,7 +28,7 @@ public class Demanda implements AggregateRoot, Serializable {
     private static final String Closed = "CLOSED";
 
     public Demanda (Ingredient ingredient, @Positive int quantity, Unit unit){
-        this.id = Identificator.newInstance(DemandaID.class);
+        this.dID = Identificator.newInstance(DemandaID.class);
         this.quantity= quantity;
         this.unit = unit;
         this.ingredient = ingredient;
@@ -42,6 +40,6 @@ public class Demanda implements AggregateRoot, Serializable {
 
     @Override
     public Identificator id() {
-        return this.id;
+        return this.dID;
     }
 }
