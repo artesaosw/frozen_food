@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.producao;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredient;
 
 import javax.validation.constraints.Positive;

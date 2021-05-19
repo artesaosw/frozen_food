@@ -1,9 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;

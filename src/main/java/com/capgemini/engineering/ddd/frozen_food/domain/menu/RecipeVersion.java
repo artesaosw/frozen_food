@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.menu;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.ValueObject;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.ValueObject;
 
 import java.io.Serializable;
 

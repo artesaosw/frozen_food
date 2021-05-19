@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainEvent;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

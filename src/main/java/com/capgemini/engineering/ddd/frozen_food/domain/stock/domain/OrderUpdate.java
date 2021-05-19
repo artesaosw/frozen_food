@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
 
 public class OrderUpdate extends DomainEvent {
 

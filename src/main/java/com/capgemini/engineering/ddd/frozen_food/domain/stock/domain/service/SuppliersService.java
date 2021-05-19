@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.Events;
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.Domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.SupplierRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;

@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
+import com.capgemini.engineering.ddd.frozen_food._shared.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.NIF;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Supplier;
 

@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.repository;
 
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.entity.Order;
 
 import java.util.List;

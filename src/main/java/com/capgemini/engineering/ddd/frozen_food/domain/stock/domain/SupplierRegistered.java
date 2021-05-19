@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.domain.stock.domain;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.SupplierID;
+import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.SupplierID;
 
 public class SupplierRegistered extends DomainEvent {
 
