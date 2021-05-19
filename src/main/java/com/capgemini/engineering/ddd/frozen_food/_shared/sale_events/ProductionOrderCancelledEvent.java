@@ -1,13 +1,13 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.domain.event;
+package com.capgemini.engineering.ddd.frozen_food._shared.sale_events;
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
 import org.springframework.context.ApplicationEvent;
 
-public class ProductionOrderIssuedEvent extends ApplicationEvent {
+public class ProductionOrderCancelledEvent extends ApplicationEvent {
 
     private ProductionOrder productionOrder;
 
-    public ProductionOrderIssuedEvent(Object source, ProductionOrder productionOrder) {
+    public ProductionOrderCancelledEvent(Object source, ProductionOrder productionOrder) {
         super(source);
         this.productionOrder = productionOrder;
     }

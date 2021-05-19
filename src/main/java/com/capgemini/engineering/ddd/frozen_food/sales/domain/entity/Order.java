@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -11,12 +12,13 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-// #1: sera que deve incluir preço total?
+@Document(collection = "order_sales")
 public class Order implements AggregateRoot, Serializable {
 
     @Id
     private String id;
 
+    @NotNull
     private OrderID orderID = Identificator.newInstance(OrderID.class);
 
     private Map<Product, Integer> itemsOrdered = new HashMap<>();

@@ -1,14 +1,12 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.infra.service;
+package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food.sales.Sales;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.OrderState;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.OrderCancelledEventPublisher;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.OrderRegisteredEventPublisher;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.PaymentReturnedEventPublisher;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.OrderCancelledEventPublisher;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.OrderRegisteredEventPublisher;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.PaymentReturnedEventPublisher;
 import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.OrderRepository;
-import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.Orders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

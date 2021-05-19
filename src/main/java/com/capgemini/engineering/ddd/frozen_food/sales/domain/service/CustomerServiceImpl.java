@@ -1,14 +1,12 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.infra.service;
+package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food.sales.Sales;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.CustomerDeletedEvent;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.CustomerRegisteredEvent;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.event.CustomerUpdatedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerDeletedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.CustomerRepository;
-import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.Customers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

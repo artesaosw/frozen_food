@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.domain.event;
+package com.capgemini.engineering.ddd.frozen_food._shared.sale_events;
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import org.springframework.context.ApplicationEvent;

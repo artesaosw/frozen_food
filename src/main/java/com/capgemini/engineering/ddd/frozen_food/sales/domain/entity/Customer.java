@@ -6,6 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.customerInfo.Address;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.customerInfo.NIF;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,11 +14,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
+@Document(collection = "customer_sales")
 public class Customer implements AggregateRoot, Serializable {
 
     @Id
     private String id;
 
+    @NotNull
     private CustomerID customerID = Identificator.newInstance(CustomerID.class);
 
     @NotBlank
@@ -26,11 +29,12 @@ public class Customer implements AggregateRoot, Serializable {
     @NotNull
     private NIF nif;
 
+    @NotBlank
     @Email(message = "Email invalid!" )
     private String email;
 
-    @Pattern(regexp="[9][0-9]{8}",message = "Invalid cellphone number!")
     @NotBlank
+    @Pattern(regexp="[9][0-9]{8}",message = "Invalid cellphone number!")
     private String cellphoneNumber;
 
     @NotNull

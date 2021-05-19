@@ -1,13 +1,13 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.domain.event;
+package com.capgemini.engineering.ddd.frozen_food._shared.sale_events;
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
 import org.springframework.context.ApplicationEvent;
 
-public class OrderUpdatedEvent extends ApplicationEvent {
+public class PaymentReturnedEvent extends ApplicationEvent {
 
     private Order order;
 
-    public OrderUpdatedEvent(Object source, Order order) {
+    public PaymentReturnedEvent(Object source, Order order) {
         super(source);
         this.order = order;
     }

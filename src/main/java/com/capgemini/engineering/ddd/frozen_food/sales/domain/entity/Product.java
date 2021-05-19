@@ -5,21 +5,24 @@ import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.ProductID;
 import com.capgemini.engineering.ddd.frozen_food._shared.Unit;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@Document(collection = "product_sales")
 public class Product implements AggregateRoot, Serializable {
 
     @Id
     private String id;
 
-    //igual a RecipeID ???
-    // ******** VER MELHOR ******************
+    @NotNull
     private ProductID productID = Identificator.newInstance(ProductID.class);
 
     private double unitPrice;
 
+    @NotNull
     private Unit unit;
 
     @NotBlank
