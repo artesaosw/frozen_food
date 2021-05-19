@@ -1,6 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject;
 
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.SaleOrderID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.ProductReplica;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Units;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.SaleOrderReplicaRepository;
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.ProductDTO;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.ProductReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.ProductID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.ProductID;
 
 public class ProductDTOConverter {
 
@@ -11,7 +11,6 @@ public class ProductDTOConverter {
     public ProductReplica productDTOtoProduct(ProductDTO productDTO){
         ProductReplica productReplica = new ProductReplica();
         productReplica.setProductID(new ProductID(productDTO.getProductID()));
-        productReplica.setQuantity(productDTO.getProductQuantity());
         productReplica.setWeightUnit(unitsConverter.whichUnit(productDTO.getWeightUnit()));
         productReplica.setWeight(productDTO.getWeight());
         productReplica.setVolumeUnit(unitsConverter.whichUnit(productDTO.getVolumeUnit()));

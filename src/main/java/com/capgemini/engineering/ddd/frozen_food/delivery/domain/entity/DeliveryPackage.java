@@ -2,9 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.*;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.DeliveryPackageID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.SaleOrderID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.DeliveryStatus;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.OrderDimensions;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.DeliveryPackageID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.infra;
+package com.capgemini.engineering.ddd.frozen_food.delivery.infra.handler;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.SaleOrderEvent;
-import com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter.CustomerDTOConverter;
-import com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter.SaleOrderDTOConverter;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter.CustomerDTOConverter;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter.SaleOrderDTOConverter;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.CustomerReplica;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrderReplica;
 

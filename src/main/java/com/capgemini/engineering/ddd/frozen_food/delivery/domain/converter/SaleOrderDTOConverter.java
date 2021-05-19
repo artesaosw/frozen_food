@@ -1,10 +1,10 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.SaleOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.ProductReplica;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrderReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.SaleOrderID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class SaleOrderDTOConverter {
         for(int i = 0; i < saleOrderDTO.getProductDTOList().size(); i++){
             productReplicaList.add(productDTOConverter.productDTOtoProduct(saleOrderDTO.getProductDTOList().get(i)));
         }
-        saleOrderReplica.setSaleOrderProductReplicas(productReplicaList);
+       // saleOrderReplica.setSaleOrderProductReplicas(productReplicaList);
         saleOrderReplica.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());
         return saleOrderReplica;
     }

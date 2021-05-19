@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject;
 
 public enum DeliveryStatus {
 

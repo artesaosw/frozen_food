@@ -2,7 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Address;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.NIF;
 import lombok.*;

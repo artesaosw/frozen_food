@@ -1,10 +1,10 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.CustomerDTO;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Address;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.CustomerReplica;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.NIF;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
 
 public class CustomerDTOConverter {
 

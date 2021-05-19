@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
 
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Units;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

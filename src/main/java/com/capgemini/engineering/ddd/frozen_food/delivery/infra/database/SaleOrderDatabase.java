@@ -1,12 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.infra.database;
 
+import com.capgemini.engineering.ddd.frozen_food.__metadata.Repository;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrderReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.SaleOrderID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.SaleOrderRepository;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 
 import java.util.List;
 
-public class SaleOrderDatabase implements SaleOrderRepository {
+//import org.springframework.data.mongodb.repository.MongoRepository;
+
+public class SaleOrderDatabase implements Repository<SaleOrderReplica, SaleOrderID> /*extends MongoRepository<SaleOrderReplica, SaleOrderID>*/ {
 
     @Override
     public List<SaleOrderReplica> all() {

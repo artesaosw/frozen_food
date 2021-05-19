@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.sun.istack.NotNull;
@@ -6,15 +6,15 @@ import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class CustomerID implements Identificator, Serializable {
+public class TransportID implements Identificator, Serializable {
 
     private UUID id;
 
-    public CustomerID(@NotNull UUID id){
+    TransportID(@NotNull UUID id){
         this.id = id;
     }
 
-    public CustomerID() {
+    public TransportID() {
         this.id = UUID.randomUUID();
     }
 

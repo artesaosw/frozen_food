@@ -1,35 +1,37 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.infra.converter;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Units;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Units;
 import com.capgemini.engineering.ddd.frozen_food.domain.stock.domain.exception.InvalidElementException;
 
 public class UnitsConverter {
 
     public Units whichUnit(String unit){
+        Units value;
         switch (unit){
             case "KG":
-                return Units.KG;
+                value = Units.KG;
                 break;
             case "G":
-                return Units.G;
+                value = Units.G;
                 break;
             case "MG":
-                return Units.MG;
+                value = Units.MG;
                 break;
             case "L":
-                return Units.L;
+                value = Units.L;
                 break;
             case "ML":
-                return Units.ML;
+                value = Units.ML;
                 break;
             case "M":
-                return Units.M;
+                value = Units.M;
                 break;
             case "CM":
-                return Units.CM;
+                value = Units.CM;
                 break;
             default:
                 throw new InvalidElementException("Invalid measure unit!");
         }
+        return value;
     }
 }

@@ -1,12 +1,12 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.infra.database;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.CustomerReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.CustomerRepository;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.CustomerReplicaRepository;
 
 import java.util.List;
 
-public class CustomerDatabase implements CustomerRepository {
+public class CustomerReplicaDatabase implements CustomerReplicaRepository {
 
     @Override
     public List<CustomerReplica> all() {

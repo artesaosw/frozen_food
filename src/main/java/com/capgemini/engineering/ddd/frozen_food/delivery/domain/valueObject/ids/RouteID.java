@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.delivery.domain.ids;
+package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.sun.istack.NotNull;
