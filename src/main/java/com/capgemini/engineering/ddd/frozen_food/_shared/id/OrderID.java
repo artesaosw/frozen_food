@@ -1,7 +1,8 @@
-package com.capgemini.engineering.ddd.frozen_food.domain._shared;
+package com.capgemini.engineering.ddd.frozen_food._shared.id;
 
-import com.sun.istack.NotNull;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class OrderID implements Identificator {
