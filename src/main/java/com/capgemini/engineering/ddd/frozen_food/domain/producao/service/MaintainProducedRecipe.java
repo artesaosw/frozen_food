@@ -18,10 +18,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
+//Aquando inserção de dimensão atualizar dimensao no objecto Recipe do Domain?
 public class MantainProducedRecipe implements DomainServices {
 
-    private ProducedRecipes producedRecipes() {
-        return Producao.producedRecipes();
+    private ProducedRecipes producedRecipes() { return Producao.producedRecipes();
     }
 
     public void registerNew(@NotNull Unit unit, String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita) {

@@ -7,7 +7,6 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.SetStatus;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.Status;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +20,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+//Necessita estimativa temporal?
 //Needs String of reference?
 public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
 
