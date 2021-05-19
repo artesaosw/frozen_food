@@ -10,7 +10,7 @@ public class Events implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     public static <T extends DomainEvent> void report(T event){
-        //TODO code to implement a event dispatch on Spring
+        //TODO code to implement a com.capgemini.engineering.ddd.frozen_food.domain.producao.event dispatch on Spring
     }
 
     @Override

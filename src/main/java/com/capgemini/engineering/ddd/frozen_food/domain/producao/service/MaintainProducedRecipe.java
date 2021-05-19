@@ -6,9 +6,9 @@ import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainService
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionCanceled;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionClosed;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.RecipeProductionRegistered;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.event.RecipeProductionCanceled;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.event.RecipeProductionClosed;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.event.RecipeProductionRegistered;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.exceptions.IllegalStatusException;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.ProducedRecipes;
@@ -32,7 +32,7 @@ public class MantainProducedRecipe implements DomainServices {
         //persists
         producedRecipes().registerNew(producedRecipe);
 
-        //reports event
+        //reports com.capgemini.engineering.ddd.frozen_food.domain.producao.event
         Events.report(new RecipeProductionRegistered(producedRecipe.getId()));
     }
 
@@ -52,7 +52,7 @@ public class MantainProducedRecipe implements DomainServices {
         //persists
         producedRecipes().update(producedRecipe);
 
-        //reports event
+        //reports com.capgemini.engineering.ddd.frozen_food.domain.producao.event
         Events.report(new RecipeProductionClosed(batchID));
     }
 
@@ -76,7 +76,7 @@ public class MantainProducedRecipe implements DomainServices {
         //persists
         producedRecipes().update(producedRecipe);
 
-        //reports event
+        //reports com.capgemini.engineering.ddd.frozen_food.domain.producao.event
         Events.report(new RecipeProductionCanceled(batchID));
     }
 

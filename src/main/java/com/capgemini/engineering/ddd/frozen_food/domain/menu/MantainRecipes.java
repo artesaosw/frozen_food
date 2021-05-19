@@ -29,7 +29,7 @@ public class MantainRecipes implements DomainServices {
         //persists
         recipes().registerNew(recipe);
 
-        //reports event
+        //reports com.capgemini.engineering.ddd.frozen_food.domain.producao.event
         Events.report(new RecipeRegistered(recipe.id()));
     }
 
@@ -49,7 +49,7 @@ public class MantainRecipes implements DomainServices {
         //persists
         recipes().update(recipe);
 
-        //reports event
+        //reports com.capgemini.engineering.ddd.frozen_food.domain.producao.event
         Events.report(new RecipeUpdated(recipeID));
     }
 
