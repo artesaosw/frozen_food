@@ -4,6 +4,9 @@ package com.capgemini.engineering.ddd.frozen_food.domain.sales.domain;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service.CustomerService;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service.OrderService;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service.ProductService;
+import com.capgemini.engineering.ddd.frozen_food.domain.sales.domain.service.ProductionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +24,14 @@ public class SalesController {
     @Autowired
     private CustomerService customerService;
 
-//    @Autowired
-//    private ProductService productService;
-//
-//    @Autowired
-//    private ProductionOrderService productionOrderService;
-//
-//    @Autowired
-//    private OrderService orderService;
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ProductionOrderService productionOrderService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/customers/{id}")
     public Customer getCustomer(@NotBlank @PathVariable String id) {
