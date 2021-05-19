@@ -12,6 +12,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.event.RecipePro
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.exceptions.IllegalStatusException;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.ProducedRecipes;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.valueObject.PackageCharacteristics;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,10 +25,10 @@ public class MantainProducedRecipe implements DomainServices {
     private ProducedRecipes producedRecipes() { return Producao.producedRecipes();
     }
 
-    public void registerNew(@NotNull Unit unit, String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita) {
+    public void registerNew(@NotNull Unit unit, String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade, @NotBlank String tipoReceita, PackageCharacteristics packaging,@NotNull int estimatedTimeInDays) {
 
         //Instantiate aggregate
-        ProducedRecipe producedRecipe = new ProducedRecipe(unit, name, quantity, recipeID, prazoValidade, tipoReceita);
+        ProducedRecipe producedRecipe = new ProducedRecipe(unit, name, quantity, recipeID, prazoValidade, tipoReceita, packaging, estimatedTimeInDays);
 
         //persists
         producedRecipes().registerNew(producedRecipe);

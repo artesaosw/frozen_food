@@ -2,6 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.domain.producao.dto;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.valueObject.PackageCharacteristics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,11 +38,17 @@ public class ProducedRecipeDTO {
     @JsonProperty(value = "tipoReceita")
     private String tipoReceita;
 
+    @JsonProperty(value = "packaging")
+    private PackageCharacteristics packaging;
+
+    @JsonProperty(value = "estimatedTimeInDays")
+    private int estimatedTimeInDays;
+
     public ProducedRecipeDTO(){
 
     }
 
-    public ProducedRecipeDTO(RecipeID recipeID, BatchID id, Unit unit, String name, int quantity, LocalDate prazoValidade, LocalDate dataProducao, String tipoReceita ){
+    public ProducedRecipeDTO(RecipeID recipeID, BatchID id, Unit unit, String name, int quantity, LocalDate prazoValidade, LocalDate dataProducao, String tipoReceita, PackageCharacteristics packaging, int estimatedTimeInDays ){
         this.recipeID = recipeID;
         this.id = id;
         this.unit = unit;
@@ -50,5 +57,7 @@ public class ProducedRecipeDTO {
         this.prazoValidade = prazoValidade;
         this.dataProducao = dataProducao;
         this.tipoReceita = tipoReceita;
+        this.packaging = packaging;
+        this.estimatedTimeInDays = estimatedTimeInDays;
     }
 }

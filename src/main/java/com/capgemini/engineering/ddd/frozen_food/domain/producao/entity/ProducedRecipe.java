@@ -8,6 +8,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.Status;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.valueObject.PackageCharacteristics;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
@@ -49,7 +50,14 @@ public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
     //Tipo de Receita
     private String tipoReceita;
 
+    //Status de Producao
     private Status status;
+
+    //Caracteristicas do pacote
+    private PackageCharacteristics packaging;
+
+    //Estimativa de Producao em dias
+    private int estimatedTimeInDays;
 
     private static final String primaryRecipe = "PRIMARY";
     private static final String secondaryRecipe = "SECONDARY";
@@ -58,14 +66,15 @@ public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
     protected ProducedRecipe() {}
 
     //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
-    public ProducedRecipe(@NotNull Unit unit,@NotNull String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita){
+    public ProducedRecipe(@NotNull Unit unit,@NotNull String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita, @NotNull PackageCharacteristics packaging, int estimatedTimeInDays){
         this.id = Identificator.newInstance(BatchID.class);
         this.unit = unit;
         this.name = name;
-        this.quantity = quantity;
         this.recipeID = recipeID;
         this.prazoValidade = prazoValidade;
         this.tipoReceita = tipoReceita;
+        this.packaging = packaging;
+        this.estimatedTimeInDays = estimatedTimeInDays;
         setLocalDate();
         setOpenStatus();
     }
