@@ -2,7 +2,6 @@ package com.capgemini.engineering.ddd.frozen_food.domain.producao.event;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
 import lombok.Getter;
 
 @Getter
