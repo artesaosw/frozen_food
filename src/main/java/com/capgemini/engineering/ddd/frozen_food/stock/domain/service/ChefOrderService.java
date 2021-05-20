@@ -44,8 +44,11 @@ public class ChefOrderService {
     }
 
     public void registerNewChefOrder(@NotNull ChefOrder chefOrder) {
-        if (chefOrderDAO.existsById(chefOrder.id()) || chefOrderDAO.existsByOrderReference(chefOrder.getOrderReference())) {
-            throw new DuplicatedEntityException("Already exists another chef order with the same id or order reference.");
+        if (chefOrderDAO.existsById(chefOrder.id())) {
+            throw new DuplicatedEntityException("Already exists another chef order with the same id.");
+        }
+        if (chefOrderDAO.existsByOrderReference(chefOrder.getOrderReference())) {
+            throw new DuplicatedEntityException("Already exists another chef order with the same order reference.");
         }
         chefOrderDAO.save(chefOrder);
         Events.report(new ChefOrderRegistered(chefOrder.id()));
@@ -87,8 +90,8 @@ public class ChefOrderService {
     }
 
     public void updateChefOrder(ChefOrder chefOrder) {
-        if (!chefOrderDAO.existsById(chefOrder.getChefOrderID())) {
-            throw new NonExistentEntityException("There is no order with id = " + chefOrder.getId().toString());
+        if (!chefOrderDAO.existsById(chefOrder.id())) {
+            throw new NonExistentEntityException("There is no order with id = " + chefOrder.id());
         }
         chefOrderDAO.save(chefOrder);
         Events.report(new ChefOrderUpdated(chefOrder.id()));

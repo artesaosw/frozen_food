@@ -48,6 +48,9 @@ public class IngredientService implements DomainServices {
     }
 
     public void registerNewIngredient(@NotNull Ingredient ingredient) {
+        if (ingredientDAO.existsById(ingredient.id())) {
+            throw new DuplicatedEntityException("Already exists another ingredient with the same id.");
+        }
         if (ingredientDAO.existsByName(ingredient.getName())) {
             throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
         }
@@ -55,8 +58,8 @@ public class IngredientService implements DomainServices {
     }
 
     public void updateIngredient(@NotNull Ingredient ingredient){
-        if (!ingredientDAO.existsById(ingredient.getIngredientID())) {
-            throw new NonExistentEntityException("There is no ingredient with id = " + ingredient.getId().toString());
+        if (!ingredientDAO.existsById(ingredient.id())) {
+            throw new NonExistentEntityException("There is no ingredient with id = " + ingredient.id());
         }
         ingredientDAO.save(ingredient);
         Events.report(new IngredientUpdated(ingredient.id()));

@@ -44,8 +44,11 @@ public class ProductionOrderService {
     }
 
     public void registerNewProductionOrder(ProductionOrder productionOrder) {
-        if (productionOrderDAO.existsById(productionOrder.id()) || productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
-            throw new DuplicatedEntityException("Already exists another production order with the same id or order reference.");
+        if (productionOrderDAO.existsById(productionOrder.id())) {
+            throw new DuplicatedEntityException("Already exists another production order with the same id.");
+        }
+        if (productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
+            throw new DuplicatedEntityException("Already exists another production order with the same order reference.");
         }
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderRegistered(productionOrder.id()));
@@ -88,7 +91,7 @@ public class ProductionOrderService {
 
     public void updateProductionOrder(ProductionOrder productionOrder) {
         if (!productionOrderDAO.existsById(productionOrder.id())) {
-            throw new NonExistentEntityException("There is no order with id = " + productionOrder.getId().toString());
+            throw new NonExistentEntityException("There is no order with id = " + productionOrder.id());
         }
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderUpdated(productionOrder.id()));

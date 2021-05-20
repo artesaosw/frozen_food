@@ -46,8 +46,11 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void registerNewSupplierOrder(@NotNull SupplierOrder supplierOrder) {
-        if (supplierOrderDAO.existsById(supplierOrder.getSupplierOrderID()) || supplierOrderDAO.existsByOrderReference(supplierOrder.getOrderReference())) {
-            throw new DuplicatedEntityException("Already exists another supplier order with the same id or order reference.");
+        if (supplierOrderDAO.existsById(supplierOrder.id())) {
+            throw new DuplicatedEntityException("Already exists another supplier order with the same id.");
+        }
+        if (supplierOrderDAO.existsByOrderReference(supplierOrder.getOrderReference())) {
+            throw new DuplicatedEntityException("Already exists another supplier order with the same order reference.");
         }
         supplierOrderDAO.save(supplierOrder);
         Events.report(new SupplierOrderRegistered(supplierOrder.id()));
@@ -76,8 +79,8 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void updateSupplierOrder(SupplierOrder supplierOrder) {
-        if (!supplierOrderDAO.existsById(supplierOrder.getSupplierOrderID())) {
-            throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.getId().toString());
+        if (!supplierOrderDAO.existsById(supplierOrder.id())) {
+            throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.id());
         }
         supplierOrderDAO.save(supplierOrder);
         Events.report(new SupplierOrderUpdated(supplierOrder.id()));

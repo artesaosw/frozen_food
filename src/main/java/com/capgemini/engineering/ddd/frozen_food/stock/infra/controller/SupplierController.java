@@ -73,7 +73,7 @@ public class SupplierController {
         return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
-    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getSupplierById(@PathVariable @Valid @NotBlank String id) {
         try {
 //            SupplierID supplierID = new SupplierID(id);
@@ -83,7 +83,7 @@ public class SupplierController {
             var supplier = supplierService.getSupplierBySupplierID(supplierID);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(e);
         }
     }
 

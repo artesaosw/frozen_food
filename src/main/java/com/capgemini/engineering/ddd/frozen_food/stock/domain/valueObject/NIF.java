@@ -16,7 +16,7 @@ public class NIF {
     String nif;
 
     @JsonCreator
-    public NIF(@NotBlank String nif) {
+    public NIF(@NotBlank @Pattern(regexp = "[0-9]{9}", message = "NIF must have 9 digits.") String nif) {
         setNif(nif);
     }
 
