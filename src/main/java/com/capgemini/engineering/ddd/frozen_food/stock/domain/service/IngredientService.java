@@ -31,10 +31,16 @@ public class IngredientService implements DomainServices {
     }
 
     public Ingredient getIngredientByIngredientID(@NotNull IngredientID id) {
+        if (!ingredientDAO.existsByIngredientID(id)) {
+            throw new NonExistentEntityException("There is no ingredient with id = " + id);
+        }
         return ingredientDAO.findByIngredientID(id);
     }
 
     public Ingredient getIngredientByName(@NotBlank String name) {
+        if (!ingredientDAO.existsByName(name)) {
+            throw new NonExistentEntityException("There is no ingredient with name = " + name);
+        }
         return ingredientDAO.findByName(name);
     }
 

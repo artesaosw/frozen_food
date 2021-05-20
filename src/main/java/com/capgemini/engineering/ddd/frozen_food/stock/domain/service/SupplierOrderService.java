@@ -33,6 +33,9 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public SupplierOrder getSupplierOrderBySupplierOrderID(SupplierOrderID id) {
+        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
+            throw new NonExistentEntityException("There is no order with id = " + id);
+        }
         return supplierOrderDAO.findBySupplierOrderID(id);
     }
 

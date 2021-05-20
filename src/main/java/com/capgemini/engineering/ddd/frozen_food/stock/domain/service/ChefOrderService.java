@@ -31,6 +31,9 @@ public class ChefOrderService {
     }
 
     public ChefOrder getChefOrderByChefOrderID(ChefOrderID id) {
+        if (!chefOrderDAO.existsByChefOrderID(id)) {
+            throw new NonExistentEntityException("There is no order with id = " + id);
+        }
         return chefOrderDAO.findByChefOrderID(id);
     }
 

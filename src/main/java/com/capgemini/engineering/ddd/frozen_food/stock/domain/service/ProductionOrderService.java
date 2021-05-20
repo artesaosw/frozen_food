@@ -31,6 +31,9 @@ public class ProductionOrderService {
     }
 
     public ProductionOrder getProductionOrderByProductionOrderID(@NotNull ProductionOrderID id) {
+        if (!productionOrderDAO.existsByProductionOrderID(id)) {
+            throw new NonExistentEntityException("There is no order with id = " + id);
+        }
         return productionOrderDAO.findByProductionOrderID(id);
     }
 

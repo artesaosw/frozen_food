@@ -16,4 +16,6 @@ public interface SupplierDAO extends MongoRepository<Supplier, SupplierID> {
     Supplier findByNif(NIF nif);
 
     boolean existsBySupplierID(SupplierID id);
+
+    boolean existsByName(String name);
 }

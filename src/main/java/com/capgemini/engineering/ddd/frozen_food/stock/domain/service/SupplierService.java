@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SupplierService implements DomainServices {
@@ -28,14 +27,23 @@ public class SupplierService implements DomainServices {
     }
 
     public Supplier getSupplierBySupplierID(@NotNull SupplierID id) {
+        if (!supplierDAO.existsBySupplierID(id)) {
+            throw new DuplicatedEntityException("There is no supplier with SupplierID = " + id);
+        }
         return supplierDAO.findBySupplierID(id);
     }
 
     public Supplier getSupplierByName(@NotBlank String name) {
+        if (!supplierDAO.existsByName(name)) {
+            throw new DuplicatedEntityException("There is no supplier with name = " + name);
+        }
         return supplierDAO.findByName(name);
     }
 
     public Supplier getSupplierByNif(@NotBlank NIF nif) {
+        if (!supplierDAO.existsByNif(nif)) {
+            throw new DuplicatedEntityException("There is no supplier with NIF = " + nif);
+        }
         return supplierDAO.findByNif(nif);
     }
 
