@@ -1,19 +1,19 @@
-package com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject;
+package com.capgemini.engineering.ddd.frozen_food.stock.infra.utils;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement(localName = "message")
-public class MessageDTO {
+public class Message {
 
     @JacksonXmlProperty(localName = "message")
     private String message;
 
-    public MessageDTO(String message) {
+    public Message(String message) {
         this.message = message;
     }
 
-    public MessageDTO() {
+    public Message() {
     }
 
     public String getMessage() {

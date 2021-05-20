@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
@@ -53,17 +53,17 @@ public class ProductionOrderController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
     @GetMapping(path = "/production/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +73,7 @@ public class ProductionOrderController {
             var productionOrder = productionOrderService.getProductionOrderByProductionOrderID(productionOrderID);
             return ResponseEntity.ok(productionOrder);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -82,7 +82,7 @@ public class ProductionOrderController {
         try {
             return ResponseEntity.ok(productionOrderService.getAllProductionOrders());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -91,7 +91,7 @@ public class ProductionOrderController {
         try {
             return ResponseEntity.ok(productionOrderService.getAllProductionOrdersByOrderStatus(OrderStatus.DELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -100,7 +100,7 @@ public class ProductionOrderController {
         try {
             return ResponseEntity.ok(productionOrderService.getAllProductionOrdersByOrderStatus(OrderStatus.UNDELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -109,7 +109,7 @@ public class ProductionOrderController {
         try {
             return ResponseEntity.ok(productionOrderService.getAllProductionOrdersByOrderStatus(OrderStatus.CANCELED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -117,11 +117,11 @@ public class ProductionOrderController {
     public ResponseEntity<?> addProductionOrder(@RequestBody @Valid @NotNull ProductionOrder productionOrder) {
         try {
             productionOrderService.registerNewProductionOrder(productionOrder);
-            return ResponseEntity.created(URI.create("/production/" + productionOrder.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/production/" + productionOrder.getId())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -129,11 +129,11 @@ public class ProductionOrderController {
     public ResponseEntity<?> updateProductionOrder(@RequestBody @Valid @NotNull ProductionOrder productionOrder) {
         try {
             productionOrderService.updateProductionOrder(productionOrder);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -142,11 +142,11 @@ public class ProductionOrderController {
         try {
             ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
             productionOrderService.updateProductionOrderStatus(productionOrderID, OrderStatus.valueOf(orderStatus));
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -155,11 +155,11 @@ public class ProductionOrderController {
         try {
             ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
             productionOrderService.deleteProductionOrder(productionOrderID);
-            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 }

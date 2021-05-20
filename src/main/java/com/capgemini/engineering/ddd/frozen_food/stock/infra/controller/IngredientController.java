@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
@@ -54,17 +54,17 @@ public class IngredientController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +74,7 @@ public class IngredientController {
             var ingredient = ingredientService.getIngredientByIngredientID(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -84,7 +84,7 @@ public class IngredientController {
             var ingredient = ingredientService.getIngredientByName(name);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -93,7 +93,7 @@ public class IngredientController {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredients());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -102,7 +102,7 @@ public class IngredientController {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_USE));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -111,7 +111,7 @@ public class IngredientController {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.NOT_IN_USE));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -120,7 +120,7 @@ public class IngredientController {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_TEST));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -128,11 +128,11 @@ public class IngredientController {
     public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
             ingredientService.registerNewIngredient(ingredient);
-            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -140,11 +140,11 @@ public class IngredientController {
     public ResponseEntity<?> updateIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
             ingredientService.updateIngredient(ingredient);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -153,11 +153,11 @@ public class IngredientController {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.updateIngredientUseStatus(ingredientID, IngredientStatus.valueOf(ingredientStatus));
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -166,11 +166,11 @@ public class IngredientController {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -179,11 +179,11 @@ public class IngredientController {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.increaseIngredientStock(ingredientID, quantity);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -192,11 +192,11 @@ public class IngredientController {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.decreaseIngredientStock(ingredientID, quantity);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -205,11 +205,11 @@ public class IngredientController {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.deleteIngredient(ingredientID);
-            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 }

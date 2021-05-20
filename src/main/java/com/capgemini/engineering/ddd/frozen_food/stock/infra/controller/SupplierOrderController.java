@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
@@ -53,17 +53,17 @@ public class SupplierOrderController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
     @GetMapping(path = "/supplier/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +73,7 @@ public class SupplierOrderController {
             var supplierOrder = supplierOrderService.getSupplierOrderBySupplierOrderID(supplierOrderID);
             return ResponseEntity.ok(supplierOrder);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -82,7 +82,7 @@ public class SupplierOrderController {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrders());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -91,7 +91,7 @@ public class SupplierOrderController {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.DELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -100,7 +100,7 @@ public class SupplierOrderController {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.UNDELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -109,7 +109,7 @@ public class SupplierOrderController {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.CANCELED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -117,11 +117,11 @@ public class SupplierOrderController {
     public ResponseEntity<?> addSupplierOrder(@RequestBody @Valid @NotNull SupplierOrder supplierOrder) {
         try {
             supplierOrderService.registerNewSupplierOrder(supplierOrder);
-            return ResponseEntity.created(URI.create("/supplier/" + supplierOrder.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/supplier/" + supplierOrder.getId())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -129,11 +129,11 @@ public class SupplierOrderController {
     public ResponseEntity<?> updateSupplierOrder(@RequestBody @Valid @NotNull SupplierOrder supplierOrder) {
         try {
             supplierOrderService.updateSupplierOrder(supplierOrder);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -142,11 +142,11 @@ public class SupplierOrderController {
         try {
             SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
             supplierOrderService.updateSupplierOrderStatus(supplierOrderID, OrderStatus.valueOf(orderStatus));
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -155,11 +155,11 @@ public class SupplierOrderController {
         try {
             SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
             supplierOrderService.deleteSupplierOrder(supplierOrderID);
-            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 }

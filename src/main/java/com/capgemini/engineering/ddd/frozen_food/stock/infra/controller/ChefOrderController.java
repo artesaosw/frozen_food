@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
@@ -53,17 +53,17 @@ public class ChefOrderController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
     @GetMapping(path = "/chef/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +73,7 @@ public class ChefOrderController {
             var chefOrder = chefOrderService.getChefOrderByChefOrderID(chefOrderID);
             return ResponseEntity.ok(chefOrder);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -82,7 +82,7 @@ public class ChefOrderController {
         try {
             return ResponseEntity.ok(chefOrderService.getAllChefOrders());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -91,7 +91,7 @@ public class ChefOrderController {
         try {
             return ResponseEntity.ok(chefOrderService.getAllChefOrdersByOrderStatus(OrderStatus.DELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -100,7 +100,7 @@ public class ChefOrderController {
         try {
             return ResponseEntity.ok(chefOrderService.getAllChefOrdersByOrderStatus(OrderStatus.UNDELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -109,7 +109,7 @@ public class ChefOrderController {
         try {
             return ResponseEntity.ok(chefOrderService.getAllChefOrdersByOrderStatus(OrderStatus.CANCELED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -117,11 +117,11 @@ public class ChefOrderController {
     public ResponseEntity<?> addChefOrder(@RequestBody @Valid @NotNull ChefOrder chefOrder) {
         try {
             chefOrderService.registerNewChefOrder(chefOrder);
-            return ResponseEntity.created(URI.create("/chef/" + chefOrder.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/chef/" + chefOrder.getId())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -129,11 +129,11 @@ public class ChefOrderController {
     public ResponseEntity<?> updateChefOrder(@RequestBody @Valid @NotNull ChefOrder chefOrder) {
         try {
             chefOrderService.updateChefOrder(chefOrder);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -142,11 +142,11 @@ public class ChefOrderController {
         try {
             ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
             chefOrderService.updateChefOrderStatus(chefOrderID, OrderStatus.valueOf(orderStatus));
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -155,11 +155,11 @@ public class ChefOrderController {
         try {
             ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
             chefOrderService.deleteChefOrder(chefOrderID);
-            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 }

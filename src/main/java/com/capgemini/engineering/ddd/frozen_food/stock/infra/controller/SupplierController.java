@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
@@ -58,20 +58,20 @@ public class SupplierController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
         if (ex.getMessage().contains(INVALID_NIF_MSG)) {
-            return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(INVALID_NIF_MSG)));
+            return ResponseEntity.badRequest().body(new Error(new Exception(INVALID_NIF_MSG)));
         } else {
-            return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
+            return ResponseEntity.badRequest().body(new Error(new Exception(NO_DATA_ERROR_MSG)));
         }
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
+        return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
@@ -81,7 +81,7 @@ public class SupplierController {
             var supplier = supplierService.getSupplierBySupplierID(supplierID);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -91,7 +91,7 @@ public class SupplierController {
             var supplier = supplierService.getSupplierByName(name);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -104,7 +104,7 @@ public class SupplierController {
             var supplier = supplierService.getSupplierByNif(nifObj);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -113,7 +113,7 @@ public class SupplierController {
         try {
             return ResponseEntity.ok(supplierService.getAllSuppliers());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -121,11 +121,11 @@ public class SupplierController {
     public ResponseEntity<?> addSupplier(@RequestBody @Valid @NotNull Supplier supplier) {
         try {
             supplierService.registerNewSupplier(supplier);
-            return ResponseEntity.created(URI.create("/supplier/" + supplier.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/supplier/" + supplier.getId())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException | InvalidElementException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -133,11 +133,11 @@ public class SupplierController {
     public ResponseEntity<?> updateSupplier(@RequestBody @Valid @NotNull Supplier supplier) {
         try {
             supplierService.updateSupplier(supplier);
-            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
@@ -146,11 +146,11 @@ public class SupplierController {
         try {
             SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
             supplierService.deleteSupplier(supplierID);
-            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
+            return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 }
