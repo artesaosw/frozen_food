@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.dao;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.IngredientStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -12,7 +12,9 @@ public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID>
 
     boolean existsByName(String name);
 
-    Optional<Ingredient> findByName(String name);
+    Ingredient findByName(String name);
 
     List<Ingredient> findAllByIngredientStatus(IngredientStatus ingredientStatus);
+
+    Ingredient findByIngredientID(IngredientID id);
 }

@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.__metadata;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 
 public interface Entity {
 

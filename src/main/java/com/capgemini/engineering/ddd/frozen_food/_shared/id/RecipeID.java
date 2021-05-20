@@ -1,21 +1,18 @@
-package com.capgemini.engineering.ddd.frozen_food._shared;
-
-import lombok.Data;
+package com.capgemini.engineering.ddd.frozen_food._shared.id;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Data
-public class IngredientID implements Identificator, Serializable {
+public class RecipeID implements Identificator, Serializable {
 
     private UUID id;
 
-    IngredientID(@NotNull UUID id) {
+    RecipeID(@NotNull UUID id) {
         this.id = id;
     }
 
-    public IngredientID() {
+    public RecipeID() {
         this.id = UUID.randomUUID();
     }
 
@@ -23,4 +20,5 @@ public class IngredientID implements Identificator, Serializable {
     public UUID id() {
         return id;
     }
+
 }

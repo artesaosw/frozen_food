@@ -1,13 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -18,11 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
+@Document(collection = "production_order_stock")
 public class ProductionOrder implements AggregateRoot, Serializable {
 
     @Id
-    private ProductionOrderID id;
+    private String id;
+
+    private ProductionOrderID productionOrderID;
 
     private String orderReference;
 
@@ -34,8 +37,8 @@ public class ProductionOrder implements AggregateRoot, Serializable {
 
     public ProductionOrder (@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
         this.orderReference = orderReference;
-        this.id = Identificator.newInstance(ProductionOrderID.class);
-        this.orders = new HashMap<>();
+        this.productionOrderID = Identificator.newInstance(ProductionOrderID.class);
+        this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
     }

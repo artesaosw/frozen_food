@@ -1,14 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.SupplierOrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,11 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
+@Document(collection = "supplier_order_stock")
 public class SupplierOrder implements AggregateRoot, Serializable {
 
     @Id
-    private SupplierOrderID id;
+    String id;
+
+    private SupplierOrderID supplierOrderID;
 
     private String orderReference;
 
@@ -33,14 +36,14 @@ public class SupplierOrder implements AggregateRoot, Serializable {
 
     private LocalDate purchaseDate;
 
-    private Integer purchaseValue;
+    private double purchaseValue;
 
     private OrderStatus orderStatus;
 
-    public SupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull Integer purchaseValue) {
+    public SupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull double purchaseValue) {
         this.orderReference = orderReference;
-        this.id = Identificator.newInstance(SupplierOrderID.class);
-        this.orders = new HashMap<>();
+        this.supplierOrderID = Identificator.newInstance(SupplierOrderID.class);
+        this.orders = new HashMap<>(orders);
         this.supplierID = supplierID;
         this.purchaseDate = LocalDate.now();
         this.purchaseValue = purchaseValue;
@@ -48,7 +51,7 @@ public class SupplierOrder implements AggregateRoot, Serializable {
     }
 
     public SupplierOrderID id() {
-        return this.id;
+        return this.supplierOrderID;
     }
 
     @Override

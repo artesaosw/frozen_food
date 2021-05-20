@@ -1,11 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedKeyException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentIngredientException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.ProductionOrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -67,9 +69,12 @@ public class ProductionOrderController {
     }
 
     @GetMapping(path = "/production/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid ProductionOrderID id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            var productionOrder = productionOrderService.getProductionOrderById(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var productionOrderID = mapper.readValue(jsonString, ProductionOrderID.class);
+            var productionOrder = productionOrderService.getProductionOrderByProductionOrderID(productionOrderID);
             return ResponseEntity.ok(productionOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -117,7 +122,7 @@ public class ProductionOrderController {
         try {
             productionOrderService.registerNewProductionOrder(productionOrder);
             return ResponseEntity.created(URI.create("/production/" + productionOrder.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
-        } catch (DuplicatedKeyException e) {
+        } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_ORDER_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -129,7 +134,7 @@ public class ProductionOrderController {
         try {
             productionOrderService.updateProductionOrder(productionOrder);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -137,11 +142,14 @@ public class ProductionOrderController {
     }
 
     @PutMapping(path = "/production/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateProductionOrderStatus(@PathVariable @Valid @NotNull ProductionOrderID productionOrderID, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
+    public ResponseEntity<?> updateProductionOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
         try {
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var productionOrderID = mapper.readValue(jsonString, ProductionOrderID.class);
             productionOrderService.updateProductionOrderStatus(productionOrderID, orderStatus);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -149,11 +157,14 @@ public class ProductionOrderController {
     }
 
     @DeleteMapping(path = "/production/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> deleteProductionOrder(@PathVariable @Valid ProductionOrderID id) {
+    public ResponseEntity<?> deleteProductionOrder(@PathVariable @Valid String id) {
         try {
-            productionOrderService.deleteProductionOrder(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var productionOrderID = mapper.readValue(jsonString, ProductionOrderID.class);
+            productionOrderService.deleteProductionOrder(productionOrderID);
             return ResponseEntity.ok(DELETE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);

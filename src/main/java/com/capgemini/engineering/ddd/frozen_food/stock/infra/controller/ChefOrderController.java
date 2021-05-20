@@ -1,11 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedKeyException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentIngredientException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.ChefOrderService;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -67,9 +69,12 @@ public class ChefOrderController {
     }
 
     @GetMapping(path = "/chef/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid ChefOrderID id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            var chefOrder = chefOrderService.getChefOrderById(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
+            var chefOrder = chefOrderService.getChefOrderByChefOrderID(supplierID);
             return ResponseEntity.ok(chefOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -117,7 +122,7 @@ public class ChefOrderController {
         try {
             chefOrderService.registerNewChefOrder(chefOrder);
             return ResponseEntity.created(URI.create("/chef/" + chefOrder.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
-        } catch (DuplicatedKeyException e) {
+        } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_ORDER_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -129,7 +134,7 @@ public class ChefOrderController {
         try {
             chefOrderService.updateChefOrder(chefOrder);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -137,11 +142,14 @@ public class ChefOrderController {
     }
 
     @PutMapping(path = "/chef/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull ChefOrderID chefOrderID, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
+    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
         try {
-            chefOrderService.updateChefOrderStatus(chefOrderID, orderStatus);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
+            chefOrderService.updateChefOrderStatus(supplierID, orderStatus);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -151,9 +159,12 @@ public class ChefOrderController {
     @DeleteMapping(path = "/chef/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid ChefOrderID id) {
         try {
-            chefOrderService.deleteChefOrder(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
+            chefOrderService.deleteChefOrder(supplierID);
             return ResponseEntity.ok(DELETE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);

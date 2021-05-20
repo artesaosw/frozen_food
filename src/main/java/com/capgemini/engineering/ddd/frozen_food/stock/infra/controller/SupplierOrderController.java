@@ -1,11 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.SupplierOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedKeyException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentIngredientException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.SupplierOrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -67,9 +69,12 @@ public class SupplierOrderController {
     }
 
     @GetMapping(path = "/supplier/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid SupplierOrderID id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            var supplierOrder = supplierOrderService.getSupplierOrderById(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
+            var supplierOrder = supplierOrderService.getSupplierOrderBySupplierOrderID(supplierOrderID);
             return ResponseEntity.ok(supplierOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -117,7 +122,7 @@ public class SupplierOrderController {
         try {
             supplierOrderService.registerNewSupplierOrder(supplierOrder);
             return ResponseEntity.created(URI.create("/supplier/" + supplierOrder.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
-        } catch (DuplicatedKeyException e) {
+        } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_ORDER_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -129,7 +134,7 @@ public class SupplierOrderController {
         try {
             supplierOrderService.updateSupplierOrder(supplierOrder);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -137,11 +142,14 @@ public class SupplierOrderController {
     }
 
     @PutMapping(path = "/supplier/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull SupplierOrderID supplierOrderID, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
+    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
         try {
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
             supplierOrderService.updateSupplierOrderStatus(supplierOrderID, orderStatus);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -149,11 +157,14 @@ public class SupplierOrderController {
     }
 
     @DeleteMapping(path = "/supplier/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> deleteSupplierOrder(@PathVariable @Valid SupplierOrderID id) {
+    public ResponseEntity<?> deleteSupplierOrder(@PathVariable @Valid String id) {
         try {
-            supplierOrderService.deleteSupplierOrder(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
+            supplierOrderService.deleteSupplierOrder(supplierOrderID);
             return ResponseEntity.ok(DELETE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);

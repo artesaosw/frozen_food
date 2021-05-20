@@ -1,14 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,11 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
+@Document(collection = "chef_order_stock")
 public class ChefOrder implements AggregateRoot, Serializable {
 
     @Id
-    private ChefOrderID id;
+    private String id;
+
+    private ChefOrderID chefOrderID;
 
     private String orderReference;
 
@@ -35,15 +38,15 @@ public class ChefOrder implements AggregateRoot, Serializable {
 
     public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
         this.orderReference = orderReference;
-        this.id = Identificator.newInstance(ProductionOrderID.class);
-        this.orders = new HashMap<>();
+        this.chefOrderID = Identificator.newInstance(ProductionOrderID.class);
+        this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
     }
 
     @Override
     public ChefOrderID id() {
-        return null;
+        return chefOrderID;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-    public void addIngredientToOrder(Ingredient ingredient, @Positive Integer quantity) {
+    public void addIngredientToOrder(@NotNull Ingredient ingredient, @Positive Integer quantity) {
         if (this.orders.containsKey(ingredient)) {
             throw new InvalidElementException("The ingredient already exists in the order!");
         } else {
@@ -64,11 +67,11 @@ public class ChefOrder implements AggregateRoot, Serializable {
         }
     }
 
-    public void removeIngredientFromOrder(Ingredient ingredient) {
+    public void removeIngredientFromOrder(@NotNull Ingredient ingredient) {
         this.orders.remove(ingredient);
     }
 
-    public void updateIngredientQuantityInOrder(Ingredient ingredient, @NotNull Integer quantity) {
+    public void updateIngredientQuantityInOrder(@NotNull Ingredient ingredient, @NotNull Integer quantity) {
         if (!this.orders.containsKey(ingredient)) {
             throw new InvalidElementException("The ingredient does not exists in the order!");
         } else {

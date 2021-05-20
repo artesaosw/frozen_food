@@ -1,32 +1,35 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food._shared.Unit;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.IngredientStatus;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
+@Document(collection = "ingredient_stock")
 public class Ingredient implements AggregateRoot, Serializable {
 
     private static final Integer INGREDIENT_STOCK_ON_CREATION = 0;
     private static final Integer MINIMUM_STOCK_VALUE_ON_CREATION = 0;
 
-    // TODO o id tem de ser igual ao id do Ingredient do package menu
     @Id
-    private IngredientID id;
+    String id;
 
+    private IngredientID ingredientID;
+
+    @NotBlank
     private String name;
 
+    @NotNull
     private Unit unit;
 
     private Integer minimumStockValue;
@@ -36,7 +39,7 @@ public class Ingredient implements AggregateRoot, Serializable {
     private Integer ingredientStock;
 
     public Ingredient(@NotBlank String name, @NotNull Unit unit) {
-        this.id = Identificator.newInstance(IngredientID.class);
+        this.ingredientID = Identificator.newInstance(IngredientID.class);
         this.name = name;
         this.unit = unit;
         this.minimumStockValue = MINIMUM_STOCK_VALUE_ON_CREATION;
@@ -45,7 +48,7 @@ public class Ingredient implements AggregateRoot, Serializable {
     }
 
     public IngredientID id() {
-        return this.id;
+        return this.ingredientID;
     }
 
     @Override
@@ -58,11 +61,11 @@ public class Ingredient implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-    public void increaseIngredientStock(@NotNull @PositiveOrZero Integer quantity) {
+    public void increaseIngredientStock(@NotNull @Positive Integer quantity) {
         setIngredientStock(this.ingredientStock + quantity);
     }
 
-    public void decreaseIngredientStock(@NotNull @PositiveOrZero Integer quantity) {
+    public void decreaseIngredientStock(@NotNull @Positive Integer quantity) {
         if (quantity > this.ingredientStock) {
             setIngredientStock(this.ingredientStock - quantity);
         } else {

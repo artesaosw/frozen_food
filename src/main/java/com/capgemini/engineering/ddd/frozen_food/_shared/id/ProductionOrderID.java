@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared;
+package com.capgemini.engineering.ddd.frozen_food._shared.id;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.capgemini.engineering.ddd.frozen_food.stock.domain.event;
+package com.capgemini.engineering.ddd.frozen_food._shared.stock.event;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 
 public class ChefOrderRegistered extends DomainEvent {
 

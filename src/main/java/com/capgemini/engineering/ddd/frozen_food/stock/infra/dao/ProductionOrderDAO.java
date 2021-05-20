@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.dao;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -12,4 +12,6 @@ public interface ProductionOrderDAO extends MongoRepository<ProductionOrder, Pro
     List<ProductionOrder> findAllByOrderStatus(OrderStatus orderStatus);
 
     boolean existsByOrderReference(String orderReference);
+
+    ProductionOrder findByProductionOrderID(ProductionOrderID id);
 }

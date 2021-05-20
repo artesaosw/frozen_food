@@ -1,5 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food._shared;
+package com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

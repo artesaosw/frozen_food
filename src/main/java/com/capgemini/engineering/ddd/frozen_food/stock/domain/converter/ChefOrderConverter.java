@@ -1,24 +1,40 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.dto.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredient2IngredientDTO;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredientDTO2Ingredient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChefOrderConverter {
 
     public static ChefOrderDTO chefOrder2ChefOrderDTO(ChefOrder chefOrder) throws NullPointerException {
         ChefOrderDTO chefOrderDTO = new ChefOrderDTO();
         chefOrderDTO.setOrderReference(chefOrder.getOrderReference());
-        chefOrderDTO.setOrders(chefOrder.getOrders());
+        Map<IngredientDTO, Integer> orders = new HashMap<>();
+        for (Map.Entry<Ingredient, Integer> map : chefOrder.getOrders().entrySet()) {
+            IngredientDTO ingredientDTO = ingredient2IngredientDTO(map.getKey());
+            Integer quantity = map.getValue();
+            orders.put(ingredientDTO,quantity);
+        }
+        chefOrderDTO.setOrders(orders);
         return chefOrderDTO;
     }
 
     public static ChefOrder chefOrderDTO2ChefOrder(ChefOrderDTO chefOrderDTO) throws NullPointerException {
-        ChefOrder chefOrder = new ChefOrder();
-        chefOrder.setOrderReference(chefOrderDTO.getOrderReference());
-        chefOrder.setOrders(chefOrderDTO.getOrders());
+        Map<Ingredient, Integer> orders = new HashMap<>();
+        for (Map.Entry<IngredientDTO, Integer> map : chefOrderDTO.getOrders().entrySet()) {
+            Ingredient ingredient = ingredientDTO2Ingredient(map.getKey());
+            Integer quantity = map.getValue();
+            orders.put(ingredient,quantity);
+        }
+        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getOrderReference(), orders);
         return chefOrder;
     }
 

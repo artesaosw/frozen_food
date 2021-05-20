@@ -1,11 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.event.ProductionOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.event.ProductionOrderUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ProductionOrderRegistered;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ProductionOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.ProductionOrders;
@@ -29,22 +31,21 @@ public class ProductionOrderService {
         return Stock.productionOrders();
     }
 
-    public ProductionOrder getProductionOrderById(ProductionOrderID id) {
-        Optional<ProductionOrder> productionOrder = productionOrderDAO.findById(id);
-        return productionOrder.get();
+    public ProductionOrder getProductionOrderByProductionOrderID(@NotNull ProductionOrderID id) {
+        return productionOrderDAO.findByProductionOrderID(id);
     }
 
     public List<ProductionOrder> getAllProductionOrders() {
         return productionOrderDAO.findAll();
     }
 
-    public List<ProductionOrder> getAllProductionOrdersByOrderStatus(OrderStatus orderStatus) {
+    public List<ProductionOrder> getAllProductionOrdersByOrderStatus(@NotNull OrderStatus orderStatus) {
         return productionOrderDAO.findAllByOrderStatus(orderStatus);
     }
 
     public void registerNewProductionOrder(ProductionOrder productionOrder) {
-        if (productionOrderDAO.existsById(productionOrder.getId()) || productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
-            throw new IllegalArgumentException("Already exists another production order with the same id or order reference.");
+        if (productionOrderDAO.existsById(productionOrder.id()) || productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
+            throw new DuplicatedEntityException("Already exists another production order with the same id or order reference.");
         }
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderRegistered(productionOrder.id()));
@@ -52,7 +53,7 @@ public class ProductionOrderService {
 
     public void registerNewProductionOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
         if (productionOrderDAO.existsByOrderReference(orderReference)) {
-            throw new IllegalArgumentException("Already exists another order with the same order reference.");
+            throw new DuplicatedEntityException("Already exists another order with the same order reference.");
         }
         ProductionOrder productionOrder = new ProductionOrder(orderReference, orders);
         productionOrderDAO.save(productionOrder);
@@ -61,7 +62,7 @@ public class ProductionOrderService {
 
     public void updateProductionOrderStatus(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
         if (!productionOrderDAO.existsById(id)) {
-            throw new IllegalArgumentException("There is no order with id = " + id);
+            throw new NonExistentEntityException("There is no order with id = " + id);
         }
         ProductionOrder productionOrder = productionOrderDAO.findById(id).get();
         if (productionOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
@@ -74,7 +75,7 @@ public class ProductionOrderService {
 
     public void updateProductionOrderIngredients(@NotNull ProductionOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
         if (!productionOrderDAO.existsById(id)) {
-            throw new IllegalArgumentException("There is no order with id = " + id);
+            throw new NonExistentEntityException("There is no order with id = " + id);
         }
         ProductionOrder productionOrder = productionOrderDAO.findById(id).get();
         if (productionOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
@@ -86,8 +87,8 @@ public class ProductionOrderService {
     }
 
     public void updateProductionOrder(ProductionOrder productionOrder) {
-        if (!productionOrderDAO.existsById(productionOrder.getId())) {
-            throw new IllegalArgumentException("There is no order with id = " + productionOrder.getId().toString());
+        if (!productionOrderDAO.existsById(productionOrder.id())) {
+            throw new NonExistentEntityException("There is no order with id = " + productionOrder.getId().toString());
         }
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderUpdated(productionOrder.id()));
@@ -95,7 +96,7 @@ public class ProductionOrderService {
 
     public void deleteProductionOrder(ProductionOrderID id) {
         if (!productionOrderDAO.existsById(id)) {
-            throw new IllegalArgumentException("There is no order with id = " + id);
+            throw new NonExistentEntityException("There is no order with id = " + id);
         }
         Optional<ProductionOrder> productionOrder = productionOrderDAO.findById(id);
         productionOrderDAO.delete(productionOrder.get());

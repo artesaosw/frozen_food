@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.__metadata;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 
 import java.util.List;
 
@@ -15,5 +15,4 @@ public interface Repository<T extends AggregateRoot, V extends Identificator> {
     void registerNew(T aggregateRoot);
 
     void update(T aggregateRoot);
-
 }

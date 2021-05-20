@@ -1,11 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.IngredientStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedKeyException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentIngredientException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.IngredientService;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -67,16 +70,19 @@ public class IngredientController {
     }
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> getIngredientById(@PathVariable @Valid IngredientID id) {
+    public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
-            var ingredient = ingredientService.getIngredientById(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            var ingredient = ingredientService.getIngredientByIngredientID(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
         }
     }
 
-    @GetMapping(path = "/{name}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/name/{name}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getIngredientByName(@PathVariable @Valid String name) {
         try {
             var ingredient = ingredientService.getIngredientByName(name);
@@ -95,7 +101,7 @@ public class IngredientController {
         }
     }
 
-    @GetMapping(path = "/in_use/", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/in_use", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getAllIngredientsInUse() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_USE));
@@ -104,7 +110,7 @@ public class IngredientController {
         }
     }
 
-    @GetMapping(path = "/not_in_use/", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/not_in_use", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getAllIngredientsNotInUse() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.NOT_IN_USE));
@@ -113,7 +119,7 @@ public class IngredientController {
         }
     }
 
-    @GetMapping(path = "/in_test/", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/in_test", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getAllIngredientsInTest() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_TEST));
@@ -127,7 +133,7 @@ public class IngredientController {
         try {
             ingredientService.registerNewIngredient(ingredient);
             return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
-        } catch (DuplicatedKeyException e) {
+        } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_INGREDIENT_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -139,7 +145,7 @@ public class IngredientController {
         try {
             ingredientService.updateIngredient(ingredient);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -147,11 +153,14 @@ public class IngredientController {
     }
 
     @PutMapping(path = "/status/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull IngredientStatus ingredientStatus) {
+    public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull IngredientStatus ingredientStatus) {
         try {
-            ingredientService.updateIngredientUseStatus(id, ingredientStatus);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            ingredientService.updateIngredientUseStatus(ingredientID, ingredientStatus);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -159,11 +168,14 @@ public class IngredientController {
     }
 
     @PutMapping(path = "/stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
+    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
         try {
-            ingredientService.updateIngredientMinimumStockValue(id, minimumStockValue);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            ingredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -171,11 +183,14 @@ public class IngredientController {
     }
 
     @PutMapping(path = "/increase_stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer increaseIngredientStock) {
+    public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
-            ingredientService.increaseIngredientStock(id, increaseIngredientStock);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            ingredientService.increaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -183,11 +198,14 @@ public class IngredientController {
     }
 
     @PutMapping(path = "/decrease_stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull IngredientID id, @RequestParam @Valid @NotNull Integer decreaseIngredientStock) {
+    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
-            ingredientService.decreaseIngredientStock(id, decreaseIngredientStock);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            ingredientService.decreaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
@@ -195,11 +213,14 @@ public class IngredientController {
     }
 
     @DeleteMapping(path = "/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> deleteIngredient(@PathVariable @Valid IngredientID id) {
+    public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
         try {
-            ingredientService.deleteIngredient(id);
+            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            ObjectMapper mapper = new ObjectMapper();
+            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            ingredientService.deleteIngredient(ingredientID);
             return ResponseEntity.ok(DELETE_SUCCESS_MSG);
-        } catch (NonExistentIngredientException e) {
+        } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
