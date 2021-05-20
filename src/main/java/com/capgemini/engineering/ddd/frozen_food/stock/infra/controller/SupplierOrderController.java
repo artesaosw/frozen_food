@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
@@ -31,15 +32,12 @@ import java.util.stream.Collectors;
 @Validated
 public class SupplierOrderController {
 
-    static final String GENERAL_ERROR_MSG = "INTERNAL_ERROR";
-    static final String NO_DATA_ERROR_MSG = "NO_DATA_RECEIVED_ERROR";
-    static final String DUPLICATED_ORDER_ERROR_MSG = "DUPLICATED_ORDER_ERROR";
-    static final String ADD_SUCCESS_MSG = "ADD_SUCCESS";
-    static final String UPDATE_SUCCESS_MSG = "UPDATE_SUCCESS";
-    static final String DELETE_SUCCESS_MSG = "DELETE_SUCCESS";
-    static final String ORDER_NOT_FOUND_ERROR_MSG = "ORDER_NOT_FOUND";
-    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING_PARAMETER_ERROR";
-    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING_PARAMETER_VALUE_ERROR";
+    static final String NO_DATA_ERROR_MSG = "NO DATA RECEIVED ERROR";
+    static final String ADD_SUCCESS_MSG = "Supplier Order added successfully!";
+    static final String UPDATE_SUCCESS_MSG = "Supplier Order updated successfully!";
+    static final String DELETE_SUCCESS_MSG = "Supplier Order deleted successfully!";
+    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING PARAMETER ERROR";
+    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING PARAMETER VALUE ERROR";
 
     @Autowired
     private SupplierOrderService supplierOrderService;
@@ -55,119 +53,119 @@ public class SupplierOrderController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(NO_DATA_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(MISSING_PARAMETER_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(MISSING_PARAMETER_VALUE_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
-    @GetMapping(path = "/supplier/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/supplier/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            String jsonString = String.format("{\"id\":\"%s\"}", id);
             ObjectMapper mapper = new ObjectMapper();
             var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
             var supplierOrder = supplierOrderService.getSupplierOrderBySupplierOrderID(supplierOrderID);
             return ResponseEntity.ok(supplierOrder);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/supplier", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/supplier", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllSuppliersOrders() {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrders());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/supplier/delivered", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/supplier/delivered", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllDeliveredSuppliersOrders() {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.DELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/supplier/undelivered", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/supplier/undelivered", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllUndeliveredSuppliersOrders() {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.UNDELIVERED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/supplier/canceled", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/supplier/canceled", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllCanceledSuppliersOrders() {
         try {
             return ResponseEntity.ok(supplierOrderService.getAllSuppliersOrdersByOrderStatus(OrderStatus.CANCELED));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PostMapping(path = "/supplier", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(path = "/supplier")
     public ResponseEntity<?> addSupplierOrder(@RequestBody @Valid @NotNull SupplierOrder supplierOrder) {
         try {
             supplierOrderService.registerNewSupplierOrder(supplierOrder);
-            return ResponseEntity.created(URI.create("/supplier/" + supplierOrder.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
+            return ResponseEntity.created(URI.create("/supplier/" + supplierOrder.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_ORDER_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/supplier", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/supplier", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateSupplierOrder(@RequestBody @Valid @NotNull SupplierOrder supplierOrder) {
         try {
             supplierOrderService.updateSupplierOrder(supplierOrder);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/supplier/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/supplier/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            String jsonString = String.format("{\"id\":\"%s\"}", id);
             ObjectMapper mapper = new ObjectMapper();
             var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
             supplierOrderService.updateSupplierOrderStatus(supplierOrderID, orderStatus);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @DeleteMapping(path = "/supplier/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @DeleteMapping(path = "/supplier/{id}")
     public ResponseEntity<?> deleteSupplierOrder(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            String jsonString = String.format("{\"id\":\"%s\"}", id);
             ObjectMapper mapper = new ObjectMapper();
             var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
             supplierOrderService.deleteSupplierOrder(supplierOrderID);
-            return ResponseEntity.ok(DELETE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(ORDER_NOT_FOUND_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 }

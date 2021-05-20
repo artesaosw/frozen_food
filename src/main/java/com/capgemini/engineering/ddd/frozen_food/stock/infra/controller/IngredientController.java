@@ -1,13 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.IngredientService;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -32,15 +32,12 @@ import java.util.stream.Collectors;
 @Validated
 public class IngredientController {
 
-    static final String GENERAL_ERROR_MSG = "INTERNAL_ERROR";
-    static final String NO_DATA_ERROR_MSG = "NO_DATA_RECEIVED_ERROR";
-    static final String DUPLICATED_INGREDIENT_ERROR_MSG = "DUPLICATED_INGREDIENT_ERROR";
-    static final String ADD_SUCCESS_MSG = "ADD_SUCCESS";
-    static final String UPDATE_SUCCESS_MSG = "UPDATE_SUCCESS";
-    static final String DELETE_SUCCESS_MSG = "DELETE_SUCCESS";
-    static final String INGREDIENT_NOT_FOUND_ERROR_MSG = "INGREDIENT_NOT_FOUND";
-    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING_PARAMETER_ERROR";
-    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING_PARAMETER_VALUE_ERROR";
+    static final String NO_DATA_ERROR_MSG = "NO DATA RECEIVED ERROR";
+    static final String ADD_SUCCESS_MSG = "Ingredient added successfully!";
+    static final String UPDATE_SUCCESS_MSG = "Ingredient updated successfully!";
+    static final String DELETE_SUCCESS_MSG = "Ingredient deleted successfully!";
+    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING PARAMETER ERROR";
+    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING PARAMETER VALUE ERROR";
 
     @Autowired
     private IngredientService ingredientService;
@@ -56,174 +53,174 @@ public class IngredientController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleNoData(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(NO_DATA_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(NO_DATA_ERROR_MSG)));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<?> handleNoData(MissingServletRequestParameterException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(MISSING_PARAMETER_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_ERROR_MSG)));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     private ResponseEntity<?> handleNoData(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(MISSING_PARAMETER_VALUE_ERROR_MSG);
+        return ResponseEntity.badRequest().body(new ErrorDTO(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
-    @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
+            String jsonString = String.format("{\"id\":\"%s\"}", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             var ingredient = ingredientService.getIngredientByIngredientID(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/name/{name}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIngredientByName(@PathVariable @Valid String name) {
         try {
             var ingredient = ingredientService.getIngredientByName(name);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredients() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredients());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/in_use", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/in_use", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsInUse() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_USE));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/not_in_use", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/not_in_use", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsNotInUse() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.NOT_IN_USE));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @GetMapping(path = "/in_test", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(path = "/in_test", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsInTest() {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_TEST));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PostMapping(produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping()
     public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
             ingredientService.registerNewIngredient(ingredient);
-            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).contentType(MediaType.TEXT_PLAIN).body(ADD_SUCCESS_MSG);
+            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).body(new MessageDTO(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body(DUPLICATED_INGREDIENT_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
             ingredientService.updateIngredient(ingredient);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/status/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/status/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull IngredientStatus ingredientStatus) {
         try {
             String jsonString = String.format("{ \"id\" : \"%s\" }", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             ingredientService.updateIngredientUseStatus(ingredientID, ingredientStatus);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
         try {
             String jsonString = String.format("{ \"id\" : \"%s\" }", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             ingredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/increase_stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/increase_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             String jsonString = String.format("{ \"id\" : \"%s\" }", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             ingredientService.increaseIngredientStock(ingredientID, quantity);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @PutMapping(path = "/decrease_stock/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(path = "/decrease_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             String jsonString = String.format("{ \"id\" : \"%s\" }", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             ingredientService.decreaseIngredientStock(ingredientID, quantity);
-            return ResponseEntity.ok(UPDATE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
-    @DeleteMapping(path = "/{id}", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
         try {
             String jsonString = String.format("{ \"id\" : \"%s\" }", id);
             ObjectMapper mapper = new ObjectMapper();
             var ingredientID = mapper.readValue(jsonString, IngredientID.class);
             ingredientService.deleteIngredient(ingredientID);
-            return ResponseEntity.ok(DELETE_SUCCESS_MSG);
+            return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.TEXT_PLAIN).body(INGREDIENT_NOT_FOUND_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(GENERAL_ERROR_MSG);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 }
