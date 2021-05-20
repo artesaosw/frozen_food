@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 @Getter
@@ -16,6 +17,7 @@ public class NIF {
     String nif;
 
     @JsonCreator
+    @ConstructorProperties("nif")
     public NIF(@NotBlank @Pattern(regexp = "[0-9]{9}", message = "NIF must have 9 digits.") String nif) {
         setNif(nif);
     }

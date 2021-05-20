@@ -96,12 +96,9 @@ public class SupplierController {
     }
 
     @GetMapping(path = "/nif/{nif}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getSupplierByNif(@PathVariable @Valid @NotBlank String nif) {
+    public ResponseEntity<?> getSupplierByNif(@PathVariable @Valid @NotNull NIF nif) {
         try {
-            String jsonString = String.format("{\"nif\":\"%s\"}", nif);
-            ObjectMapper mapper = new ObjectMapper();
-            var nifObj = mapper.readValue(jsonString, NIF.class); // TODO não funciona
-            var supplier = supplierService.getSupplierByNif(nifObj);
+            var supplier = supplierService.getSupplierByNif(nif);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
