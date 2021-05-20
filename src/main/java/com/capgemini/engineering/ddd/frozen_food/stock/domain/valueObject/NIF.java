@@ -1,23 +1,21 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject;
 
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class NIF {
 
     @NotBlank
     @Pattern(regexp = "[0-9]{9}", message = "NIF must have 9 digits.")
     String nif;
 
-    @JsonCreator
-    @ConstructorProperties("nif")
     public NIF(@NotBlank String nif) {
         setNif(nif);
     }
