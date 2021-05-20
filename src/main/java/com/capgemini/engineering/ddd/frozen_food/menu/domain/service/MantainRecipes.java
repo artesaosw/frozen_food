@@ -4,11 +4,11 @@ import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.RecipeID;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.DTO.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.RecipeDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.RecipeConverter;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.RecipeCatalogUpdatedPublisher;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Recipe;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.RecipeRegistered;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.RecipeUpdated;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Recipes;
 
@@ -40,9 +40,11 @@ public class MantainRecipes implements DomainServices {
         RecipeDTO recipeDTO = RecipeConverter.recipe2RecipeDTO(recipe);
 
         if(integratesCatalog){
-            Events.report(new RecipeRegistered(recipeDTO));
-        }
+            RecipeCatalogUpdatedPublisher eventPublisher = new
+                    RecipeCatalogUpdatedPublisher();
 
+            eventPublisher.publishEvent(recipeDTO);
+        }
     }
 
     public void updatePortion(@NotNull RecipeID recipeID, @NotNull Portion portion, boolean majorUpdate){
@@ -65,19 +67,4 @@ public class MantainRecipes implements DomainServices {
         Events.report(new RecipeUpdated(recipeID, recipe));
     }
 
-
-
-    //public void createExperimentRecipe(Set<Portion> items) {
-    //    ExperimentRecipe experimentRecipe = new ExperimentRecipe(items);
-//
-    //     ExperimentRecipeDTO experimentRecipeDTO = ExperimentRecipeConverter.
-    //             experimentRecipe2ExperimentRecipeDTO(experimentRecipe);
-
-
-        //Events.report(new IngredientsRequested(experimentRecipe));
-
-    //   ExperimentRecipeRequestedPublisher eventPublisher = new
-    //           ExperimentRecipeRequestedPublisher();
-    //   eventPublisher.publishEvent(experimentRecipeDTO);
-    // }
 }

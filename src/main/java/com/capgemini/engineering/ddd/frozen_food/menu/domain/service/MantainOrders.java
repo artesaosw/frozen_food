@@ -2,11 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.DTO.OrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.OrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.OrderConverter;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.events.StockOrderRegisteredPublisher;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.StockOrderRegisteredPublisher;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Orders;
 
 import javax.validation.constraints.NotBlank;
