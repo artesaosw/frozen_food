@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.producao.event;
+package com.capgemini.engineering.ddd.frozen_food.domain._shared.producao.event;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainEvent;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;

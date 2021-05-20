@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.producao.dto;
+package com.capgemini.engineering.ddd.frozen_food.domain._shared.producao.dto;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;

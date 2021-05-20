@@ -65,7 +65,7 @@ public class ProducedRecipe implements AggregateRoot, Serializable, SetStatus {
     //Just to support ORM frameworks
     protected ProducedRecipe() {}
 
-    //Prazo de validade pode ser determinado na criacao da receita e automatizado na producao atraves da adicao do tempo a data de producao
+    //Prazo de validade pode ser determinado na criacao da receita e automatizado na com.capgemini.engineering.ddd.frozen_food.domain._shared.producao atraves da adicao do tempo a data de com.capgemini.engineering.ddd.frozen_food.domain._shared.producao
     public ProducedRecipe(@NotNull Unit unit,@NotNull String name, @Positive int quantity, @NotBlank RecipeID recipeID, LocalDate prazoValidade,@NotBlank String tipoReceita, @NotNull PackageCharacteristics packaging, int estimatedTimeInDays){
         this.id = Identificator.newInstance(BatchID.class);
         this.unit = unit;

@@ -21,7 +21,7 @@ public class Producao implements ApplicationContextAware {
 
     public static ProducedRecipes producedRecipes() { return applicationContext.getBean(ProducedRecipes.class);}
 
-    public static Demanda demanda() { return applicationContext.getBean(Demanda.class);}
+    public static Demandas demanda() { return applicationContext.getBean(Demandas.class);}
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.producao.dto;
+package com.capgemini.engineering.ddd.frozen_food.domain._shared.producao.dto;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.BatchID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @Getter
 @Setter

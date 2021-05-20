@@ -4,7 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.dto.ProducedRec
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.ProducedRecipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.valueObject.PackageCharacteristics;
 
-//estimated Time in Days não irá ser necessario enviar aquando o fecho de producao do lote
+//estimated Time in Days não irá ser necessario enviar aquando o fecho de com.capgemini.engineering.ddd.frozen_food.domain._shared.producao do lote
 public class ProducedRecipeDTOConverter {
 
     public ProducedRecipeDTO producedRecipe2ProducedRecipeDTO(ProducedRecipe producedRecipe){
