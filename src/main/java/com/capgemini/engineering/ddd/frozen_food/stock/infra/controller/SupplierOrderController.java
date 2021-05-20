@@ -1,14 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.SupplierOrderService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -69,9 +69,7 @@ public class SupplierOrderController {
     @GetMapping(path = "/supplier/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
+            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
             var supplierOrder = supplierOrderService.getSupplierOrderBySupplierOrderID(supplierOrderID);
             return ResponseEntity.ok(supplierOrder);
         } catch (Exception e) {
@@ -140,12 +138,10 @@ public class SupplierOrderController {
     }
 
     @PutMapping(path = "/supplier/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
+    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
-            supplierOrderService.updateSupplierOrderStatus(supplierOrderID, orderStatus);
+            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
+            supplierOrderService.updateSupplierOrderStatus(supplierOrderID, OrderStatus.valueOf(orderStatus));
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
@@ -157,9 +153,7 @@ public class SupplierOrderController {
     @DeleteMapping(path = "/supplier/{id}")
     public ResponseEntity<?> deleteSupplierOrder(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierOrderID = mapper.readValue(jsonString, SupplierOrderID.class);
+            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
             supplierOrderService.deleteSupplierOrder(supplierOrderID);
             return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {

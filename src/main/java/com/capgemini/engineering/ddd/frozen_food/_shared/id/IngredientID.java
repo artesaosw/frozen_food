@@ -19,8 +19,17 @@ public class IngredientID implements Identificator, Serializable {
         this.id = UUID.randomUUID();
     }
 
+    public IngredientID(String id) {
+        this.id = UUID.fromString(id);
+    }
+
     @Override
     public UUID id() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return id + "";
     }
 }

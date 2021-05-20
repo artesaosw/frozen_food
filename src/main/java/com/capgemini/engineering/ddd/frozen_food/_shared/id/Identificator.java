@@ -41,14 +41,14 @@ public interface Identificator {
         }
     }
 
-    static <T extends Identificator> T newInstance(@NotNull Class clazz, @NotBlank String uuid){
+    static <T extends Identificator> T newInstance(@NotNull Class clazz, @NotBlank String id){
         if (!Identificator.class.isAssignableFrom(clazz)){
             throw new IllegalArgumentException("Argument \"clazz\" does not extend Identificator");
         }
         try {
             return (T) clazz
-                    .getConstructor(String.class)
-                    .newInstance(uuid);
+                    .getConstructor(new Class[]{String.class})
+                    .newInstance(id);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new MetadataException(e);
         }

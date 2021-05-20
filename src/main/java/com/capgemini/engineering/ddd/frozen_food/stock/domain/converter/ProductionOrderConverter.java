@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.IngredientDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredient2IngredientDTO;

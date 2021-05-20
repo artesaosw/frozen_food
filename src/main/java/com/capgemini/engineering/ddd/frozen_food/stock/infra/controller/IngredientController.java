@@ -1,14 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.IngredientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
@@ -69,9 +70,7 @@ public class IngredientController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             var ingredient = ingredientService.getIngredientByIngredientID(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
@@ -149,13 +148,11 @@ public class IngredientController {
         }
     }
 
-    @PutMapping(path = "/status/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull IngredientStatus ingredientStatus) {
+    @PutMapping(path = "/status/{id}")
+    public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotBlank String id, @RequestParam @NotBlank String ingredientStatus) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
-            ingredientService.updateIngredientUseStatus(ingredientID, ingredientStatus);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+            ingredientService.updateIngredientUseStatus(ingredientID, IngredientStatus.valueOf(ingredientStatus));
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
@@ -167,9 +164,7 @@ public class IngredientController {
     @PutMapping(path = "/stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
@@ -182,9 +177,7 @@ public class IngredientController {
     @PutMapping(path = "/increase_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.increaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
@@ -197,9 +190,7 @@ public class IngredientController {
     @PutMapping(path = "/decrease_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.decreaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
@@ -212,9 +203,7 @@ public class IngredientController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{ \"id\" : \"%s\" }", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var ingredientID = mapper.readValue(jsonString, IngredientID.class);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
             ingredientService.deleteIngredient(ingredientID);
             return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {

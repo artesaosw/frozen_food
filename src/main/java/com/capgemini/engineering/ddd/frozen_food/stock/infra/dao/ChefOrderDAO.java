@@ -16,4 +16,6 @@ public interface ChefOrderDAO extends MongoRepository<ChefOrder, ChefOrderID> {
     boolean existsByOrderReference(String orderReference);
 
     ChefOrder findByChefOrderID(ChefOrderID id);
+
+    boolean existsByChefOrderID(ChefOrderID id);
 }

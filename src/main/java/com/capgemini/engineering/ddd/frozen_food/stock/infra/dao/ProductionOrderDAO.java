@@ -14,4 +14,6 @@ public interface ProductionOrderDAO extends MongoRepository<ProductionOrder, Pro
     boolean existsByOrderReference(String orderReference);
 
     ProductionOrder findByProductionOrderID(ProductionOrderID id);
+
+    boolean existsByProductionOrderID(ProductionOrderID id);
 }

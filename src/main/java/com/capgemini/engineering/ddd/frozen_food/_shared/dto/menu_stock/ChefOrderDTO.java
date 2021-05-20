@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.stock.dto;
+package com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock;
 
 import lombok.Data;
 

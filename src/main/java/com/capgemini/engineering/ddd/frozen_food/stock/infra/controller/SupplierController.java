@@ -1,7 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
@@ -76,14 +77,11 @@ public class SupplierController {
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> getSupplierById(@PathVariable @Valid @NotBlank String id) {
         try {
-//            SupplierID supplierID = new SupplierID(id);
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierID = mapper.readValue(jsonString, SupplierID.class);
+            SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
             var supplier = supplierService.getSupplierBySupplierID(supplierID);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
         }
     }
 
@@ -146,9 +144,7 @@ public class SupplierController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable @Valid @NotBlank String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierID = mapper.readValue(jsonString, SupplierID.class);
+            SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
             supplierService.deleteSupplier(supplierID);
             return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {

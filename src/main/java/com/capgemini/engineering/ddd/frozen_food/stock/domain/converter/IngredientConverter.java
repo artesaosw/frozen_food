@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 
 import java.util.ArrayList;

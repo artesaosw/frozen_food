@@ -21,7 +21,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class SupplierOrderService implements DomainServices {
@@ -46,7 +45,7 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void registerNewSupplierOrder(@NotNull SupplierOrder supplierOrder) {
-        if (supplierOrderDAO.existsById(supplierOrder.id())) {
+        if (supplierOrderDAO.existsBySupplierOrderID(supplierOrder.id())) {
             throw new DuplicatedEntityException("Already exists another supplier order with the same id.");
         }
         if (supplierOrderDAO.existsByOrderReference(supplierOrder.getOrderReference())) {
@@ -66,10 +65,10 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void updateSupplierOrderStatus(@NotNull SupplierOrderID id, @NotNull OrderStatus orderStatus) {
-        if (!supplierOrderDAO.existsById(id)) {
+        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
+        SupplierOrder supplierOrder = supplierOrderDAO.findBySupplierOrderID(id);
         if (supplierOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -79,7 +78,7 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void updateSupplierOrder(SupplierOrder supplierOrder) {
-        if (!supplierOrderDAO.existsById(supplierOrder.id())) {
+        if (!supplierOrderDAO.existsBySupplierOrderID(supplierOrder.id())) {
             throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.id());
         }
         supplierOrderDAO.save(supplierOrder);
@@ -87,10 +86,10 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void deleteSupplierOrder(SupplierOrderID id) {
-        if (!supplierOrderDAO.existsById(id)) {
+        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
             throw new NonExistentEntityException("There is no supplier order with id = " + id);
         }
-        Optional<SupplierOrder> supplierOrder = supplierOrderDAO.findById(id);
-        supplierOrderDAO.delete(supplierOrder.get());
+        SupplierOrder supplierOrder = supplierOrderDAO.findBySupplierOrderID(id);
+        supplierOrderDAO.delete(supplierOrder);
     }
 }

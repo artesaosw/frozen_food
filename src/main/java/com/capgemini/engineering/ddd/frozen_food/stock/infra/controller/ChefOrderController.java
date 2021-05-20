@@ -1,14 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.ErrorDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.dto.MessageDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.ErrorDTO;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.MessageDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.ChefOrderService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -69,10 +69,8 @@ public class ChefOrderController {
     @GetMapping(path = "/chef/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
-            var chefOrder = chefOrderService.getChefOrderByChefOrderID(supplierID);
+            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
+            var chefOrder = chefOrderService.getChefOrderByChefOrderID(chefOrderID);
             return ResponseEntity.ok(chefOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(e));
@@ -140,12 +138,10 @@ public class ChefOrderController {
     }
 
     @PutMapping(path = "/chef/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull OrderStatus orderStatus) {
+    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
-            chefOrderService.updateChefOrderStatus(supplierID, orderStatus);
+            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
+            chefOrderService.updateChefOrderStatus(chefOrderID, OrderStatus.valueOf(orderStatus));
             return ResponseEntity.ok(new MessageDTO(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));
@@ -155,12 +151,10 @@ public class ChefOrderController {
     }
 
     @DeleteMapping(path = "/chef/{id}")
-    public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid ChefOrderID id) {
+    public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid String id) {
         try {
-            String jsonString = String.format("{\"id\":\"%s\"}", id);
-            ObjectMapper mapper = new ObjectMapper();
-            var supplierID = mapper.readValue(jsonString, ChefOrderID.class);
-            chefOrderService.deleteChefOrder(supplierID);
+            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
+            chefOrderService.deleteChefOrder(chefOrderID);
             return ResponseEntity.ok(new MessageDTO(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(e));

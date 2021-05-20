@@ -20,8 +20,8 @@ public class SupplierID implements Identificator, Serializable {
         this.id = UUID.randomUUID();
     }
 
-    public SupplierID(String sid) {
-        this.id = Identificator.newInstance(SupplierID.class, sid);
+    public SupplierID(String id) {
+        this.id = UUID.fromString(id);
     }
 
     @Override

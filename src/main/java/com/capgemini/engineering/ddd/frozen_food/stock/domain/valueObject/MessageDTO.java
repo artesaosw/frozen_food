@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.stock.dto;
+package com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

@@ -17,4 +17,6 @@ public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID>
     List<Ingredient> findAllByIngredientStatus(IngredientStatus ingredientStatus);
 
     Ingredient findByIngredientID(IngredientID id);
+
+    boolean existsByIngredientID(IngredientID id);
 }

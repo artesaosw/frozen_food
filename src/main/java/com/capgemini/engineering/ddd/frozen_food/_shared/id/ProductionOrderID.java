@@ -19,8 +19,17 @@ public class ProductionOrderID implements Identificator, Serializable {
         this.id = UUID.randomUUID();
     }
 
+    public ProductionOrderID(String id) {
+        this.id = UUID.fromString(id);
+    }
+
     @Override
     public UUID id() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return id + "";
     }
 }
