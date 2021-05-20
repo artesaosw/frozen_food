@@ -1,6 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food.menu.domain.events;
+package com.capgemini.engineering.ddd.frozen_food._shared.menu.events;
 
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.DTO.OrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.OrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 

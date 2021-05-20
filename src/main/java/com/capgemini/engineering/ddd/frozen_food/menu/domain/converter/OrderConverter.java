@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.DTO.OrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.OrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
 
 public class OrderConverter {
