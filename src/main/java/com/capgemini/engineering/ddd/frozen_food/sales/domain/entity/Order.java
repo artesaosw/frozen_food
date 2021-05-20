@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,15 +21,16 @@ public class Order implements AggregateRoot, Serializable {
     @NotNull
     private OrderID orderID = Identificator.newInstance(OrderID.class);
 
-    private Map<Product, Integer> itemsOrdered = new HashMap<>();
+    private Map<Product, Integer> productsOrdered = new HashMap<>();
 
     @NotNull
     private Customer orderedBy;
 
     @NotNull
-    private OrderState orderState = OrderState.PROCESSING;
+    private OrderState orderState;
 
-    private LocalDate date = LocalDate.now();
+    @NotNull
+    private LocalDate date;
 
     public Order() {
 
@@ -56,12 +57,12 @@ public class Order implements AggregateRoot, Serializable {
         return this.orderID;
     }
 
-    public Map<Product, Integer> getItemsOrdered() {
-        return itemsOrdered;
+    public Map<Product, Integer> getProductsOrdered() {
+        return productsOrdered;
     }
 
-    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
-        this.itemsOrdered = itemsOrdered;
+    public void setProductsOrdered(Map<Product, Integer> productsOrdered) {
+        this.productsOrdered = productsOrdered;
     }
 
     public Customer getOrderedBy() {
@@ -105,34 +106,34 @@ public class Order implements AggregateRoot, Serializable {
         }
 
         //if item is not in the list, add it
-        if(!this.itemsOrdered.containsKey(item)) {
-            this.itemsOrdered.put(item, quantity);
+        if(!this.productsOrdered.containsKey(item)) {
+            this.productsOrdered.put(item, quantity);
         }
         else {
             //increment what's already there
-            int newQuantity = this.itemsOrdered.get(item) + quantity;
-            this.itemsOrdered.put(item, newQuantity);
+            int newQuantity = this.productsOrdered.get(item) + quantity;
+            this.productsOrdered.put(item, newQuantity);
         }
     }
 
     public void removeItemFromOrder(Product item) {
-        this.itemsOrdered.remove(item);
+        this.productsOrdered.remove(item);
     }
 
     public void decrementItemInOrder(Product item, int quantity) {
 
         //check if item exists and if available amount is >= than quantity
-        if(this.itemsOrdered.containsKey(item) && this.itemsOrdered.get(item) >= 0) {
-            int newQuantity = this.itemsOrdered.get(item) - quantity;
-            this.itemsOrdered.put(item, newQuantity);
+        if(this.productsOrdered.containsKey(item) && this.productsOrdered.get(item) >= 0) {
+            int newQuantity = this.productsOrdered.get(item) - quantity;
+            this.productsOrdered.put(item, newQuantity);
         }
     }
 
     public double computeTotalCost() {
         double totalCost = 0;
 
-        for (Product product : this.itemsOrdered.keySet()) {
-            totalCost += product.getUnitPrice() * this.itemsOrdered.get(product);
+        for (Product product : this.productsOrdered.keySet()) {
+            totalCost += product.getUnitPrice() * this.productsOrdered.get(product);
         }
 
         return totalCost;

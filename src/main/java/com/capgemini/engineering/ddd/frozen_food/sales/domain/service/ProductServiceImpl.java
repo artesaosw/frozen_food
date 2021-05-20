@@ -2,7 +2,6 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.ProductCreatedEventPublisher;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.ProductNameAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

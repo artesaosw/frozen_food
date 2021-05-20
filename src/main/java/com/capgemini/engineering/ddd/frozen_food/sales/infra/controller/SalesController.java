@@ -2,7 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.sales.infra.controller;
 
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.customerInfo.NIF;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.CustomerService;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.OrderService;

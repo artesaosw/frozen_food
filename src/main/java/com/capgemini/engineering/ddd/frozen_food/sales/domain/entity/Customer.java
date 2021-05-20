@@ -1,10 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.customerInfo.Address;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.customerInfo.NIF;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Address;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

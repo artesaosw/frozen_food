@@ -2,9 +2,9 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerDeletedEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerRegisteredEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.CustomerUpdatedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerDeletedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

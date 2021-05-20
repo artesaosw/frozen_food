@@ -1,14 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductID;
-import com.capgemini.engineering.ddd.frozen_food._shared.Unit;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 @Document(collection = "product_sales")
@@ -18,15 +19,24 @@ public class Product implements AggregateRoot, Serializable {
     private String id;
 
     @NotNull
-    private ProductID productID = Identificator.newInstance(ProductID.class);
+    private ProductID productID;
 
+    @Positive
     private double unitPrice;
 
+//    //NAO VAI SER NECESSARIO PARA CONTEXTO DE VENDAS
+//    @NotNull
+//    private Unit unit;
+
     @NotNull
-    private Unit unit;
+    private Dimensions dimensions;
 
     @NotBlank
     private String name;
+
+    //might be better to use an Enum here
+    //something like Availability -> Available, out of stock, discontinued
+    private boolean available;
 
     public Product() {
 
@@ -64,8 +74,20 @@ public class Product implements AggregateRoot, Serializable {
         this.name = name;
     }
 
-    public Unit getUnit() {
-        return unit;
+    public Dimensions getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(Dimensions dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override

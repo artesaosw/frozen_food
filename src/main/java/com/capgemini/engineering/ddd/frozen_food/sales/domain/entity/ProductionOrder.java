@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +20,10 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     @NotNull
     private ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class);
 
-    private Map<Product, Integer> itemsOrdered = new HashMap<>();
+    private Map<Product, Integer> products = new HashMap<>();
+
+    @NotNull
+    private OrderState orderState;
 
     public ProductionOrder() {
 
@@ -34,12 +37,12 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.productionOrderID = productionOrderID;
     }
 
-    public Map<Product, Integer> getItemsOrdered() {
-        return itemsOrdered;
+    public Map<Product, Integer> getProducts() {
+        return products;
     }
 
-    public void setItemsOrdered(Map<Product, Integer> itemsOrdered) {
-        this.itemsOrdered = itemsOrdered;
+    public void setProducts(Map<Product, Integer> products) {
+        this.products = products;
     }
 
     public String getId() {
@@ -48,6 +51,14 @@ public class ProductionOrder implements AggregateRoot, Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public OrderState getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
     }
 
     @Override

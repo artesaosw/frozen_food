@@ -3,8 +3,6 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.ProductionOrderCancelledEventPublisher;
-import com.capgemini.engineering.ddd.frozen_food._shared.sale_events.ProductionOrderIssuedEventPublisher;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.ProductionOrderContainsNoItemException;
 import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.ProductionOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
 
     public ProductionOrder createProductionOrder(@NotNull ProductionOrder productionOrder) {
 
-        if (this.validateItemsOrderedMap(productionOrder.getItemsOrdered())) {
+        if (this.validateItemsOrderedMap(productionOrder.getProducts())) {
             throw new ProductionOrderContainsNoItemException("Production order must contain one or more ordered items.");
         }
 
