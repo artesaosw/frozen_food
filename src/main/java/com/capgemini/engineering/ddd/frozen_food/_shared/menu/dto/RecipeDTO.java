@@ -3,7 +3,6 @@ package com.capgemini.engineering.ddd.frozen_food._shared.menu.dto;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.RecipeItem;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,13 +11,10 @@ import java.util.stream.Collectors;
 
 public class RecipeDTO {
 
-    @JsonProperty(value = "id")
     private RecipeID id;
 
-    @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty(value = "items")
     private Map<RecipeItem, Portion> items;
 
     public RecipeDTO() {

@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.id;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 

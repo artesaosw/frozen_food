@@ -1,16 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.menu.dto;
 
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
 public class OrderDTO {
 
-    @JsonProperty(value = "reference")
     String orderReference;
 
-    @JsonProperty(value = "articles")
     Map<Ingredient, Integer> articles;
 
 
