@@ -26,11 +26,11 @@ public class SupplierService implements DomainServices {
         return Stock.suppliers();
     }
 
-    public Supplier getSupplierBySupplierID(@NotNull SupplierID id) {
-        if (!supplierDAO.existsBySupplierID(id)) {
+    public Supplier getSupplierById(@NotNull SupplierID id) {
+        if (!supplierDAO.existsById(id)) {
             throw new DuplicatedEntityException("There is no supplier with SupplierID = " + id);
         }
-        return supplierDAO.findBySupplierID(id);
+        return supplierDAO.findById(id).get();
     }
 
     public Supplier getSupplierByName(@NotBlank String name) {
@@ -60,7 +60,7 @@ public class SupplierService implements DomainServices {
     }
 
     public void registerNewSupplier(@NotNull Supplier supplier) {
-        if (supplierDAO.existsBySupplierID(supplier.id())) {
+        if (supplierDAO.existsById(supplier.id())) {
             throw new DuplicatedEntityException("Already exists another supplier with the same id.");
         }
         if (supplierDAO.existsByNif(supplier.getNif())) {
@@ -70,17 +70,17 @@ public class SupplierService implements DomainServices {
     }
 
     public void updateSupplier(@NotNull Supplier supplier) {
-        if (!supplierDAO.existsBySupplierID(supplier.id())) {
+        if (!supplierDAO.existsById(supplier.id())) {
             throw new NonExistentEntityException("There is no supplier with id = " + supplier.id());
         }
         supplierDAO.save(supplier);
     }
 
     public void deleteSupplier(@NotNull SupplierID id) {
-        if (!supplierDAO.existsBySupplierID(id)) {
+        if (!supplierDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no supplier with id = " + id);
         }
-        Supplier supplier = supplierDAO.findBySupplierID(id);
+        Supplier supplier = supplierDAO.findById(id).get();
         supplierDAO.delete(supplier);
     }
 }

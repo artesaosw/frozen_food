@@ -10,7 +10,7 @@ public class IngredientConverter {
 
     public static IngredientDTO ingredient2IngredientDTO(Ingredient ingredient) throws NullPointerException {
         IngredientDTO ingredientDTO = new IngredientDTO();
-        ingredientDTO.setId(ingredient.getIngredientID());
+        ingredientDTO.setId(ingredient.getId());
         ingredientDTO.setName(ingredient.getName());
         ingredientDTO.setUnit(ingredient.getUnit());
         return ingredientDTO;
@@ -18,7 +18,7 @@ public class IngredientConverter {
 
     public static Ingredient ingredientDTO2Ingredient(IngredientDTO ingredientDTO) throws NullPointerException {
         Ingredient ingredient = new Ingredient(ingredientDTO.getName(), ingredientDTO.getUnit());
-        ingredient.setIngredientID(ingredientDTO.getId());
+        ingredient.setId(ingredientDTO.getId());
         return ingredient;
     }
 

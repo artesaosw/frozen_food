@@ -36,8 +36,7 @@ public interface Identificator {
                     .getConstructor()
                     .newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-//            throw new MetadataException(e);
-            throw new RuntimeException(e);
+            throw new MetadataException(e);
         }
     }
 

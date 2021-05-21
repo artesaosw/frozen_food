@@ -32,11 +32,11 @@ public class SupplierOrderService implements DomainServices {
         return Stock.suppliersOrders();
     }
 
-    public SupplierOrder getSupplierOrderBySupplierOrderID(SupplierOrderID id) {
-        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
+    public SupplierOrder getSupplierOrderById(SupplierOrderID id) {
+        if (!supplierOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        return supplierOrderDAO.findBySupplierOrderID(id);
+        return supplierOrderDAO.findById(id).get();
     }
 
     public List<SupplierOrder> getAllSuppliersOrders() {
@@ -48,7 +48,7 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void registerNewSupplierOrder(@NotNull SupplierOrder supplierOrder) {
-        if (supplierOrderDAO.existsBySupplierOrderID(supplierOrder.id())) {
+        if (supplierOrderDAO.existsById(supplierOrder.id())) {
             throw new DuplicatedEntityException("Already exists another supplier order with the same id.");
         }
         if (supplierOrderDAO.existsByOrderReference(supplierOrder.getOrderReference())) {
@@ -68,10 +68,10 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void updateSupplierOrderStatus(@NotNull SupplierOrderID id, @NotNull OrderStatus orderStatus) {
-        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
+        if (!supplierOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        SupplierOrder supplierOrder = supplierOrderDAO.findBySupplierOrderID(id);
+        SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
         if (supplierOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -81,7 +81,7 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void updateSupplierOrder(SupplierOrder supplierOrder) {
-        if (!supplierOrderDAO.existsBySupplierOrderID(supplierOrder.id())) {
+        if (!supplierOrderDAO.existsById(supplierOrder.id())) {
             throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.id());
         }
         supplierOrderDAO.save(supplierOrder);
@@ -89,10 +89,10 @@ public class SupplierOrderService implements DomainServices {
     }
 
     public void deleteSupplierOrder(SupplierOrderID id) {
-        if (!supplierOrderDAO.existsBySupplierOrderID(id)) {
+        if (!supplierOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no supplier order with id = " + id);
         }
-        SupplierOrder supplierOrder = supplierOrderDAO.findBySupplierOrderID(id);
+        SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
         supplierOrderDAO.delete(supplierOrder);
     }
 }

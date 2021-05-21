@@ -6,7 +6,6 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID> {
 
@@ -15,8 +14,4 @@ public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID>
     Ingredient findByName(String name);
 
     List<Ingredient> findAllByIngredientStatus(IngredientStatus ingredientStatus);
-
-    Ingredient findByIngredientID(IngredientID id);
-
-    boolean existsByIngredientID(IngredientID id);
 }

@@ -6,8 +6,8 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderS
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,9 +24,7 @@ import java.util.Map;
 public class SupplierOrder implements AggregateRoot, Serializable {
 
     @Id
-    String id;
-
-    private SupplierOrderID supplierOrderID;
+    private SupplierOrderID id;
 
     private String orderReference;
 
@@ -40,9 +38,10 @@ public class SupplierOrder implements AggregateRoot, Serializable {
 
     private OrderStatus orderStatus;
 
+    @JsonCreator
     public SupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull double purchaseValue) {
+        this.id = Identificator.newInstance(SupplierOrderID.class);
         this.orderReference = orderReference;
-        this.supplierOrderID = Identificator.newInstance(SupplierOrderID.class);
         this.orders = new HashMap<>(orders);
         this.supplierID = supplierID;
         this.purchaseDate = LocalDate.now();
@@ -51,7 +50,7 @@ public class SupplierOrder implements AggregateRoot, Serializable {
     }
 
     public SupplierOrderID id() {
-        return this.supplierOrderID;
+        return this.id;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,24 +18,21 @@ import java.io.Serializable;
 public class Supplier implements AggregateRoot, Serializable {
 
     @Id
-    String id;
+    private SupplierID id;
 
-    private SupplierID supplierID;
-
-    @NotBlank
     private String name;
 
-    @NotNull
     private NIF nif;
 
+    @JsonCreator
     public Supplier(@NotBlank String name, @NotNull NIF nif) {
-        this.supplierID = Identificator.newInstance(SupplierID.class);
+        this.id = Identificator.newInstance(SupplierID.class);
         this.name = name;
         this.nif = nif;
     }
 
     public SupplierID id() {
-        return this.supplierID;
+        return this.id;
     }
 
     @Override

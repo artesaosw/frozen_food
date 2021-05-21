@@ -6,6 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -24,9 +25,7 @@ import java.util.Map;
 public class ChefOrder implements AggregateRoot, Serializable {
 
     @Id
-    private String id;
-
-    private ChefOrderID chefOrderID;
+    private ChefOrderID id;
 
     private String orderReference;
 
@@ -36,9 +35,10 @@ public class ChefOrder implements AggregateRoot, Serializable {
 
     private OrderStatus orderStatus;
 
+    @JsonCreator
     public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
+        this.id = Identificator.newInstance(ProductionOrderID.class);
         this.orderReference = orderReference;
-        this.chefOrderID = Identificator.newInstance(ProductionOrderID.class);
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
@@ -46,7 +46,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
 
     @Override
     public ChefOrderID id() {
-        return chefOrderID;
+        return this.id;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class SupplierController {
     public ResponseEntity<?> getSupplierById(@PathVariable @Valid @NotBlank String id) {
         try {
             SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
-            var supplier = supplierService.getSupplierBySupplierID(supplierID);
+            var supplier = supplierService.getSupplierById(supplierID);
             return ResponseEntity.ok(supplier);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));

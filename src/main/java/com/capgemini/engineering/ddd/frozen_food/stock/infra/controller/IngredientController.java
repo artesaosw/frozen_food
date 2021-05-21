@@ -71,7 +71,7 @@ public class IngredientController {
     public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            var ingredient = ingredientService.getIngredientByIngredientID(ingredientID);
+            var ingredient = ingredientService.getIngredientById(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
@@ -128,7 +128,7 @@ public class IngredientController {
     public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
             ingredientService.registerNewIngredient(ingredient);
-            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.getId())).body(new Message(ADD_SUCCESS_MSG));
+            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.id())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {

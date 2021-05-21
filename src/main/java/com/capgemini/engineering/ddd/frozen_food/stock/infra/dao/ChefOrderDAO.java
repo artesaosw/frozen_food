@@ -11,11 +11,7 @@ import java.util.Optional;
 
 public interface ChefOrderDAO extends MongoRepository<ChefOrder, ChefOrderID> {
 
-    List<ChefOrder> findAllByOrderStatus(OrderStatus orderStatus);
-
     boolean existsByOrderReference(String orderReference);
 
-    ChefOrder findByChefOrderID(ChefOrderID id);
-
-    boolean existsByChefOrderID(ChefOrderID id);
+    List<ChefOrder> findAllByOrderStatus(OrderStatus orderStatus);
 }

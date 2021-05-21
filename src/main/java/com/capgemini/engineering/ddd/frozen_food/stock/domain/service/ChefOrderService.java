@@ -30,11 +30,11 @@ public class ChefOrderService {
         return Stock.chefOrders();
     }
 
-    public ChefOrder getChefOrderByChefOrderID(ChefOrderID id) {
-        if (!chefOrderDAO.existsByChefOrderID(id)) {
+    public ChefOrder getChefOrderById(ChefOrderID id) {
+        if (!chefOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        return chefOrderDAO.findByChefOrderID(id);
+        return chefOrderDAO.findById(id).get();
     }
 
     public List<ChefOrder> getAllChefOrders() {
@@ -46,7 +46,7 @@ public class ChefOrderService {
     }
 
     public void registerNewChefOrder(@NotNull ChefOrder chefOrder) {
-        if (chefOrderDAO.existsByChefOrderID(chefOrder.id())) {
+        if (chefOrderDAO.existsById(chefOrder.id())) {
             throw new DuplicatedEntityException("Already exists another chef order with the same id.");
         }
         if (chefOrderDAO.existsByOrderReference(chefOrder.getOrderReference())) {
@@ -66,10 +66,10 @@ public class ChefOrderService {
     }
 
     public void updateChefOrderStatus(@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
-        if (!chefOrderDAO.existsByChefOrderID(id)) {
+        if (!chefOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ChefOrder chefOrder = chefOrderDAO.findByChefOrderID(id);
+        ChefOrder chefOrder = chefOrderDAO.findById(id).get();
         if (chefOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -79,10 +79,10 @@ public class ChefOrderService {
     }
 
     public void updateChefOrderIngredients(@NotNull ChefOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
-        if (!chefOrderDAO.existsByChefOrderID(id)) {
+        if (!chefOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ChefOrder chefOrder = chefOrderDAO.findByChefOrderID(id);
+        ChefOrder chefOrder = chefOrderDAO.findById(id).get();
         if (chefOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -92,7 +92,7 @@ public class ChefOrderService {
     }
 
     public void updateChefOrder(ChefOrder chefOrder) {
-        if (!chefOrderDAO.existsByChefOrderID(chefOrder.id())) {
+        if (!chefOrderDAO.existsById(chefOrder.id())) {
             throw new NonExistentEntityException("There is no order with id = " + chefOrder.id());
         }
         chefOrderDAO.save(chefOrder);
@@ -100,10 +100,10 @@ public class ChefOrderService {
     }
 
     public void deleteChefOrder(ChefOrderID id) {
-        if (!chefOrderDAO.existsByChefOrderID(id)) {
+        if (!chefOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ChefOrder chefOrder = chefOrderDAO.findByChefOrderID(id);
+        ChefOrder chefOrder = chefOrderDAO.findById(id).get();
         chefOrderDAO.delete(chefOrder);
     }
 }

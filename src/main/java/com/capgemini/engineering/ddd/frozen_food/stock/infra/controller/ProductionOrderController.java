@@ -70,7 +70,7 @@ public class ProductionOrderController {
     public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
             ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
-            var productionOrder = productionOrderService.getProductionOrderByProductionOrderID(productionOrderID);
+            var productionOrder = productionOrderService.getProductionOrderById(productionOrderID);
             return ResponseEntity.ok(productionOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));

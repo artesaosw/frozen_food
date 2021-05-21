@@ -30,11 +30,11 @@ public class IngredientService implements DomainServices {
         return Stock.ingredients();
     }
 
-    public Ingredient getIngredientByIngredientID(@NotNull IngredientID id) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+    public Ingredient getIngredientById(@NotNull IngredientID id) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        return ingredientDAO.findByIngredientID(id);
+        return ingredientDAO.findById(id).get();
     }
 
     public Ingredient getIngredientByName(@NotBlank String name) {
@@ -53,7 +53,7 @@ public class IngredientService implements DomainServices {
     }
 
     public void registerNewIngredient(@NotNull Ingredient ingredient) {
-        if (ingredientDAO.existsByIngredientID(ingredient.id())) {
+        if (ingredientDAO.existsById(ingredient.id())) {
             throw new DuplicatedEntityException("Already exists another ingredient with the same id.");
         }
         if (ingredientDAO.existsByName(ingredient.getName())) {
@@ -63,7 +63,7 @@ public class IngredientService implements DomainServices {
     }
 
     public void updateIngredient(@NotNull Ingredient ingredient){
-        if (!ingredientDAO.existsByIngredientID(ingredient.id())) {
+        if (!ingredientDAO.existsById(ingredient.id())) {
             throw new NonExistentEntityException("There is no ingredient with id = " + ingredient.id());
         }
         ingredientDAO.save(ingredient);
@@ -71,50 +71,50 @@ public class IngredientService implements DomainServices {
     }
 
     public void updateIngredientUseStatus(@NotNull IngredientID id, @NotNull IngredientStatus ingredientStatus) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findByIngredientID(id);
+        Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.setIngredientStatus(ingredientStatus);
         ingredientDAO.save(ingredient);
         Events.report(new IngredientUpdated(ingredient.id()));
     }
 
     public void updateIngredientMinimumStockValue(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer minimumStockValue) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findByIngredientID(id);
+        Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.setMinimumStockValue(minimumStockValue);
         ingredientDAO.save(ingredient);
         Events.report(new IngredientUpdated(ingredient.id()));
     }
 
     public void increaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findByIngredientID(id);
+        Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.increaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
         Events.report(new IngredientStockUpdated(ingredient.id()));
     }
 
     public void decreaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findByIngredientID(id);
+        Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.decreaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
         Events.report(new IngredientStockUpdated(ingredient.id()));
     }
 
     public void deleteIngredient(@NotNull IngredientID id) {
-        if (!ingredientDAO.existsByIngredientID(id)) {
+        if (!ingredientDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findByIngredientID(id);
+        Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredientDAO.delete(ingredient);
     }
 }

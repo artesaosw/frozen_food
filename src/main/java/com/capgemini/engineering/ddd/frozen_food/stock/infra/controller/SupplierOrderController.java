@@ -70,7 +70,7 @@ public class SupplierOrderController {
     public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
         try {
             SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
-            var supplierOrder = supplierOrderService.getSupplierOrderBySupplierOrderID(supplierOrderID);
+            var supplierOrder = supplierOrderService.getSupplierOrderById(supplierOrderID);
             return ResponseEntity.ok(supplierOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));

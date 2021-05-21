@@ -9,11 +9,7 @@ import java.util.List;
 
 public interface ProductionOrderDAO extends MongoRepository<ProductionOrder, ProductionOrderID> {
 
-    List<ProductionOrder> findAllByOrderStatus(OrderStatus orderStatus);
-
     boolean existsByOrderReference(String orderReference);
 
-    ProductionOrder findByProductionOrderID(ProductionOrderID id);
-
-    boolean existsByProductionOrderID(ProductionOrderID id);
+    List<ProductionOrder> findAllByOrderStatus(OrderStatus orderStatus);
 }

@@ -12,8 +12,4 @@ public interface SupplierOrderDAO extends MongoRepository<SupplierOrder, Supplie
     boolean existsByOrderReference(String orderReference);
 
     List<SupplierOrder> findAllByOrderStatus(OrderStatus orderStatus);
-
-    SupplierOrder findBySupplierOrderID(SupplierOrderID id);
-
-    boolean existsBySupplierOrderID(SupplierOrderID id);
 }

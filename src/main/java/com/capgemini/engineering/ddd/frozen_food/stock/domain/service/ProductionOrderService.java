@@ -30,11 +30,11 @@ public class ProductionOrderService {
         return Stock.productionOrders();
     }
 
-    public ProductionOrder getProductionOrderByProductionOrderID(@NotNull ProductionOrderID id) {
-        if (!productionOrderDAO.existsByProductionOrderID(id)) {
+    public ProductionOrder getProductionOrderById(@NotNull ProductionOrderID id) {
+        if (!productionOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        return productionOrderDAO.findByProductionOrderID(id);
+        return productionOrderDAO.findById(id).get();
     }
 
     public List<ProductionOrder> getAllProductionOrders() {
@@ -46,7 +46,7 @@ public class ProductionOrderService {
     }
 
     public void registerNewProductionOrder(ProductionOrder productionOrder) {
-        if (productionOrderDAO.existsByProductionOrderID(productionOrder.id())) {
+        if (productionOrderDAO.existsById(productionOrder.id())) {
             throw new DuplicatedEntityException("Already exists another production order with the same id.");
         }
         if (productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
@@ -66,10 +66,10 @@ public class ProductionOrderService {
     }
 
     public void updateProductionOrderStatus(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
-        if (!productionOrderDAO.existsByProductionOrderID(id)) {
+        if (!productionOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ProductionOrder productionOrder = productionOrderDAO.findByProductionOrderID(id);
+        ProductionOrder productionOrder = productionOrderDAO.findById(id).get();
         if (productionOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -79,10 +79,10 @@ public class ProductionOrderService {
     }
 
     public void updateProductionOrderIngredients(@NotNull ProductionOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
-        if (!productionOrderDAO.existsByProductionOrderID(id)) {
+        if (!productionOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ProductionOrder productionOrder = productionOrderDAO.findByProductionOrderID(id);
+        ProductionOrder productionOrder = productionOrderDAO.findById(id).get();
         if (productionOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
@@ -92,7 +92,7 @@ public class ProductionOrderService {
     }
 
     public void updateProductionOrder(ProductionOrder productionOrder) {
-        if (!productionOrderDAO.existsByProductionOrderID(productionOrder.id())) {
+        if (!productionOrderDAO.existsById(productionOrder.id())) {
             throw new NonExistentEntityException("There is no order with id = " + productionOrder.id());
         }
         productionOrderDAO.save(productionOrder);
@@ -100,10 +100,10 @@ public class ProductionOrderService {
     }
 
     public void deleteProductionOrder(ProductionOrderID id) {
-        if (!productionOrderDAO.existsByProductionOrderID(id)) {
+        if (!productionOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        ProductionOrder productionOrder = productionOrderDAO.findByProductionOrderID(id);
+        ProductionOrder productionOrder = productionOrderDAO.findById(id).get();
         productionOrderDAO.delete(productionOrder);
     }
 }
