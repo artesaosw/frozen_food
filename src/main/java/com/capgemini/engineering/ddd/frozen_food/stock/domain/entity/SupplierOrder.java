@@ -7,7 +7,8 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.Suppli
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,23 +20,29 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+@Getter
 @Document(collection = "supplier_order_stock")
 public class SupplierOrder implements AggregateRoot, Serializable {
 
     @Id
     private SupplierOrderID id;
 
+    @Setter
     private String orderReference;
 
+    @Setter
     private Map<Ingredient, Integer> orders;
 
+    @Setter
     private SupplierID supplierID;
 
+    @Setter
     private LocalDate purchaseDate;
 
+    @Setter
     private double purchaseValue;
 
+    @Setter
     private OrderStatus orderStatus;
 
     @JsonCreator

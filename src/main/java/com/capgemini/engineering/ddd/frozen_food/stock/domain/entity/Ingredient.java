@@ -6,7 +6,8 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
-@Data
+@Getter
 @Document(collection = "ingredient_stock")
 public class Ingredient implements AggregateRoot, Serializable {
 
@@ -25,19 +26,33 @@ public class Ingredient implements AggregateRoot, Serializable {
     @Id
     private IngredientID id;
 
+    @Setter
     private String name;
 
+    @Setter
     private Unit unit;
 
+    @Setter
     private Integer minimumStockValue;
 
+    @Setter
     private IngredientStatus ingredientStatus;
 
+    @Setter
     private Integer ingredientStock;
 
     @JsonCreator
     public Ingredient(@NotBlank String name, @NotNull Unit unit) {
         this.id = Identificator.newInstance(IngredientID.class);
+        this.name = name;
+        this.unit = unit;
+        this.minimumStockValue = MINIMUM_STOCK_VALUE_ON_CREATION;
+        this.ingredientStatus = IngredientStatus.IN_TEST;
+        this.ingredientStock = INGREDIENT_STOCK_ON_CREATION;
+    }
+
+    public Ingredient(@NotNull IngredientID id, @NotBlank String name, @NotNull Unit unit) {
+        this.id = id;
         this.name = name;
         this.unit = unit;
         this.minimumStockValue = MINIMUM_STOCK_VALUE_ON_CREATION;

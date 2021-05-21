@@ -6,8 +6,8 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,19 +19,23 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+@Getter
 @Document(collection = "production_order_stock")
 public class ProductionOrder implements AggregateRoot, Serializable {
 
     @Id
     private ProductionOrderID id;
 
+    @Setter
     private String orderReference;
 
+    @Setter
     private Map<Ingredient, Integer> orders;
 
+    @Setter
     private LocalDate orderDate;
 
+    @Setter
     private OrderStatus orderStatus;
 
     @JsonCreator
