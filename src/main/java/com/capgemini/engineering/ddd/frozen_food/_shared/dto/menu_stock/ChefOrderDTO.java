@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
 import lombok.Data;
 
 import java.util.HashMap;
