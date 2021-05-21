@@ -1,6 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 
 import javax.validation.constraints.NotNull;
@@ -12,13 +11,13 @@ public class ProductionOrderDTO {
     private ProductionOrderID productionOrderID;
 
     @NotNull
-    private Map<ProductID, Integer> products;
+    private Map<ProductDTO, Integer> products;
 
     public ProductionOrderDTO() {
 
     }
 
-    public ProductionOrderDTO(ProductionOrderID productionOrderID, Map<ProductID, Integer> products) {
+    public ProductionOrderDTO(ProductionOrderID productionOrderID, Map<ProductDTO, Integer> products) {
         this.productionOrderID = productionOrderID;
         this.products = products;
     }
@@ -31,11 +30,12 @@ public class ProductionOrderDTO {
         this.productionOrderID = productionOrderID;
     }
 
-    public Map<ProductID, Integer> getProducts() {
+    public Map<ProductDTO, Integer> getProducts() {
         return products;
     }
 
-    public void setProducts(Map<ProductID, Integer> products) {
+    public void setProducts(Map<ProductDTO, Integer> products) {
         this.products = products;
     }
+
 }

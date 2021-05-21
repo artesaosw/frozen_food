@@ -1,12 +1,14 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.CustomerDTO;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.converter.CustomerToCustomerDTOConverter;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerDeletedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
-import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.CustomerRepository;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,7 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
 
     public Customer createNewCustomer (Customer customer) {
 
-        // can't have two customers with the same billing info
-        // IS THIS CORRECT ??????????
+        //can't have two customers with the same NIF
         if (customerRepository.existsCustomerByNif(customer.getNif())) {
             throw new BillingInfoAlreadyExistsException("Customer creation failed. A customer with the same billing information already exists.");
         }
@@ -34,7 +35,9 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         //persist new customer into the database and issue an event
         customer = this.customerRepository.save(customer);
 
-        eventPublisher.publishEvent(new CustomerRegisteredEvent(this, customer));
+        //convert customer to customerDTO and publish new event
+        CustomerDTO customerDTO = CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(customer);
+        this.eventPublisher.publishEvent(new CustomerRegisteredEvent(this, customerDTO));
 
         return customer;
     }
@@ -43,7 +46,9 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         //update the customer and issue an event
         customer = this.customerRepository.save(customer);
 
-        eventPublisher.publishEvent(new CustomerUpdatedEvent(this, customer));
+        //convert customer to customerDTO and publish new event
+        CustomerDTO customerDTO = CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(customer);
+        this.eventPublisher.publishEvent(new CustomerUpdatedEvent(this, customerDTO));
 
         return customer;
     }
@@ -60,8 +65,9 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
 
     @Override
     public void deleteCustomer(String id) {
+        Customer customer = this.customerRepository.findById(id).get();
         this.customerRepository.deleteById(id);
-        eventPublisher.publishEvent(new CustomerDeletedEvent(this, id));
+        this.eventPublisher.publishEvent(new CustomerDeletedEvent(this, customer.getCustomerID()));
     }
 
     /*
@@ -74,10 +80,13 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         //first check if customer is already disabled
         if(customer.isActivated()) {
             customer.setActivated(false);
+            customer = this.customerRepository.save(customer);
 
+            //convert customer to customerDTO and publish new event
             CustomerUpdatedEvent updateEvent =
-                    new CustomerUpdatedEvent(this, this.customerRepository.save(customer));
-            eventPublisher.publishEvent(updateEvent);
+                    new CustomerUpdatedEvent(this,
+                            CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(customer));
+            this.eventPublisher.publishEvent(updateEvent);
         }
     }
 
@@ -91,10 +100,13 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
         //first check if customer is already enabled
         if(!customer.isActivated()) {
             customer.setActivated(true);
+            customer = this.customerRepository.save(customer);
 
+            //convert customer to customerDTO and publish new event
             CustomerUpdatedEvent updateEvent =
-                    new CustomerUpdatedEvent(this, this.customerRepository.save(customer));
-            eventPublisher.publishEvent(updateEvent);
+                    new CustomerUpdatedEvent(this,
+                            CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(customer));
+            this.eventPublisher.publishEvent(updateEvent);
         }
 
     }
@@ -103,4 +115,5 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
     public CustomerRepository getCustomerRepository() {
         return customerRepository;
     }
+
 }

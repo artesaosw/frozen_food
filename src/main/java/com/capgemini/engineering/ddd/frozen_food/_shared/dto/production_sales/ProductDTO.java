@@ -5,6 +5,7 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimens
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class ProductDTO {
 
@@ -17,16 +18,20 @@ public class ProductDTO {
     @NotBlank
     private String name;
 
+    @Positive
+    private int shelfLife;
+
     private boolean available;
 
     public ProductDTO() {
 
     }
 
-    public ProductDTO(ProductID productID, Dimensions dimensions, String name, boolean available) {
+    public ProductDTO(ProductID productID, Dimensions dimensions, String name, int shelfLife, boolean available) {
         this.productID = productID;
         this.dimensions = dimensions;
         this.name = name;
+        this.shelfLife = shelfLife;
         this.available = available;
     }
 
@@ -54,6 +59,14 @@ public class ProductDTO {
         this.name = name;
     }
 
+    public int getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(int shelfLife) {
+        this.shelfLife = shelfLife;
+    }
+
     public boolean isAvailable() {
         return available;
     }
@@ -61,4 +74,5 @@ public class ProductDTO {
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
 }

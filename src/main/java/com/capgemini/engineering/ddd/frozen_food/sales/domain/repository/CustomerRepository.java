@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.sales.infra.repository;
+package com.capgemini.engineering.ddd.frozen_food.sales.domain.repository;
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;

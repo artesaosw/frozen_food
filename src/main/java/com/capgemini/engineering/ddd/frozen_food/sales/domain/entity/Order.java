@@ -27,10 +27,14 @@ public class Order implements AggregateRoot, Serializable {
     private Customer orderedBy;
 
     @NotNull
-    private OrderState orderState;
+    private OrderDeliveryState orderDeliveryState;
 
+    //a class in the Sales context containing business logic is responsible for initializing the date for an Order object
     @NotNull
-    private LocalDate date;
+    private LocalDate creationDate;
+
+    //defined by Delivery context
+    private LocalDate deliveryDate;
 
     public Order() {
 
@@ -73,20 +77,28 @@ public class Order implements AggregateRoot, Serializable {
         this.orderedBy = orderedBy;
     }
 
-    public OrderState getOrderState() {
-        return orderState;
+    public OrderDeliveryState getOrderDeliveryState() {
+        return orderDeliveryState;
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
+        this.orderDeliveryState = orderDeliveryState;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     @Override

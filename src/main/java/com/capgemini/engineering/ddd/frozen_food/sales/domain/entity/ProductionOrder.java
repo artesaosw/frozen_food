@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     private Map<Product, Integer> products = new HashMap<>();
 
     @NotNull
-    private OrderState orderState;
+    private OrderDeliveryState orderDeliveryState;
+
+    private LocalDate productionDate;
 
     public ProductionOrder() {
 
@@ -53,12 +56,20 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.id = id;
     }
 
-    public OrderState getOrderState() {
-        return orderState;
+    public OrderDeliveryState getOrderDeliveryState() {
+        return orderDeliveryState;
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
+        this.orderDeliveryState = orderDeliveryState;
+    }
+
+    public LocalDate getProductionDate() {
+        return productionDate;
+    }
+
+    public void setProductionDate(LocalDate productionDate) {
+        this.productionDate = productionDate;
     }
 
     @Override

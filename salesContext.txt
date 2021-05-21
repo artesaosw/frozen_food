@@ -9,17 +9,20 @@ produçao - vendas
 produto pronto a ser comercializado (ja vem com informaçao dimensional e de estado)
 
     { produto descontinuado,
-    produto modificado} -> possivelmente basta o mesmo dto
+    produto modificado } -> possivelmente basta o mesmo dto
 
 ------------
 
-(nao sera antes menu -> produçao -> vendas ????)
+( nao sera antes menu -> produçao -> vendas ???? )
 menu - vendas
 
 novos produtos
 estado produtos (disponivel, esgotado, descontinuado ?????)
 
+
 ENDPOINTS PARA CRIAR PEDIDOS de produçao
+
+
 -----------------------
 
 

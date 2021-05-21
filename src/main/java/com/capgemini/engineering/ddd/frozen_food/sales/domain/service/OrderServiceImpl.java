@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.OrderState;
-import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.OrderRepository;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.OrderDeliveryState;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +45,9 @@ public class OrderServiceImpl implements DomainServices, OrderService {
 //
 //        try {
 //
-//            //must first fetch the order to change it's OrderState
+//            //must first fetch the order to change it's OrderDeliveryState
 //            order = this.orderRepository.findById(id).get();
-//            order.setOrderState(OrderState.CANCELLED);
+//            order.setOrderDeliveryState(OrderDeliveryState.CANCELLED);
 //
 //            this.orderRepository.delete(order);
 //
@@ -71,11 +71,11 @@ public class OrderServiceImpl implements DomainServices, OrderService {
 //                    + id + " . There might not exist an order with this ID. ", HttpStatus.BAD_REQUEST);
 //        }
 
-        //must first fetch the order to change it's OrderState
+        //must first fetch the order to change it's OrderDeliveryState
         Order order = this.orderRepository.findById(id).get();
 
-        if(order.getOrderState() != OrderState.CANCELLED) {
-            order.setOrderState(OrderState.CANCELLED);
+        if(order.getOrderDeliveryState() != OrderDeliveryState.CANCELLED) {
+            order.setOrderDeliveryState(OrderDeliveryState.CANCELLED);
 
             this.orderRepository.delete(order);
 

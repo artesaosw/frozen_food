@@ -34,6 +34,10 @@ public class Product implements AggregateRoot, Serializable {
     @NotBlank
     private String name;
 
+    //shelf life of the product, defined in numbers of days
+    @Positive
+    private int shelfLife;
+
     //might be better to use an Enum here
     //something like Availability -> Available, out of stock, discontinued
     private boolean available;
@@ -80,6 +84,14 @@ public class Product implements AggregateRoot, Serializable {
 
     public void setDimensions(Dimensions dimensions) {
         this.dimensions = dimensions;
+    }
+
+    public int getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(int shelfLife) {
+        this.shelfLife = shelfLife;
     }
 
     public boolean isAvailable() {

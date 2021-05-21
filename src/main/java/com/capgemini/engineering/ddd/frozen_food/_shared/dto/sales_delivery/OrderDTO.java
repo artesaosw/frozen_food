@@ -2,7 +2,6 @@ package com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -14,27 +13,27 @@ public class OrderDTO {
     private OrderID orderID;
 
     @NotNull
-    private Map<ProductID, Integer> productsOrdered;
+    private Map<ProductDTO, Integer> productsOrdered;
 
     @NotNull
     private CustomerID orderedBy;
 
     @NotNull
-    private OrderState orderState;
+    private OrderDeliveryState orderDeliveryState;
 
-    @NotNull
-    private LocalDate date;
+    //to be set by the Delivery context
+    private LocalDate deliveryDate;
 
     public OrderDTO() {
 
     }
 
-    public OrderDTO(OrderID orderID, Map<ProductID, Integer> productsOrdered, CustomerID orderedBy, OrderState orderState, LocalDate date) {
+    public OrderDTO(OrderID orderID, Map<ProductDTO, Integer> productsOrdered, CustomerID orderedBy, OrderDeliveryState orderDeliveryState, LocalDate date) {
         this.orderID = orderID;
         this.productsOrdered = productsOrdered;
         this.orderedBy = orderedBy;
-        this.orderState = orderState;
-        this.date = date;
+        this.orderDeliveryState = orderDeliveryState;
+        this.deliveryDate = date;
     }
 
     public OrderID getOrderID() {
@@ -45,11 +44,11 @@ public class OrderDTO {
         this.orderID = orderID;
     }
 
-    public Map<ProductID, Integer> getProductsOrdered() {
+    public Map<ProductDTO, Integer> getProductsOrdered() {
         return productsOrdered;
     }
 
-    public void setProductsOrdered(Map<ProductID, Integer> productsOrdered) {
+    public void setProductsOrdered(Map<ProductDTO, Integer> productsOrdered) {
         this.productsOrdered = productsOrdered;
     }
 
@@ -61,19 +60,21 @@ public class OrderDTO {
         this.orderedBy = orderedBy;
     }
 
-    public OrderState getOrderState() {
-        return orderState;
+    public OrderDeliveryState getOrderDeliveryState() {
+        return orderDeliveryState;
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
+        this.orderDeliveryState = orderDeliveryState;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
+
+
 }

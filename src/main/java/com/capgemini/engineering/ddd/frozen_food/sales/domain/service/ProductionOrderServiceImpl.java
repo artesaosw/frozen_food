@@ -4,7 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.ProductionOrderContainsNoItemException;
-import com.capgemini.engineering.ddd.frozen_food.sales.infra.repository.ProductionOrderRepository;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.ProductionOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
