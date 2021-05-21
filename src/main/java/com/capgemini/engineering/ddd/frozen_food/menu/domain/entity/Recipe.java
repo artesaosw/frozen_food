@@ -5,7 +5,10 @@ import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.RecipeVersion;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -17,8 +20,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
+@Document(collection = "recipe_menu")
 public class Recipe implements AggregateRoot, RecipeItem, Serializable {
 
+    @Id
     private RecipeID id;
 
     private String name;
@@ -34,6 +39,7 @@ public class Recipe implements AggregateRoot, RecipeItem, Serializable {
     //Just to support ORM frameworks
     protected Recipe() {}
 
+    @JsonCreator
     public Recipe(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure, boolean integratesCatalog) {
         this.id = Identificator.newInstance(RecipeID.class);
         this.name = name;
