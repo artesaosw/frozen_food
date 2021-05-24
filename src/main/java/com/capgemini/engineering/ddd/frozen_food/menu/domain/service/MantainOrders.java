@@ -13,6 +13,7 @@ import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExiste
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Orders;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.OrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class MantainOrders implements DomainServices {
 
     @Autowired
@@ -62,6 +64,24 @@ public class MantainOrders implements DomainServices {
         //converts order to orderDTO
         OrderDTO orderDTO = OrderConverter.order2orderDTO(order);
 
+        //reports event
+        StockOrderRegisteredPublisher eventPublisher = new
+                StockOrderRegisteredPublisher();
+
+        eventPublisher.publishEvent(orderDTO);
+    }
+
+    public void registerNew(@NotNull Order order) throws DuplicatedEntityException {
+
+        //Validation
+        if(orderDAO.existsByOrderReference(order.getOrderReference())){
+            throw new DuplicatedEntityException("There is already an order with this reference");
+        }
+
+        orderDAO.save(order);
+
+        //converts order to orderDTO
+        OrderDTO orderDTO = OrderConverter.order2orderDTO(order);
         //reports event
         StockOrderRegisteredPublisher eventPublisher = new
                 StockOrderRegisteredPublisher();

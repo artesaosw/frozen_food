@@ -27,6 +27,13 @@ public class MantainIngredients implements DomainServices {
         return ingredientDAO.findById(id).get();
     }
 
+    public Ingredient getIngredientByDescription(@NotBlank String description) throws NonExistentEntityException {
+        if (!ingredientDAO.existsByDescription(description)) {
+            throw new NonExistentEntityException("There is no ingredient with name = " + description);
+        }
+        return ingredientDAO.findByDescription(description);
+    }
+
     public List<Ingredient> getAllIngredients(){
         return ingredientDAO.findAll();
     }
@@ -46,6 +53,16 @@ public class MantainIngredients implements DomainServices {
         ingredientDAO.save(ingredient);
 
         Events.report(new IngredientRegistered (ingredient.getId()));
+    }
+
+    public void registerNew(@NotNull Ingredient ingredient) throws DuplicatedEntityException {
+        if (ingredientDAO.existsById(ingredient.getId())) {
+            throw new DuplicatedEntityException("Already exists another ingredient with the same id.");
+        }
+        if (ingredientDAO.existsByDescription(ingredient.getDescription())) {
+            throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
+        }
+        ingredientDAO.save(ingredient);
     }
 
     public void updateIngredient(Ingredient ingredient) throws NonExistentEntityException {
