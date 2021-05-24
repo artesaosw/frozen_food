@@ -1,18 +1,20 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ChefOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ChefOrderUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderRegistered;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.ChefOrders;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ChefOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -20,15 +22,27 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderConverter.chefOrderDTO2ChefOrder;
+
 @Service
 public class ChefOrderService {
+
+//        código para a Isabel implemetar
+//        @Autowired
+//        private final ApplicationEventPublisher applicationEventPublisher;
+
+//        dentro do método
+//        ChefOrderDTO chefOrderDTO = chefOrder2ChefOrderDTO(chefOrder); ** usa o converter dela;
+//        em vez de chefOrder, usa o nome da entidade dela
+//        eventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
+
+//        para o ingrediente faz a mesma coisa
 
     @Autowired
     ChefOrderDAO chefOrderDAO;
 
-    private ChefOrders chefOrders() {
-        return Stock.chefOrders();
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public ChefOrder getChefOrderById(ChefOrderID id) {
         if (!chefOrderDAO.existsById(id)) {
@@ -54,6 +68,13 @@ public class ChefOrderService {
         }
         chefOrderDAO.save(chefOrder);
         Events.report(new ChefOrderRegistered(chefOrder.id()));
+    }
+
+    @EventListener
+    public void registerNewChefOrder(ChefOrderRegisteredEvent chefOrderRegisteredEvent) {
+        ChefOrderDTO chefOrderDTO = chefOrderRegisteredEvent.getChefOrderDTO();
+        ChefOrder chefOrder = chefOrderDTO2ChefOrder(chefOrderDTO);
+        registerNewChefOrder(chefOrder);
     }
 
     public void registerNewChefOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {

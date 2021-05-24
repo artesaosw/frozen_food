@@ -2,17 +2,19 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.IngredientStockUpdated;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.IngredientUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.IngredientStockUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.IngredientUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.IngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -20,15 +22,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredientDTO2Ingredient;
+
 @Service
 public class IngredientService implements DomainServices {
 
     @Autowired
     IngredientDAO ingredientDAO;
 
-    private Ingredients ingredients() {
-        return Stock.ingredients();
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public Ingredient getIngredientById(@NotNull IngredientID id) {
         if (!ingredientDAO.existsById(id)) {
@@ -60,6 +63,13 @@ public class IngredientService implements DomainServices {
             throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
         }
         ingredientDAO.save(ingredient);
+    }
+
+    @EventListener
+    public void registerNewIngredient(NewIngredientRegisteredEvent newIngredientRegisteredEvent) {
+        IngredientDTO ingredientDTO = newIngredientRegisteredEvent.getIngredientDTO();
+        Ingredient ingredient = ingredientDTO2Ingredient(ingredientDTO);
+        registerNewIngredient(ingredient);
     }
 
     public void updateIngredient(@NotNull Ingredient ingredient){

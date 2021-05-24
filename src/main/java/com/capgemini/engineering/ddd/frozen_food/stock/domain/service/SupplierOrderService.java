@@ -6,15 +6,14 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.Duplicat
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.SupplierOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.SupplierOrderUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierOrderRegistered;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.SuppliersOrders;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -28,9 +27,8 @@ public class SupplierOrderService implements DomainServices {
     @Autowired
     SupplierOrderDAO supplierOrderDAO;
 
-    private SuppliersOrders suppliersOrders() {
-        return Stock.suppliersOrders();
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public SupplierOrder getSupplierOrderById(SupplierOrderID id) {
         if (!supplierOrderDAO.existsById(id)) {
