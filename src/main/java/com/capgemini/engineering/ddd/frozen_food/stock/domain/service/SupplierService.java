@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
+import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
@@ -9,7 +10,9 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Supplier;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.Suppliers;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierDAO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierRegistered;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,9 +27,8 @@ public class SupplierService implements DomainServices {
     @Autowired
     SupplierDAO supplierDAO;
 
-    private Suppliers suppliers() {
-        return Stock.suppliers();
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public Supplier getSupplierById(@NotNull SupplierID id) {
         if (!supplierDAO.existsById(id)) {
@@ -69,6 +71,7 @@ public class SupplierService implements DomainServices {
             throw new DuplicatedEntityException("Already exists another supplier with the same NIF.");
         }
         supplierDAO.save(supplier);
+        Events.report(new SupplierRegistered(supplier.id()));
     }
 
     public void updateSupplier(@NotNull Supplier supplier) {

@@ -1,18 +1,21 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ProductionOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food._shared.stock.event.ProductionOrderUpdated;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ProductionOrderRegistered;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ProductionOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.ProductionOrders;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ProductionOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -20,15 +23,16 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderConverter.productionOrderDTO2ProductionOrder;
+
 @Service
 public class ProductionOrderService {
 
     @Autowired
     ProductionOrderDAO productionOrderDAO;
 
-    private ProductionOrders productionOrders() {
-        return Stock.productionOrders();
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public ProductionOrder getProductionOrderById(@NotNull ProductionOrderID id) {
         if (!productionOrderDAO.existsById(id)) {
@@ -54,6 +58,13 @@ public class ProductionOrderService {
         }
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderRegistered(productionOrder.id()));
+    }
+
+    @EventListener
+    public void registerNewProductionOrder(ProductionOrderRegisteredEvent productionOrderRegisteredEvent) {
+        ProductionOrderDTO productionOrderDTO = productionOrderRegisteredEvent.getProductionOrderDTO();
+        ProductionOrder productionOrder = productionOrderDTO2ProductionOrder(productionOrderDTO);
+        registerNewProductionOrder(productionOrder);
     }
 
     public void registerNewProductionOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
