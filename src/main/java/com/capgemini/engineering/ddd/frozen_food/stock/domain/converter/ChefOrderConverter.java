@@ -2,6 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredient2IngredientDTO;
@@ -16,6 +17,7 @@ public class ChefOrderConverter {
 
     public static ChefOrderDTO chefOrder2ChefOrderDTO(ChefOrder chefOrder) throws NullPointerException {
         ChefOrderDTO chefOrderDTO = new ChefOrderDTO();
+        chefOrderDTO.setId(Identificator.clone(chefOrder.getId()));
         chefOrderDTO.setOrderReference(chefOrder.getOrderReference());
         Map<IngredientDTO, Integer> orders = new HashMap<>();
         for (Map.Entry<Ingredient, Integer> map : chefOrder.getOrders().entrySet()) {
@@ -34,7 +36,7 @@ public class ChefOrderConverter {
             Integer quantity = map.getValue();
             orders.put(ingredient,quantity);
         }
-        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getOrderReference(), orders);
+        ChefOrder chefOrder = new ChefOrder(Identificator.clone(chefOrderDTO.getId()), chefOrderDTO.getOrderReference(), orders);
         return chefOrder;
     }
 

@@ -11,12 +11,14 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.Supplie
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
+@Validated
 public class SupplierService implements DomainServices {
 
     @Autowired
@@ -51,11 +53,11 @@ public class SupplierService implements DomainServices {
         return supplierDAO.findAll();
     }
 
-    public void registerNewSupplier(@NotBlank String name, @NotNull NIF nif) {
+    public void registerNewSupplier(@NotBlank String name, @NotNull NIF nif, @NotBlank String email, @NotBlank String cellPhone) {
         if (supplierDAO.existsByNif(nif)) {
             throw new DuplicatedEntityException("Already exists another supplier with the same NIF.");
         }
-        Supplier supplier = new Supplier(name, nif);
+        Supplier supplier = new Supplier(name, nif, email, cellPhone);
         supplierDAO.save(supplier);
     }
 

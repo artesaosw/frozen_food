@@ -52,7 +52,7 @@ public class Ingredient implements AggregateRoot, Serializable {
     }
 
     public Ingredient(@NotNull IngredientID id, @NotBlank String name, @NotNull Unit unit) {
-        this.id = id;
+        this.id = Identificator.clone(id);
         this.name = name;
         this.unit = unit;
         this.minimumStockValue = MINIMUM_STOCK_VALUE_ON_CREATION;

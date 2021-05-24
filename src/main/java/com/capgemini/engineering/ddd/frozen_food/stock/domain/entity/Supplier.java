@@ -9,13 +9,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Getter
 @Document(collection = "supplier_stock")
+@Validated
 public class Supplier implements AggregateRoot, Serializable {
 
     @Id
@@ -27,11 +32,21 @@ public class Supplier implements AggregateRoot, Serializable {
     @Setter
     private NIF nif;
 
+    @Setter
+    @Email(message = "Email invalid!")
+    private String email;
+
+    @Pattern(regexp="[9][0-9]{8}",message = "Invalid cellphone number!")
+    @Setter
+    private String cellPhone;
+
     @JsonCreator
-    public Supplier(@NotBlank String name, @NotNull NIF nif) {
+    public Supplier(@NotBlank String name, @NotNull NIF nif, @NotBlank String email, @NotBlank String cellPhone) {
         this.id = Identificator.newInstance(SupplierID.class);
         this.name = name;
         this.nif = nif;
+        this.email = email;
+        this.cellPhone = cellPhone;
     }
 
     public SupplierID id() {

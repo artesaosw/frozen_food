@@ -17,8 +17,8 @@ class SupplierTest {
     private NIF nif;
 
     public SupplierTest() {
-//        nif = new NIF("257899898");
-        supplier = new Supplier("Nome Test", new NIF("257899898"));
+        nif = new NIF("257899898");
+        supplier = new Supplier("Nome Test", nif,"cpf@cpf.com","987654321");
     }
 
     @Test

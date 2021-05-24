@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 
 import java.util.ArrayList;
@@ -10,14 +11,14 @@ public class IngredientConverter {
 
     public static IngredientDTO ingredient2IngredientDTO(Ingredient ingredient) throws NullPointerException {
         IngredientDTO ingredientDTO = new IngredientDTO();
-        ingredientDTO.setId(ingredient.getId());
+        ingredientDTO.setId(Identificator.clone(ingredient.getId()));
         ingredientDTO.setName(ingredient.getName());
         ingredientDTO.setUnit(ingredient.getUnit());
         return ingredientDTO;
     }
 
     public static Ingredient ingredientDTO2Ingredient(IngredientDTO ingredientDTO) throws NullPointerException {
-        Ingredient ingredient = new Ingredient(ingredientDTO.getId(), ingredientDTO.getName(), ingredientDTO.getUnit());
+        Ingredient ingredient = new Ingredient(Identificator.clone(ingredientDTO.getId()), ingredientDTO.getName(), ingredientDTO.getUnit());
         return ingredient;
     }
 
