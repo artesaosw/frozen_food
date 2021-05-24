@@ -8,4 +8,6 @@ public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID>
 
     boolean existsByDescription(String description);
 
+    Ingredient findByDescription(String description);
+
 }

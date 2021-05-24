@@ -1,10 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
+import com.capgemini.engineering.ddd.frozen_food._shared.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
+import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainIngredients;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainOrders;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +27,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/ingredient")
 @Validated
-public class OrderController {
-
-    static final String NO_DATA_ERROR_MSG = "NO DATA RECEIVED ERROR";
-    static final String ADD_SUCCESS_MSG = "Stock Order added successfully!";
-    static final String UPDATE_SUCCESS_MSG = "Stock Order updated successfully!";
-    static final String DELETE_SUCCESS_MSG = "Stock Order deleted successfully!";
-    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING PARAMETER ERROR";
-    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING PARAMETER VALUE ERROR";
-
+public class IngredientController {
 
     @Autowired
-    private MantainOrders orderService;
+    private MantainIngredients ingredientService;
 
-    public OrderController() {
+    public IngredientController() {
     }
+
+    static final String NO_DATA_ERROR_MSG = "NO DATA RECEIVED ERROR";
+    static final String ADD_SUCCESS_MSG = "Ingredient added successfully!";
+    static final String UPDATE_SUCCESS_MSG = "Ingredient updated successfully!";
+    static final String DELETE_SUCCESS_MSG = "Ingredient deleted successfully!";
+    static final String MISSING_PARAMETER_ERROR_MSG = "MISSING PARAMETER ERROR";
+    static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING PARAMETER VALUE ERROR";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<?> handleInvalidData(MethodArgumentNotValidException ex) {
@@ -65,31 +65,41 @@ public class OrderController {
         return ResponseEntity.badRequest().body(new Error(new Exception(MISSING_PARAMETER_VALUE_ERROR_MSG)));
     }
 
-    @GetMapping(path = "/stock/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getOrderById(@PathVariable @Valid String id) throws NonExistentEntityException {
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
-            OrderID orderID = Identificator.newInstance(OrderID.class, id);
-            var stockOrder = orderService.getOrderById(orderID);
-            return ResponseEntity.ok(stockOrder);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+            var ingredient = ingredientService.getIngredientById(ingredientID);
+            return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
-    @GetMapping(path = "/stock", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllOrders() {
+    @GetMapping(path = "/description/{description}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIngredientByName(@PathVariable @Valid String description) {
         try {
-            return ResponseEntity.ok(orderService.getAllOrders());
+            var ingredient = ingredientService.getIngredientByDescription(description);
+            return ResponseEntity.ok(ingredient);
+        } catch (Exception | NonExistentEntityException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllIngredients() {
+        try {
+            return ResponseEntity.ok(ingredientService.getAllIngredients());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
-    @PostMapping(path = "/stock")
-    public ResponseEntity<?> addOrder(@RequestBody @Valid @NotNull Order order) {
+    @PostMapping()
+    public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
-            orderService.registerNew(order);
-            return ResponseEntity.created(URI.create("/stock/" + order.getId())).body(new Message(ADD_SUCCESS_MSG));
+            ingredientService.registerNew(ingredient);
+            return ResponseEntity.created(URI.create("/ingredient/" + ingredient.id())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
         } catch (Exception e) {
@@ -97,10 +107,10 @@ public class OrderController {
         }
     }
 
-    @PutMapping(path = "/stock", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateOrder(@RequestBody @Valid @NotNull Order order) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
-            orderService.updateOrder(order);
+            ingredientService.updateIngredient(ingredient);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -109,11 +119,11 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping(path = "/chef/{id}")
-    public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid String id) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
         try {
-           OrderID orderID = Identificator.newInstance(OrderID.class, id);
-            orderService.deleteOrder(orderID);
+            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+            ingredientService.deleteIngredient(ingredientID);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
