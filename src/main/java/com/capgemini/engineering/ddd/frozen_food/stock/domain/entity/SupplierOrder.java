@@ -56,6 +56,16 @@ public class SupplierOrder implements AggregateRoot, Serializable {
         this.orderStatus = OrderStatus.UNDELIVERED;
     }
 
+    public SupplierOrder(@NotNull SupplierOrderID id, @NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID supplierID, @NotNull double purchaseValue) {
+        this.id = Identificator.clone(id);
+        this.orderReference = orderReference;
+        this.orders = new HashMap<>(orders);
+        this.supplierID = supplierID;
+        this.purchaseDate = LocalDate.now();
+        this.purchaseValue = purchaseValue;
+        this.orderStatus = OrderStatus.UNDELIVERED;
+    }
+
     public SupplierOrderID id() {
         return this.id;
     }

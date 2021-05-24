@@ -16,6 +16,7 @@ public class ChefOrderConverter {
 
     public static ChefOrderDTO chefOrder2ChefOrderDTO(ChefOrder chefOrder) throws NullPointerException {
         ChefOrderDTO chefOrderDTO = new ChefOrderDTO();
+        chefOrderDTO.setId(chefOrder.getId());
         chefOrderDTO.setOrderReference(chefOrder.getOrderReference());
         Map<IngredientDTO, Integer> orders = new HashMap<>();
         for (Map.Entry<Ingredient, Integer> map : chefOrder.getOrders().entrySet()) {
@@ -34,7 +35,7 @@ public class ChefOrderConverter {
             Integer quantity = map.getValue();
             orders.put(ingredient,quantity);
         }
-        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getOrderReference(), orders);
+        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getId(), chefOrderDTO.getOrderReference(), orders);
         return chefOrder;
     }
 

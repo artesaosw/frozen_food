@@ -115,7 +115,7 @@ public class SupplierController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> addSupplier(@RequestBody @Valid @NotNull Supplier supplier) {
+    public ResponseEntity<?> addSupplierAsObject(@RequestBody @Valid @NotNull Supplier supplier) {
         try {
             supplierService.registerNewSupplier(supplier);
             return ResponseEntity.created(URI.create("/supplier/" + supplier.getId())).body(new Message(ADD_SUCCESS_MSG));
@@ -125,6 +125,18 @@ public class SupplierController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
+
+//    @PostMapping()
+//    public ResponseEntity<?> addSupplierAsParameters(@RequestParam @NotBlank String name, @NotNull NIF nif, @NotBlank String email, @NotBlank String cellPhone) {
+//        try {
+//            supplierService.registerNewSupplier(name, nif, email, cellPhone);
+//            return ResponseEntity.created(URI.create("/supplier/" + name)).body(new Message(ADD_SUCCESS_MSG));
+//        } catch (DuplicatedEntityException | InvalidElementException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
+//        }
+//    }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateSupplier(@RequestBody @Valid @NotNull Supplier supplier) {

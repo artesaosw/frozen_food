@@ -16,6 +16,7 @@ public class ProductionOrderConverter {
 
     public static ProductionOrderDTO productionOrder2ProductionOrderDTO(ProductionOrder productionOrder) throws NullPointerException {
         ProductionOrderDTO productionOrderDTO = new ProductionOrderDTO();
+        productionOrderDTO.setId(productionOrder.getId());
         productionOrderDTO.setOrderReference(productionOrder.getOrderReference());
         Map<IngredientDTO, Integer> orders = new HashMap<>();
         for (Map.Entry<Ingredient, Integer> map : productionOrder.getOrders().entrySet()) {
@@ -34,7 +35,7 @@ public class ProductionOrderConverter {
             Integer quantity = map.getValue();
             orders.put(ingredient,quantity);
         }
-        ProductionOrder productionOrder = new ProductionOrder(productionOrderDTO.getOrderReference(), orders);
+        ProductionOrder productionOrder = new ProductionOrder(productionOrderDTO.getId(), productionOrderDTO.getOrderReference(), orders);
         return productionOrder;
     }
 
