@@ -27,8 +27,8 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
         //persist the new production order and issue the event
         productionOrder = this.productionOrderRepository.save(productionOrder);
 
-        ProductionOrderIssuedEventPublisher eventPublisher = new ProductionOrderIssuedEventPublisher();
-        eventPublisher.publishEvent(productionOrder);
+//        ProductionOrderIssuedEventPublisher eventPublisher = new ProductionOrderIssuedEventPublisher();
+//        eventPublisher.publishEvent(productionOrder);
 
         return productionOrder;
     }
@@ -60,9 +60,9 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
         this.productionOrderRepository.deleteById(id);
 
         //publish the cancellation event
-        ProductionOrderCancelledEventPublisher eventPublisher =
-                new ProductionOrderCancelledEventPublisher();
-        eventPublisher.publishEvent(productionOrder);
+//        ProductionOrderCancelledEventPublisher eventPublisher =
+//                new ProductionOrderCancelledEventPublisher();
+//        eventPublisher.publishEvent(productionOrder);
     }
 
     public ProductionOrderRepository getProductionOrderRepository() {

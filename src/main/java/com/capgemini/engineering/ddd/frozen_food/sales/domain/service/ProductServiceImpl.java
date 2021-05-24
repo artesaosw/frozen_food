@@ -23,8 +23,8 @@ public class ProductServiceImpl implements DomainServices, ProductService {
 
         product = this.productRepository.save(product);
 
-        ProductCreatedEventPublisher eventPublisher = new ProductCreatedEventPublisher();
-        eventPublisher.publishEvent(product);
+//        ProductCreatedEventPublisher eventPublisher = new ProductCreatedEventPublisher();
+//        eventPublisher.publishEvent(product);
 
         return product;
     }

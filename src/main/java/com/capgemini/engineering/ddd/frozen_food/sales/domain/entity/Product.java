@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Document(collection = "product_sales")
 public class Product implements AggregateRoot, Serializable {
@@ -117,4 +119,29 @@ public class Product implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.name + "-" + this.getId();
+        //return this.name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.unitPrice, unitPrice) == 0 &&
+                shelfLife == product.shelfLife &&
+                available == product.available &&
+                Objects.equals(id, product.id) &&
+                Objects.equals(productID, product.productID) &&
+                Objects.equals(dimensions, product.dimensions) &&
+                Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, productID, unitPrice, dimensions, name, shelfLife, available);
+    }
 }

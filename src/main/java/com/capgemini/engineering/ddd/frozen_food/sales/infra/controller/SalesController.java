@@ -2,6 +2,10 @@ package com.capgemini.engineering.ddd.frozen_food.sales.infra.controller;
 
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.DomainIndependentIDMismatchException;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyCancelled;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.CustomerService;
@@ -17,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController()
 @RequestMapping("/sales")
@@ -35,7 +40,7 @@ public class SalesController {
     private OrderService orderService;
 
     @GetMapping("/customers/{id}")
-    public Customer getCustomer(@NotBlank @PathVariable String id) {
+    public Customer getCustomerById(@NotBlank @PathVariable String id) {
         return this.customerService.findById(id);
     }
 
@@ -50,8 +55,15 @@ public class SalesController {
     }
 
     @PutMapping("/customers")
-    public Customer updateCustomer(@Valid @RequestBody Customer customer) {
-        return this.customerService.updateCustomer(customer);
+    public ResponseEntity<?> updateCustomer(@Valid @RequestBody Customer customer) {
+
+        try {
+            return new ResponseEntity<Customer>(this.customerService.updateCustomer(customer), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<String>("Customer does not exist in the database.", HttpStatus.BAD_REQUEST);
+        } catch (DomainIndependentIDMismatchException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/customers")
@@ -67,5 +79,44 @@ public class SalesController {
 
     }
 
+    @GetMapping("/orders/{id}")
+    public Order getOrderById(@NotBlank @PathVariable String id) {
+        return this.orderService.getOrderById(id);
+    }
+
+    @GetMapping("/orders")
+    public List<Order> getAllOrders() {
+        return this.orderService.getAllOrders();
+    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<?> registerNewOrder(@Valid @RequestBody Order order) {
+
+        try {
+            return new ResponseEntity<Order>(this.orderService.registerNewOrder(order), HttpStatus.CREATED);
+        } catch (OrderAlreadyExistsException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CloneNotSupportedException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<String> cancelOrder(@NotBlank String id) {
+
+        try {
+            this.orderService.cancelOrder(id);
+            return new ResponseEntity<String>("Order with id " + id + " was successfully cancelled.",
+                    HttpStatus.OK);
+
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<String>("Order with id " + id + " doesn't exist.",
+                    HttpStatus.BAD_REQUEST);
+        } catch (OrderAlreadyCancelled e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CloneNotSupportedException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
 }

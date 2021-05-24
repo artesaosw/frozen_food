@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 

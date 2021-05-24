@@ -22,6 +22,10 @@ public class NIF implements ValueObject {
 
     }
 
+    public NIF(String nif) {
+        this.nif = nif;
+    }
+
     private void setNif(String nif) {
         if (nifValidation(nif)) {
             this.nif = nif;

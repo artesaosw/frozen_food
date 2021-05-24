@@ -1,18 +1,18 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.events.sales;
 
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.OrderDTO;
 import org.springframework.context.ApplicationEvent;
 
 public class OrderCancelledEvent extends ApplicationEvent {
 
-    private Order order;
+    private OrderDTO orderDTO;
 
-    public OrderCancelledEvent(Object source, Order order) {
+    public OrderCancelledEvent(Object source, OrderDTO orderDTO) {
         super(source);
-        this.order = order;
+        this.orderDTO = orderDTO;
     }
 
-    public Order getOrder() {
-        return order;
+    public OrderDTO getOrderDTO() {
+        return orderDTO;
     }
 }

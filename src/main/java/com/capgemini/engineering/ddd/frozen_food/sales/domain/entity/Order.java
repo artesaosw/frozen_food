@@ -1,11 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,19 +20,17 @@ public class Order implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
-    private OrderID orderID = Identificator.newInstance(OrderID.class);
+    private OrderID orderID;
 
+    @NotEmpty
     private Map<Product, Integer> productsOrdered = new HashMap<>();
 
     @NotNull
     private Customer orderedBy;
 
-    @NotNull
     private OrderDeliveryState orderDeliveryState;
 
     //a class in the Sales context containing business logic is responsible for initializing the date for an Order object
-    @NotNull
     private LocalDate creationDate;
 
     //defined by Delivery context

@@ -20,8 +20,7 @@ public class Customer implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
-    private CustomerID customerID = Identificator.newInstance(CustomerID.class);
+    private CustomerID customerID;
 
     @NotBlank
     private String name;
@@ -46,13 +45,13 @@ public class Customer implements AggregateRoot, Serializable {
 
     }
 
-    public Customer(String name, NIF nif, String email, String cellphoneNumber, Address address) {
-        this.customerID = Identificator.newInstance(CustomerID.class);
-        this.name = name;
-        this.nif = nif;
-        this.address = address;
-        this.cellphoneNumber = cellphoneNumber;
-    }
+//    public Customer(String name, NIF nif, String email, String cellphoneNumber, Address address) {
+//        this.customerID = Identificator.newInstance(CustomerID.class);
+//        this.name = name;
+//        this.nif = nif;
+//        this.address = address;
+//        this.cellphoneNumber = cellphoneNumber;
+//    }
 
     public String getId() {
         return id;

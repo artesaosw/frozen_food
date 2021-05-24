@@ -5,7 +5,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.ValueObject;
 import javax.validation.constraints.Positive;
 import java.util.Objects;
 
-public class Dimensions implements ValueObject {
+public class Dimensions implements ValueObject, Cloneable {
 
     //Sera necessario especificar o sistema de unidades (metrico, imperial, etc.) ?
 
@@ -25,6 +25,13 @@ public class Dimensions implements ValueObject {
 
     public Dimensions() {
 
+    }
+
+    public Dimensions(@Positive double length, @Positive double width, @Positive double height, @Positive double weight) {
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.weight = weight;
     }
 
     public double getLength() {
@@ -73,5 +80,11 @@ public class Dimensions implements ValueObject {
     @Override
     public int hashCode() {
         return Objects.hash(length, width, height, weight);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new Dimensions(this.getLength(), this.getWidth(),
+                this.getHeight(), this.getWeight());
     }
 }

@@ -25,11 +25,17 @@ public class Address implements ValueObject {
     private String postalCode;
 
     @Getter @Setter
-    @NotBlank
     private String addressNote;
 
     public Address() {
 
+    }
+
+    public Address(String street, String doorNumber, String postalCode, String addressNote) {
+        this.street = street;
+        this.doorNumber = doorNumber;
+        this.postalCode = postalCode;
+        this.addressNote = addressNote;
     }
 
     @Override

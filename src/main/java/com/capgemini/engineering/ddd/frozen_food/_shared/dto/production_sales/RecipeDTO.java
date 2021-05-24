@@ -7,7 +7,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class ProductDTO {
+/*
+Class used to model Recipe entities, as used by the Production Context. Recipe objects get converted into
+ProductDTO objects when they are transported into the Sales context.
+Likewise, Product objects must be converted into RecipeDTO objects before being transferred into the
+Production context.
+ */
+public class RecipeDTO {
 
     @NotNull
     private ProductID productID;
@@ -23,11 +29,11 @@ public class ProductDTO {
 
     private boolean available;
 
-    public ProductDTO() {
+    public RecipeDTO() {
 
     }
 
-    public ProductDTO(ProductID productID, Dimensions dimensions, String name, int shelfLife, boolean available) {
+    public RecipeDTO(ProductID productID, Dimensions dimensions, String name, int shelfLife, boolean available) {
         this.productID = productID;
         this.dimensions = dimensions;
         this.name = name;
