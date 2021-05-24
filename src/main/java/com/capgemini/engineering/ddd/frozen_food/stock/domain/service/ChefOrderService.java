@@ -34,7 +34,7 @@ public class ChefOrderService {
 //        dentro do método
 //        ChefOrderDTO chefOrderDTO = chefOrder2ChefOrderDTO(chefOrder); ** usa o converter dela;
 //        em vez de chefOrder, usa o nome da entidade dela
-//        eventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
+//        applicationEventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
 
 //        para o ingrediente faz a mesma coisa
 
