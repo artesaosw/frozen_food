@@ -1,24 +1,16 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.Events;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ProductionOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ProductionOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ProductionOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -26,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
-import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderConverter.productionOrderDTO2ProductionOrder;
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderStatusConverter.productionOrder2ProductionOrderStatusDTO;
 
 @Service

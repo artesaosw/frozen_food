@@ -1,14 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierOrderDAO;

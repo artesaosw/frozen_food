@@ -1,16 +1,12 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
-import com.capgemini.engineering.ddd.frozen_food.stock.Stock;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Supplier;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.repository.Suppliers;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierDAO;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.SupplierRegistered;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

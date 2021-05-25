@@ -1,14 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.Events;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderRegistered;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderUpdated;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
@@ -17,7 +11,6 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ChefOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,9 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
-import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderConverter.chefOrderDTO2ChefOrder;
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderStatusConverter.chefOrder2ChefOrderStatusDTO;
-import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderStatusConverter.chefOrderStatusDTO2ChefOrder;
 
 @Service
 public class ChefOrderService {
