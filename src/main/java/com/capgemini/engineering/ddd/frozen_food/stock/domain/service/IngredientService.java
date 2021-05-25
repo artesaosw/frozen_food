@@ -31,7 +31,7 @@ public class IngredientService implements DomainServices {
     IngredientDAO ingredientDAO;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public Ingredient getIngredientById(@NotNull IngredientID id) {
         if (!ingredientDAO.existsById(id)) {
@@ -67,19 +67,11 @@ public class IngredientService implements DomainServices {
         ingredientDAO.save(ingredient);
     }
 
-    @EventListener
-    public void registerNewIngredient(NewIngredientRegisteredEvent newIngredientRegisteredEvent) {
-        IngredientDTO ingredientDTO = newIngredientRegisteredEvent.getIngredientDTO();
-        Ingredient ingredient = ingredientDTO2Ingredient(ingredientDTO);
-        registerNewIngredient(ingredient);
-    }
-
     public void updateIngredient(@NotNull Ingredient ingredient){
         if (!ingredientDAO.existsById(ingredient.id())) {
             throw new NonExistentEntityException("There is no ingredient with id = " + ingredient.id());
         }
         ingredientDAO.save(ingredient);
-        Events.report(new IngredientUpdated(ingredient.id()));
     }
 
     public void updateIngredientUseStatus(@NotNull IngredientID id, @NotNull IngredientStatus ingredientStatus) {
@@ -89,7 +81,6 @@ public class IngredientService implements DomainServices {
         Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.setIngredientStatus(ingredientStatus);
         ingredientDAO.save(ingredient);
-        Events.report(new IngredientUpdated(ingredient.id()));
     }
 
     public void updateIngredientMinimumStockValue(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer minimumStockValue) {
@@ -99,7 +90,6 @@ public class IngredientService implements DomainServices {
         Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.setMinimumStockValue(minimumStockValue);
         ingredientDAO.save(ingredient);
-        Events.report(new IngredientUpdated(ingredient.id()));
     }
 
     public void increaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
@@ -109,7 +99,6 @@ public class IngredientService implements DomainServices {
         Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.increaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
-        Events.report(new IngredientStockUpdated(ingredient.id()));
     }
 
     public void decreaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
@@ -119,7 +108,6 @@ public class IngredientService implements DomainServices {
         Ingredient ingredient = ingredientDAO.findById(id).get();
         ingredient.decreaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
-        Events.report(new IngredientStockUpdated(ingredient.id()));
     }
 
     public void deleteIngredient(@NotNull IngredientID id) {

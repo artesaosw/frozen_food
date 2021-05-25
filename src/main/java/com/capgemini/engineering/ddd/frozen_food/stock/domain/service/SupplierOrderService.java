@@ -28,7 +28,7 @@ public class SupplierOrderService implements DomainServices {
     SupplierOrderDAO supplierOrderDAO;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public SupplierOrder getSupplierOrderById(SupplierOrderID id) {
         if (!supplierOrderDAO.existsById(id)) {
@@ -53,7 +53,6 @@ public class SupplierOrderService implements DomainServices {
             throw new DuplicatedEntityException("Already exists another supplier order with the same order reference.");
         }
         supplierOrderDAO.save(supplierOrder);
-        Events.report(new SupplierOrderRegistered(supplierOrder.id()));
     }
 
     public void registerNewSupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID id, @NotNull Integer purchaseValue) {
@@ -62,7 +61,6 @@ public class SupplierOrderService implements DomainServices {
         }
         SupplierOrder supplierOrder = new SupplierOrder(orderReference, orders, id, purchaseValue);
         supplierOrderDAO.save(supplierOrder);
-        Events.report(new SupplierOrderRegistered(supplierOrder.id()));
     }
 
     public void updateSupplierOrderStatus(@NotNull SupplierOrderID id, @NotNull OrderStatus orderStatus) {
@@ -75,7 +73,6 @@ public class SupplierOrderService implements DomainServices {
         }
         supplierOrder.setOrderStatus(orderStatus);
         supplierOrderDAO.save(supplierOrder);
-        Events.report(new SupplierOrderUpdated(supplierOrder.id()));
     }
 
     public void updateSupplierOrder(SupplierOrder supplierOrder) {
@@ -83,7 +80,6 @@ public class SupplierOrderService implements DomainServices {
             throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.id());
         }
         supplierOrderDAO.save(supplierOrder);
-        Events.report(new SupplierOrderUpdated(supplierOrder.id()));
     }
 
     public void deleteSupplierOrder(SupplierOrderID id) {

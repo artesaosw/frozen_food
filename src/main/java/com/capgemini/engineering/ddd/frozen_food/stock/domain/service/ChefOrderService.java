@@ -74,14 +74,6 @@ public class ChefOrderService {
             throw new DuplicatedEntityException("Already exists another chef order with the same order reference.");
         }
         chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderRegistered(chefOrder.id()));
-    }
-
-    @EventListener
-    public void registerNewChefOrder(ChefOrderRegisteredEvent chefOrderRegisteredEvent) {
-        ChefOrderDTO chefOrderDTO = chefOrderRegisteredEvent.getChefOrderDTO();
-        ChefOrder chefOrder = chefOrderDTO2ChefOrder(chefOrderDTO);
-        registerNewChefOrder(chefOrder);
     }
 
     public void registerNewChefOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
@@ -90,7 +82,6 @@ public class ChefOrderService {
         }
         ChefOrder chefOrder = new ChefOrder(orderReference, orders);
         chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderRegistered(chefOrder.id()));
     }
 
     public void updateChefOrderStatus(@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
@@ -103,18 +94,8 @@ public class ChefOrderService {
         }
         chefOrder.setOrderStatus(orderStatus);
         chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderUpdated(chefOrder.id()));
         ChefOrderStatusDTO chefOrderStatusDTO = chefOrder2ChefOrderStatusDTO(chefOrder);
         applicationEventPublisher.publishEvent(new ChefOrderStatusUpdatedEvent(this, chefOrderStatusDTO));
-    }
-
-    @EventListener
-    public void updateChefOrderStatus(ChefOrderStatusUpdatedEvent chefOrderStatusUpdatedEvent) {
-        ChefOrderStatusDTO chefOrderStatusDTO = chefOrderStatusUpdatedEvent.getChefOrderStatusDTO();
-        ChefOrder chefOrder = chefOrderDAO.findById(chefOrderStatusDTO.getId()).get();
-        chefOrder.setOrderStatus(chefOrderStatusDTO.getOrderStatus());
-        chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderUpdated(chefOrder.id()));
     }
 
     public void updateChefOrderIngredients(@NotNull ChefOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
@@ -127,7 +108,6 @@ public class ChefOrderService {
         }
         chefOrder.setOrders(orders);
         chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderUpdated(chefOrder.id()));
     }
 
     public void updateChefOrder(ChefOrder chefOrder) {
@@ -135,7 +115,6 @@ public class ChefOrderService {
             throw new NonExistentEntityException("There is no order with id = " + chefOrder.id());
         }
         chefOrderDAO.save(chefOrder);
-        Events.report(new ChefOrderUpdated(chefOrder.id()));
     }
 
     public void deleteChefOrder(ChefOrderID id) {

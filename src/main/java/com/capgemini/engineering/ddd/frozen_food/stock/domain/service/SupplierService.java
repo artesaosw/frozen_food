@@ -28,7 +28,7 @@ public class SupplierService implements DomainServices {
     SupplierDAO supplierDAO;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public Supplier getSupplierById(@NotNull SupplierID id) {
         if (!supplierDAO.existsById(id)) {
@@ -71,7 +71,6 @@ public class SupplierService implements DomainServices {
             throw new DuplicatedEntityException("Already exists another supplier with the same NIF.");
         }
         supplierDAO.save(supplier);
-        Events.report(new SupplierRegistered(supplier.id()));
     }
 
     public void updateSupplier(@NotNull Supplier supplier) {

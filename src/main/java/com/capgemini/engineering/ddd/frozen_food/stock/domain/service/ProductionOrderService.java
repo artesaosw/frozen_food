@@ -63,14 +63,6 @@ public class ProductionOrderService {
             throw new DuplicatedEntityException("Already exists another production order with the same order reference.");
         }
         productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderRegistered(productionOrder.id()));
-    }
-
-    @EventListener
-    public void registerNewProductionOrder(ProductionOrderRegisteredEvent productionOrderRegisteredEvent) {
-        ProductionOrderDTO productionOrderDTO = productionOrderRegisteredEvent.getProductionOrderDTO();
-        ProductionOrder productionOrder = productionOrderDTO2ProductionOrder(productionOrderDTO);
-        registerNewProductionOrder(productionOrder);
     }
 
     public void registerNewProductionOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
@@ -79,7 +71,6 @@ public class ProductionOrderService {
         }
         ProductionOrder productionOrder = new ProductionOrder(orderReference, orders);
         productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderRegistered(productionOrder.id()));
     }
 
     public void updateProductionOrderStatus(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
@@ -92,18 +83,8 @@ public class ProductionOrderService {
         }
         productionOrder.setOrderStatus(orderStatus);
         productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderUpdated(productionOrder.id()));
         ProductionOrderStatusDTO productionOrderStatusDTO = productionOrder2ProductionOrderStatusDTO(productionOrder);
         applicationEventPublisher.publishEvent(new ProductionOrderStatusUpdatedEvent(this, productionOrderStatusDTO));
-    }
-
-    @EventListener
-    public void updateProductionOrderStatus(ProductionOrderStatusUpdatedEvent productionOrderStatusUpdatedEvent) {
-        ProductionOrderStatusDTO productionOrderStatusDTO = productionOrderStatusUpdatedEvent.getProductionOrderStatusDTO();
-        ProductionOrder productionOrder = productionOrderDAO.findById(productionOrderStatusDTO.getId()).get();
-        productionOrderStatusDTO.setOrderStatus(productionOrderStatusDTO.getOrderStatus());
-        productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderUpdated(productionOrder.id()));
     }
 
     public void updateProductionOrderIngredients(@NotNull ProductionOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
@@ -116,7 +97,6 @@ public class ProductionOrderService {
         }
         productionOrder.setOrders(orders);
         productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderUpdated(id));
     }
 
     public void updateProductionOrder(ProductionOrder productionOrder) {
@@ -124,7 +104,6 @@ public class ProductionOrderService {
             throw new NonExistentEntityException("There is no order with id = " + productionOrder.id());
         }
         productionOrderDAO.save(productionOrder);
-        Events.report(new ProductionOrderUpdated(productionOrder.id()));
     }
 
     public void deleteProductionOrder(ProductionOrderID id) {
