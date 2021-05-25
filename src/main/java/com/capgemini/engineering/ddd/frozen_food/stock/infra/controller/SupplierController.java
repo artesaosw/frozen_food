@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("/stock/supplier")
 @Validated
 public class SupplierController {
 

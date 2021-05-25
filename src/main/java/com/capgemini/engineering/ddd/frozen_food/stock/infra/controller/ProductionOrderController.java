@@ -95,6 +95,15 @@ public class ProductionOrderController {
         }
     }
 
+    @GetMapping(path = "/production/ondelivery", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllOndeliveryProductionOrders() {
+        try {
+            return ResponseEntity.ok(productionOrderService.getAllProductionOrdersByOrderStatus(OrderStatus.ON_DELIVERY));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
+        }
+    }
+
     @GetMapping(path = "/production/undelivered", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllUndeliveredProductionOrders() {
         try {

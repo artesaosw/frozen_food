@@ -85,4 +85,6 @@ public class Ingredient implements AggregateRoot, Serializable {
             setIngredientStock(0);
         }
     }
+
+    // TODO criar método para verificar o minimumStockValue contra o ingredientStock
 }

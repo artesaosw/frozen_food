@@ -95,6 +95,15 @@ public class ChefOrderController {
         }
     }
 
+    @GetMapping(path = "/chef/ondelivery", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllOndeliveryChefOrders() {
+        try {
+            return ResponseEntity.ok(chefOrderService.getAllChefOrdersByOrderStatus(OrderStatus.ON_DELIVERY));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
+        }
+    }
+
     @GetMapping(path = "/chef/undelivered", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllUndeliveredChefOrders() {
         try {
