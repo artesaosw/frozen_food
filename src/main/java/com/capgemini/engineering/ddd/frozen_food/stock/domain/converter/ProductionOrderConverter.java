@@ -19,13 +19,13 @@ public class ProductionOrderConverter {
         ProductionOrderDTO productionOrderDTO = new ProductionOrderDTO();
         productionOrderDTO.setId(Identificator.clone(productionOrder.getId()));
         productionOrderDTO.setOrderReference(productionOrder.getOrderReference());
-        Map<IngredientDTO, Integer> orders = new HashMap<>();
+        Map<IngredientDTO, Integer> ordersDTO = new HashMap<>();
         for (Map.Entry<Ingredient, Integer> map : productionOrder.getOrders().entrySet()) {
             IngredientDTO ingredientDTO = ingredient2IngredientDTO(map.getKey());
             Integer quantity = map.getValue();
-            orders.put(ingredientDTO,quantity);
+            ordersDTO.put(ingredientDTO,quantity);
         }
-        productionOrderDTO.setOrders(orders);
+        productionOrderDTO.setOrders(ordersDTO);
         return productionOrderDTO;
     }
 

@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 public class ProductionOrderIngredientDTO {
 
-    ProductionOrderID id;
+    private ProductionOrderID id;
     private Map<IngredientDTO, Integer> orders;
 
     public ProductionOrderIngredientDTO() {

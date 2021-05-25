@@ -19,13 +19,13 @@ public class ChefOrderConverter {
         ChefOrderDTO chefOrderDTO = new ChefOrderDTO();
         chefOrderDTO.setId(Identificator.clone(chefOrder.getId()));
         chefOrderDTO.setOrderReference(chefOrder.getOrderReference());
-        Map<IngredientDTO, Integer> orders = new HashMap<>();
+        Map<IngredientDTO, Integer> ordersDTO = new HashMap<>();
         for (Map.Entry<Ingredient, Integer> map : chefOrder.getOrders().entrySet()) {
             IngredientDTO ingredientDTO = ingredient2IngredientDTO(map.getKey());
             Integer quantity = map.getValue();
-            orders.put(ingredientDTO,quantity);
+            ordersDTO.put(ingredientDTO,quantity);
         }
-        chefOrderDTO.setOrders(orders);
+        chefOrderDTO.setOrders(ordersDTO);
         return chefOrderDTO;
     }
 
