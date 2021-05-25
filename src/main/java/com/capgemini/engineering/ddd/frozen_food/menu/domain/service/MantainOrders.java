@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.OrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.OrderConverter;
@@ -15,7 +15,6 @@ import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.OrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;

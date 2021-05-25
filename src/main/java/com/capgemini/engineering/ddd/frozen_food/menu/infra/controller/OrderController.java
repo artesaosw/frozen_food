@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;

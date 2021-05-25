@@ -1,6 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food._shared;
 
 
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 

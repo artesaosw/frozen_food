@@ -1,12 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainIngredients;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainOrders;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
