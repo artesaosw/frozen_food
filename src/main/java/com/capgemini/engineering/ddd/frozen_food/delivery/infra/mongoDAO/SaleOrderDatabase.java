@@ -46,9 +46,9 @@ public class SaleOrderDatabase implements SaleOrderReplicaRepository /*extends M
         List<OrderFromSales> allSaleOrdersReceived = all();
         List<OrderFromSales> saleOrdersReceivedByDate = new ArrayList<>();
         for(OrderFromSales order : allSaleOrdersReceived){
-            if(order.getSaleOrderReceivedDate().equals(saleOrderReceivedDate)){
+           /* if(order.getSaleOrderReceivedDate().equals(saleOrderReceivedDate)){
                 saleOrdersReceivedByDate.add(order);
-            }
+            }*/
         }
         return saleOrdersReceivedByDate;
     }

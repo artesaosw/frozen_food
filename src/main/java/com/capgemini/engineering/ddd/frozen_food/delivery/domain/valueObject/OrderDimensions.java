@@ -44,7 +44,7 @@ public class OrderDimensions {
          this.orderHeight = 0;
          this.orderWidth = 0;
 
-         for(Map.Entry<Product, Integer> p : saleOrderReplicaRepository.withId(saleOrderID).getSaleOrderProductsList().entrySet()) {
+         /*for(Map.Entry<Product, Integer> p : saleOrderReplicaRepository.withId(saleOrderID).getSaleOrderProductsList().entrySet()) {
              if(p.getKey().getDimensions().getWeightUnit() == weightUnit){
                  this.orderWeight = orderWeight + p.getKey().getDimensions().getWeight() * p.getValue();
              }else{
@@ -65,7 +65,7 @@ public class OrderDimensions {
              }else{
                  this.orderWidth = (orderWidth + (p.getKey().getDimensions().getWidth()) * convertLengthUnit(p.getKey().getDimensions().getLengthUnit()));
              }
-         }
+         }*/
     }
 
     public double convertWeightUnit(Units weightProductUnit){

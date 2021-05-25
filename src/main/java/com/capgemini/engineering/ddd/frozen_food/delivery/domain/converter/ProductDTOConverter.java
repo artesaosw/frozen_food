@@ -11,13 +11,13 @@ public class ProductDTOConverter {
     public Product productDTOtoProduct(ProductDTO productDTO){
         Product product = new Product();
         product.setProductID(new ProductID(productDTO.getProductID()));
-        product.setWeightUnit(unitsConverter.whichUnit(productDTO.getWeightUnit()));
+        /*product.setWeightUnit(unitsConverter.whichUnit(productDTO.getWeightUnit()));
         product.setWeight(productDTO.getWeight());
         product.setVolumeUnit(unitsConverter.whichUnit(productDTO.getVolumeUnit()));
         product.setVolume(productDTO.getVolume());
         product.setLengthUnit(unitsConverter.whichUnit(productDTO.getLengthUnit()));
         product.setHeight(productDTO.getHeight());
-        product.setWidth(productDTO.getWidth());
+        product.setWidth(productDTO.getWidth());*/
         return product;
     }
 }

@@ -16,13 +16,13 @@ public class SaleOrderDTOConverter {
     public OrderFromSales saleOrderDTOtoSaleOrderReplica(SaleOrderDTO saleOrderDTO){
         OrderFromSales orderFromSales = new OrderFromSales();
         orderFromSales.setSaleOrderID(new SaleOrderID(saleOrderDTO.getSaleOrderID()));
-        orderFromSales.setCustomerID(new CustomerID(saleOrderDTO.getCustomerDTO().getCustomerID()));
+        //orderFromSales.setCustomerID(new CustomerID(saleOrderDTO.getCustomerDTO().getCustomerID()));
         List<Product> productList = new ArrayList<>();
         for(int i = 0; i < saleOrderDTO.getProductDTOList().size(); i++){
             productList.add(productDTOConverter.productDTOtoProduct(saleOrderDTO.getProductDTOList().get(i)));
         }
        // saleOrderReplica.setSaleOrderProductReplicas(productReplicaList);
-        orderFromSales.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());
+        /*orderFromSales.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());*/
         return orderFromSales;
     }
 }
