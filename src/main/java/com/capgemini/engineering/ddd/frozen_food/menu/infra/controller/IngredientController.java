@@ -2,11 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainIngredients;
-import com.capgemini.engineering.ddd.frozen_food.menu.infra.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/menu/ingredient")
 @Validated
 public class IngredientController {
 
@@ -80,7 +80,9 @@ public class IngredientController {
         try {
             var ingredient = ingredientService.getIngredientByDescription(description);
             return ResponseEntity.ok(ingredient);
-        } catch (Exception | NonExistentEntityException e) {
+        } catch (NonExistentEntityException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }

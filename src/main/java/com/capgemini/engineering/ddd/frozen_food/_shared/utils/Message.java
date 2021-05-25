@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.menu.infra.utils;
+package com.capgemini.engineering.ddd.frozen_food._shared.utils;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

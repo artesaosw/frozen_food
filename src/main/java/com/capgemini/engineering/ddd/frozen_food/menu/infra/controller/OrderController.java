@@ -2,11 +2,12 @@ package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.service.MantainOrders;
-import com.capgemini.engineering.ddd.frozen_food.menu.infra.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/menu/order")
 @Validated
 public class OrderController {
 

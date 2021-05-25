@@ -11,11 +11,13 @@ import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExiste
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.IngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class MantainIngredients implements DomainServices {
 
     @Autowired

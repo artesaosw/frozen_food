@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
@@ -10,7 +10,6 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.Suppli
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Supplier;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.SupplierService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

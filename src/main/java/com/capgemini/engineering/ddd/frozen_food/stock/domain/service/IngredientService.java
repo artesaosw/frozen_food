@@ -6,7 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.Duplicat
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.IngredientDAO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 public class IngredientService implements DomainServices {
 
     @Autowired
-    IngredientDAO ingredientDAO;
+    StockIngredientDAO ingredientDAO;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;

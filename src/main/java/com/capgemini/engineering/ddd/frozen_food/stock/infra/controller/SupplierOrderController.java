@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/stock/order")
 @Validated
 public class SupplierOrderController {
 

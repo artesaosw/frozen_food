@@ -4,7 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.IngredientDAO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -15,20 +15,20 @@ import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.I
 public class IngredientListener {
 
     @Autowired
-    IngredientDAO ingredientDAO;
+    StockIngredientDAO stockIngredientDAO;
 
     @EventListener
     public void registerNewIngredient(NewIngredientRegisteredEvent newIngredientRegisteredEvent) {
         IngredientDTO ingredientDTO = newIngredientRegisteredEvent.getIngredientDTO();
         Ingredient ingredient = ingredientDTO2Ingredient(ingredientDTO);
-        if (ingredientDAO.existsById(ingredient.id())) {
+        if (stockIngredientDAO.existsById(ingredient.id())) {
             // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another ingredient with the same id.");
         }
-        if (ingredientDAO.existsByName(ingredient.getName())) {
+        if (stockIngredientDAO.existsByName(ingredient.getName())) {
             // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
         }
-        ingredientDAO.save(ingredient);
+        stockIngredientDAO.save(ingredient);
     }
 }

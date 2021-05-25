@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface IngredientDAO extends MongoRepository<Ingredient, IngredientID> {
+public interface StockIngredientDAO extends MongoRepository<Ingredient, IngredientID> {
 
     boolean existsByName(String name);
 

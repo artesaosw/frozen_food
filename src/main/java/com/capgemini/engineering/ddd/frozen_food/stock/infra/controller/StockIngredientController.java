@@ -2,8 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Error;
-import com.capgemini.engineering.ddd.frozen_food.stock.infra.utils.Message;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/stock/ingredient")
 @Validated
-public class IngredientController {
+public class StockIngredientController {
 
     static final String NO_DATA_ERROR_MSG = "NO DATA RECEIVED ERROR";
     static final String ADD_SUCCESS_MSG = "Ingredient added successfully!";
@@ -43,7 +43,7 @@ public class IngredientController {
     @Autowired
     private IngredientService ingredientService;
 
-    public IngredientController() {
+    public StockIngredientController() {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

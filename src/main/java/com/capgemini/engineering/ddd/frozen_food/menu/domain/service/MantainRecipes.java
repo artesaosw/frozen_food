@@ -11,12 +11,14 @@ import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.RecipeUpdated;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Recipes;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+@Service
 public class MantainRecipes implements DomainServices {
 
     private Recipes recipes(){
