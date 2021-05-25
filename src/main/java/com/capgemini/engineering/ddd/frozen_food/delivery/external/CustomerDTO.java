@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.external;
 
+ import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
  import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class CustomerDTO {
 
-    private UUID customerID;
+    private CustomerID customerID;
 
     private String name;
 

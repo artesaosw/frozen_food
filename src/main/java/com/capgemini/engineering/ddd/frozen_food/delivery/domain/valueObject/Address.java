@@ -1,18 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject;
 
-import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+import java.util.Objects;
 
 @AllArgsConstructor
-public class Address implements AggregateRoot, Serializable {
+@NoArgsConstructor
+public class Address {
 
     @Getter @Setter @Size(min=3)
     private String street;
@@ -23,18 +20,36 @@ public class Address implements AggregateRoot, Serializable {
     @Getter @Setter
     private String addressNote;
 
-    @Override
-    public Identificator id() {
-        return null;
-    }
 
     @Override
     public int hashCode() {
-        return AggregateRoot.super.hashcode();
+
+        return Objects.hash(street,doorNumber,postalCode,addressNote);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return AggregateRoot.super.isEqualsTo(obj);
+    public boolean equals(Object objectAddress){
+        if(this == objectAddress){
+            return true;
+        }
+        if( objectAddress == null || getClass() !=  objectAddress.getClass()){
+            return false;
+        }
+        Address address = (Address) objectAddress;
+        return Objects.equals(this.street, address.getStreet()) &&
+                Objects.equals(this.doorNumber,address.getDoorNumber()) &&
+                Objects.equals(this.postalCode, address.getPostalCode());
+    }
+
+    @Override
+    public String toString(){
+        if(!addressNote.equals("")){
+            return String.format("Street: %s %nDoor number: %s %nPostal Code: %s %nAddress note: %s",
+                    street,doorNumber,postalCode, addressNote);
+        }
+        else{
+            return String.format("Street: %s %nDoor number: %s %nPostal Code: %s",
+                    street,doorNumber,postalCode);
+        }
     }
 }

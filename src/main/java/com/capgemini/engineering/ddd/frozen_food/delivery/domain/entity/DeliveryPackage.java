@@ -2,10 +2,10 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.*;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.DeliveryStatus;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.OrderDimensions;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.DeliveryPackageID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.RouteID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +14,6 @@ import lombok.Setter;
 
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,17 +29,16 @@ public class DeliveryPackage implements AggregateRoot, Serializable {
     private OrderDimensions orderDimensions;
 
     @Getter @Setter
-    private DeliveryStatus deliveryStatus;
+    private OrderStatus orderStatus;
 
     @Getter @Setter
-    private Date deliveryDate;
+    private RouteID routeID;
 
-    public DeliveryPackage(DeliveryPackageID deliveryPackageID, SaleOrderID saleOrderID, Date saleOrderDate, CustomerID
-            customerID, List<ProductReplica> productReplicaList, DeliveryStatus deliveryStatus){
+    public DeliveryPackage(DeliveryPackageID deliveryPackageID, SaleOrderID saleOrderID, OrderDimensions orderDimensions,
+                           OrderStatus orderStatus){
         this.deliveryPackageID = Identificator.newInstance(DeliveryPackageID.class);
         this.saleOrderID = saleOrderID;
-
-        this.deliveryStatus = deliveryStatus;
+        this.orderStatus = OrderStatus.PACKAGE_PREPARATION;
     }
 
     public void updatePackagingStatus(){

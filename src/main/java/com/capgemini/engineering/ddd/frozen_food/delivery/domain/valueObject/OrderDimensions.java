@@ -1,33 +1,31 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject;
 
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.ProductReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.Units;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.SaleOrderReplicaRepository;
 import lombok.Getter;
 
-import java.io.Serializable;
 import java.util.Map;
 
-public class OrderDimensions implements Serializable {
+public class OrderDimensions {
 
     @Getter
     private Units weightUnit;
 
     @Getter
-    private float orderWeight;
+    private double orderWeight;
 
     @Getter
     private Units volumeUnit;
     @Getter
-    private float orderVolume;
+    private double orderVolume;
 
     @Getter
     private Units lengthUnit;
     @Getter
-    private float orderHeight;
+    private double orderHeight;
     @Getter
-    private float orderWidth;
+    private double orderWidth;
 
     @Getter
     private SaleOrderID saleOrderID;
@@ -36,33 +34,36 @@ public class OrderDimensions implements Serializable {
 
     public OrderDimensions (SaleOrderID saleOrderID){
 
+         this.saleOrderID = saleOrderID;
+         this.weightUnit = Units.KG;
+         this.volumeUnit = Units.L;
+         this.lengthUnit = Units.CM;
+
          this.orderWeight = 0;
          this.orderVolume = 0;
          this.orderHeight = 0;
          this.orderWidth = 0;
-         this.weightUnit = Units.KG;
-         this.volumeUnit = Units.L;
-         this.lengthUnit = Units.CM;
-         for(Map.Entry<ProductReplica, Integer> p : saleOrderReplicaRepository.withId(saleOrderID).getSaleOrderProductsList().entrySet()) {
-             if(p.getKey().getWeightUnit() == weightUnit){
-                 this.orderWeight = orderWeight + p.getKey().getWeight() * p.getValue();
+
+         for(Map.Entry<Product, Integer> p : saleOrderReplicaRepository.withId(saleOrderID).getSaleOrderProductsList().entrySet()) {
+             if(p.getKey().getDimensions().getWeightUnit() == weightUnit){
+                 this.orderWeight = orderWeight + p.getKey().getDimensions().getWeight() * p.getValue();
              }else{
-                 this.orderWeight = (float) (orderWeight + (p.getKey().getWeight() * p.getValue()) * convertWeightUnit(p.getKey().getWeightUnit()));
+                 this.orderWeight = (orderWeight + (p.getKey().getDimensions().getWeight() * p.getValue()) * convertWeightUnit(p.getKey().getDimensions().getWeightUnit()));
              }
-             if(p.getKey().getVolumeUnit() == volumeUnit){
-                 this.orderVolume = orderVolume + p.getKey().getVolume() * p.getValue();
+             if(p.getKey().getDimensions().getVolumeUnit() == volumeUnit){
+                 this.orderVolume = orderVolume + p.getKey().getDimensions().getVolume() * p.getValue();
              }else{
-                 this.orderVolume = (float) (orderVolume + (p.getKey().getVolume() * p.getValue())* convertVolumeUnit(p.getKey().getVolumeUnit()));
+                 this.orderVolume = (orderVolume + (p.getKey().getDimensions().getVolume() * p.getValue())* convertVolumeUnit(p.getKey().getDimensions().getVolumeUnit()));
              }
-             if(p.getKey().getLengthUnit() == lengthUnit){
-                 this.orderHeight = orderHeight + p.getKey().getHeight() * p.getValue();
+             if(p.getKey().getDimensions().getLengthUnit() == lengthUnit){
+                 this.orderHeight = orderHeight + p.getKey().getDimensions().getHeight() * p.getValue();
              }else{
-                 this.orderHeight = (float) (orderHeight + (p.getKey().getHeight() * p.getValue()) * convertLengthUnit(p.getKey().getLengthUnit()));
+                 this.orderHeight = (orderHeight + (p.getKey().getDimensions().getHeight() * p.getValue()) * convertLengthUnit(p.getKey().getDimensions().getLengthUnit()));
              }
-             if(p.getKey().getLengthUnit() == lengthUnit){
-                 this.orderWidth = orderWidth + p.getKey().getWidth() * p.getValue();
+             if(p.getKey().getDimensions().getLengthUnit() == lengthUnit){
+                 this.orderWidth = orderWidth + p.getKey().getDimensions().getWidth() * p.getValue();
              }else{
-                 this.orderWidth = (float) (orderWidth + (p.getKey().getWidth()) * convertLengthUnit(p.getKey().getLengthUnit()));
+                 this.orderWidth = (orderWidth + (p.getKey().getDimensions().getWidth()) * convertLengthUnit(p.getKey().getDimensions().getLengthUnit()));
              }
          }
     }
@@ -125,4 +126,20 @@ public class OrderDimensions implements Serializable {
         }
         return value;
     }
+
+    @Override
+    public boolean equals(Object objectOrderDimensions){
+        if(this == objectOrderDimensions){
+            return true;
+        }
+        if(objectOrderDimensions == null || getClass() != objectOrderDimensions.getClass()){
+            return false;
+        }
+        OrderDimensions orderDimensions = (OrderDimensions) objectOrderDimensions;
+        return this.orderWeight == orderDimensions.getOrderWeight() &&
+               this.orderVolume == orderDimensions.getOrderVolume() &&
+               this.orderHeight == orderDimensions.getOrderHeight() &&
+               this.orderWidth == orderDimensions.getOrderWidth();
+    }
+
 }

@@ -5,25 +5,31 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.exception.InvalidElementException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author JorgePires
  */
 
 @Getter
-public class NIF implements AggregateRoot, Serializable {
+@NoArgsConstructor
+public class NIF {
 
+    @NotBlank
     @Pattern(regexp = "[0-9]{9}", message = "NIF must have 9 digits.")
-    private String nif;
+    String nif;
 
-    public NIF(@NonNull String nif) {
+    public NIF(@NotBlank String nif) {
         setNif(nif);
     }
 
-    private void setNif(String nif) {
+    public void setNif(@NotBlank String nif) {
         if (nifValidation(nif)) {
             this.nif = nif;
         } else {
@@ -46,18 +52,22 @@ public class NIF implements AggregateRoot, Serializable {
     }
 
     @Override
-    public Identificator id() {
-        return null;
+    public String toString() {
+        return this.nif;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        NIF nif1 = (NIF) o;
+        return Objects.equals(nif, nif1.nif);
     }
 
     @Override
     public int hashCode() {
-        return AggregateRoot.super.hashcode();
+        return Objects.hash(nif);
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return AggregateRoot.super.isEqualsTo(obj);
-    }
-
 }

@@ -9,22 +9,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
 public class Route implements AggregateRoot, Serializable {
 
         @Id @Getter
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private RouteID routeID;
 
         @Getter @Setter
         private TransportID transportID;
 
         @Getter @Setter
-        private Date planningRouteDate;
+        private LocalDateTime planningRouteDate;
 
         @Getter @Setter
         private RouteStatus routeStatus;
@@ -33,16 +36,30 @@ public class Route implements AggregateRoot, Serializable {
         private List<DeliveryPackage> deliveryPackagesList;
 
         @Getter @Setter
-        private Date deliveryScheduledDate;
+        private LocalDateTime routeScheduledStart;
+
+        @Getter @Setter
+        private LocalDateTime routeScheduledEnd;
+
+
+        @Getter @Setter
+        private LocalDateTime routeRealDeliveryDate;
+
+
 
         public void checkNewOrders(){
 
         }
 
+        public void planRoute(LocalDateTime saleOrdersOfDay){
+
+        }
+
+
 
         @Override
         public Identificator id() {
-                return null;
+                return this.routeID;
         }
 
         @Override

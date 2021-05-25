@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.SaleOrderDTO;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.ProductReplica;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrderReplica;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Product;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.OrderFromSales;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 
@@ -13,16 +13,16 @@ public class SaleOrderDTOConverter {
 
     private ProductDTOConverter productDTOConverter;
 
-    public SaleOrderReplica saleOrderDTOtoSaleOrderReplica(SaleOrderDTO saleOrderDTO){
-        SaleOrderReplica saleOrderReplica = new SaleOrderReplica();
-        saleOrderReplica.setSaleOrderID(new SaleOrderID(saleOrderDTO.getSaleOrderID()));
-        saleOrderReplica.setCustomerID(new CustomerID(saleOrderDTO.getCustomerDTO().getCustomerID()));
-        List<ProductReplica> productReplicaList = new ArrayList<>();
+    public OrderFromSales saleOrderDTOtoSaleOrderReplica(SaleOrderDTO saleOrderDTO){
+        OrderFromSales orderFromSales = new OrderFromSales();
+        orderFromSales.setSaleOrderID(new SaleOrderID(saleOrderDTO.getSaleOrderID()));
+        orderFromSales.setCustomerID(new CustomerID(saleOrderDTO.getCustomerDTO().getCustomerID()));
+        List<Product> productList = new ArrayList<>();
         for(int i = 0; i < saleOrderDTO.getProductDTOList().size(); i++){
-            productReplicaList.add(productDTOConverter.productDTOtoProduct(saleOrderDTO.getProductDTOList().get(i)));
+            productList.add(productDTOConverter.productDTOtoProduct(saleOrderDTO.getProductDTOList().get(i)));
         }
        // saleOrderReplica.setSaleOrderProductReplicas(productReplicaList);
-        saleOrderReplica.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());
-        return saleOrderReplica;
+        orderFromSales.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());
+        return orderFromSales;
     }
 }

@@ -1,8 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.infra;
 
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.DeliveryStatus;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.OrderStatus;
 
 public class DeliveryItem {
-    private DeliveryStatus status;
+    private OrderStatus status;
 
 }
