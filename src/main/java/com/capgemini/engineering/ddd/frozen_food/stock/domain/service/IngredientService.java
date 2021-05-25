@@ -57,9 +57,11 @@ public class IngredientService implements DomainServices {
 
     public void registerNewIngredient(@NotNull Ingredient ingredient) {
         if (ingredientDAO.existsById(ingredient.id())) {
+            // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another ingredient with the same id.");
         }
         if (ingredientDAO.existsByName(ingredient.getName())) {
+            // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
         }
         ingredientDAO.save(ingredient);

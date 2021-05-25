@@ -48,11 +48,16 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     }
 
     public ProductionOrder (@NotNull ProductionOrderID id, @NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
-        this.id = Identificator.clone(id);
+        this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
+    }
+
+    public ProductionOrder(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
+        this.id = Identificator.clone(id);
+        this.orderStatus = orderStatus;
     }
 
     @Override

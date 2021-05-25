@@ -2,7 +2,10 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderRegistered;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.event.ChefOrderUpdated;
@@ -23,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderConverter.chefOrderDTO2ChefOrder;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderStatusConverter.chefOrder2ChefOrderStatusDTO;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderStatusConverter.chefOrderStatusDTO2ChefOrder;
 
 @Service
 public class ChefOrderService {
@@ -42,7 +47,7 @@ public class ChefOrderService {
     ChefOrderDAO chefOrderDAO;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public ChefOrder getChefOrderById(ChefOrderID id) {
         if (!chefOrderDAO.existsById(id)) {
@@ -61,9 +66,11 @@ public class ChefOrderService {
 
     public void registerNewChefOrder(@NotNull ChefOrder chefOrder) {
         if (chefOrderDAO.existsById(chefOrder.id())) {
+            // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another chef order with the same id.");
         }
         if (chefOrderDAO.existsByOrderReference(chefOrder.getOrderReference())) {
+            // TODO Event to report problem to menu domain
             throw new DuplicatedEntityException("Already exists another chef order with the same order reference.");
         }
         chefOrderDAO.save(chefOrder);
@@ -95,6 +102,17 @@ public class ChefOrderService {
             throw new IllegalArgumentException("Order already delivered.");
         }
         chefOrder.setOrderStatus(orderStatus);
+        chefOrderDAO.save(chefOrder);
+        Events.report(new ChefOrderUpdated(chefOrder.id()));
+        ChefOrderStatusDTO chefOrderStatusDTO = chefOrder2ChefOrderStatusDTO(chefOrder);
+        applicationEventPublisher.publishEvent(new ChefOrderStatusUpdatedEvent(this, chefOrderStatusDTO));
+    }
+
+    @EventListener
+    public void updateChefOrderStatus(ChefOrderStatusUpdatedEvent chefOrderStatusUpdatedEvent) {
+        ChefOrderStatusDTO chefOrderStatusDTO = chefOrderStatusUpdatedEvent.getChefOrderStatusDTO();
+        ChefOrder chefOrder = chefOrderDAO.findById(chefOrderStatusDTO.getId()).get();
+        chefOrder.setOrderStatus(chefOrderStatusDTO.getOrderStatus());
         chefOrderDAO.save(chefOrder);
         Events.report(new ChefOrderUpdated(chefOrder.id()));
     }

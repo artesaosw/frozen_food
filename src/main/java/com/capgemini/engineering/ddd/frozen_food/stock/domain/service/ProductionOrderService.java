@@ -2,8 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderConverter.productionOrderDTO2ProductionOrder;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderStatusConverter.productionOrder2ProductionOrderStatusDTO;
 
 @Service
 public class ProductionOrderService {
@@ -32,7 +36,7 @@ public class ProductionOrderService {
     ProductionOrderDAO productionOrderDAO;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public ProductionOrder getProductionOrderById(@NotNull ProductionOrderID id) {
         if (!productionOrderDAO.existsById(id)) {
@@ -51,9 +55,11 @@ public class ProductionOrderService {
 
     public void registerNewProductionOrder(ProductionOrder productionOrder) {
         if (productionOrderDAO.existsById(productionOrder.id())) {
+            // TODO Event to report problem to production domain
             throw new DuplicatedEntityException("Already exists another production order with the same id.");
         }
         if (productionOrderDAO.existsByOrderReference(productionOrder.getOrderReference())) {
+            // TODO Event to report problem to production domain
             throw new DuplicatedEntityException("Already exists another production order with the same order reference.");
         }
         productionOrderDAO.save(productionOrder);
@@ -85,6 +91,17 @@ public class ProductionOrderService {
             throw new IllegalArgumentException("Order already delivered.");
         }
         productionOrder.setOrderStatus(orderStatus);
+        productionOrderDAO.save(productionOrder);
+        Events.report(new ProductionOrderUpdated(productionOrder.id()));
+        ProductionOrderStatusDTO productionOrderStatusDTO = productionOrder2ProductionOrderStatusDTO(productionOrder);
+        applicationEventPublisher.publishEvent(new ProductionOrderStatusUpdatedEvent(this, productionOrderStatusDTO));
+    }
+
+    @EventListener
+    public void updateProductionOrderStatus(ProductionOrderStatusUpdatedEvent productionOrderStatusUpdatedEvent) {
+        ProductionOrderStatusDTO productionOrderStatusDTO = productionOrderStatusUpdatedEvent.getProductionOrderStatusDTO();
+        ProductionOrder productionOrder = productionOrderDAO.findById(productionOrderStatusDTO.getId()).get();
+        productionOrderStatusDTO.setOrderStatus(productionOrderStatusDTO.getOrderStatus());
         productionOrderDAO.save(productionOrder);
         Events.report(new ProductionOrderUpdated(productionOrder.id()));
     }

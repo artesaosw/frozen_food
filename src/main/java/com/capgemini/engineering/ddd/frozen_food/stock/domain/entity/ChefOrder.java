@@ -49,11 +49,16 @@ public class ChefOrder implements AggregateRoot, Serializable {
     }
 
     public ChefOrder (@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
-        this.id = Identificator.clone(id);
+        this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
+    }
+
+    public ChefOrder (@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
+        this.id = Identificator.clone(id);
+        this.orderStatus = orderStatus;
     }
 
     @Override
