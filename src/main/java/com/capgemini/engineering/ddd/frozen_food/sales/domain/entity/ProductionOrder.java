@@ -7,11 +7,11 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Document(collection = "productionOrder_sales")
 public class ProductionOrder implements AggregateRoot, Serializable {
@@ -20,9 +20,13 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     private String id;
 
     @NotNull
-    private ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class);
+    private ProductionOrderID productionOrderID;
 
-    private Map<Product, Integer> products = new HashMap<>();
+    @NotEmpty
+    private List<Product> products;
+
+    @NotEmpty
+    private List<Integer> quantities;
 
     @NotNull
     private OrderDeliveryState orderDeliveryState;
@@ -41,12 +45,20 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.productionOrderID = productionOrderID;
     }
 
-    public Map<Product, Integer> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Map<Product, Integer> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public List<Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(List<Integer> quantities) {
+        this.quantities = quantities;
     }
 
     public String getId() {

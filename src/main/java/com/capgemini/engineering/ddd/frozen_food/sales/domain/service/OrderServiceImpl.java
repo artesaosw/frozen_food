@@ -9,10 +9,13 @@ import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.PaymentRet
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.converter.OrderToOrderDTOConverter;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.CustomerDoesNotExistException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyCancelled;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderDoesNotExist;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.CustomerRepository;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,12 +24,16 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements DomainServices, OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
@@ -43,9 +50,20 @@ public class OrderServiceImpl implements DomainServices, OrderService {
 
     public Order registerNewOrder(Order order) throws CloneNotSupportedException {
 
-        //make sure an order with id = order.getId() doesn't already exist in the db
-        //IF so, persist it, otherwise, throw OrderAlreadyExistException
-        if (!this.orderRepository.existsById(order.getId())) {
+        //make sure the order passed as argument contains a null id or is blank (doesn't exist in the db)
+        //IF so, attempt to persist it, otherwise, throw OrderAlreadyExistException
+        if (order.getId() == null || order.getId().isBlank()) {
+
+            //If order doesn't exist, make sure the customer is already registered
+            //Also make sure the email of the customer associated with the order actually
+            //matches with the that customer's email in the Customer collection
+            //Can't place orders before registering the customer that places it
+            Optional<Customer> customer = this.customerRepository.findById(order.getOrderedBy().getId());
+
+            if( customer.isEmpty() ||
+                !customer.get().equals(order.getOrderedBy()) ) {
+                throw new CustomerDoesNotExistException("Customer associated with order doesn't exist. Please register before proceeding.");
+            }
 
             //fill up the remaining attributes of the order object
             order.setOrderID(Identificator.newInstance(OrderID.class));
@@ -58,7 +76,7 @@ public class OrderServiceImpl implements DomainServices, OrderService {
             this.eventPublisher.publishEvent(new OrderRegisteredEvent(this, orderDTO));
         }
         else {
-            throw new OrderAlreadyExistsException("The order specified already exists. If you wish to modify an existing order, delete it" +
+            throw new OrderAlreadyExistsException("The order specified may already exist, or it may contain and invalid ID. If you wish to modify an existing order, delete it" +
                     "and replace it with a new one.");
         }
 

@@ -10,8 +10,9 @@ public class CustomerToCustomerDTOConverter {
 
         CustomerDTO customerDTO = new CustomerDTO();
 
-        //close customerID into the dto
-        customerDTO.setCustomerID(Identificator.clone(customer.getCustomerID()));
+        //clone customerID into the dto (or maybe not)
+        //customerDTO.setCustomerID(Identificator.clone(customer.getCustomerID()));
+        customerDTO.setCustomerID(customer.getCustomerID());
 
         customerDTO.setName(customer.getName());
         customerDTO.setEmail(customer.getEmail());

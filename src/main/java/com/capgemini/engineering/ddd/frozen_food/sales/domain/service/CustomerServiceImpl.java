@@ -9,7 +9,7 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerDeletedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.CustomerUpdatedEvent;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.InfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.DomainIndependentIDMismatchException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,9 @@ public class CustomerServiceImpl implements DomainServices, CustomerService {
     public Customer createNewCustomer (Customer customer) {
 
         //can't have two customers with the same NIF
-        if (customerRepository.existsCustomerByNif(customer.getNif())) {
-            throw new BillingInfoAlreadyExistsException("Customer creation failed. A customer with the same billing information already exists.");
+        if (customerRepository.existsCustomerByNif(customer.getNif())
+                || customerRepository.existsCustomerByEmail(customer.getEmail()) ) {
+            throw new InfoAlreadyExistsException("Customer creation failed. A customer with the same billing or email information already exists.");
         }
 
         //assign a new CustomerID to the customer object

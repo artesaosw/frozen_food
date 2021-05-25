@@ -6,6 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Address;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
@@ -30,6 +31,7 @@ public class Customer implements AggregateRoot, Serializable {
 
     @NotBlank
     @Email(message = "Email invalid!" )
+    //@Indexed(unique=true)
     private String email;
 
     @NotBlank

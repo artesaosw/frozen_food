@@ -11,8 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Document(collection = "order_sales")
 public class Order implements AggregateRoot, Serializable {
@@ -23,7 +22,10 @@ public class Order implements AggregateRoot, Serializable {
     private OrderID orderID;
 
     @NotEmpty
-    private Map<Product, Integer> productsOrdered = new HashMap<>();
+    private List<Product> productsOrdered = new ArrayList<>();
+
+    @NotEmpty
+    private List<Integer> quantitiesOrdered = new ArrayList<>();
 
     @NotNull
     private Customer orderedBy;
@@ -61,13 +63,29 @@ public class Order implements AggregateRoot, Serializable {
         return this.orderID;
     }
 
-    public Map<Product, Integer> getProductsOrdered() {
+    public List<Product> getProductsOrdered() {
         return productsOrdered;
     }
 
-    public void setProductsOrdered(Map<Product, Integer> productsOrdered) {
+    public void setProductsOrdered(List<Product> productsOrdered) {
         this.productsOrdered = productsOrdered;
     }
+
+    public List<Integer> getQuantitiesOrdered() {
+        return quantitiesOrdered;
+    }
+
+    public void setQuantitiesOrdered(List<Integer> quantitiesOrdered) {
+        this.quantitiesOrdered = quantitiesOrdered;
+    }
+
+    //    public Map<String, Integer> getProductsOrdered() {
+//        return productsOrdered;
+//    }
+//
+//    public void setProductsOrdered(Map<String, Integer> productsOrdered) {
+//        this.productsOrdered = productsOrdered;
+//    }
 
     public Customer getOrderedBy() {
         return orderedBy;
@@ -111,41 +129,82 @@ public class Order implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-    public void addItemToOrder(Product item, int quantity) {
-        //check for null quantities
-        if(quantity <= 0) {
-            return;
+//    public void addItemToOrder(Product item, int quantity) {
+//        //check for null quantities
+//        if(quantity <= 0) {
+//            return;
+//        }
+//
+//        //if item is not in the list, add it
+//        if(!this.productsOrdered.containsKey(item)) {
+//            this.productsOrdered.put(item.toString(), quantity);
+//        }
+//        else {
+//            //increment what's already there
+//            int newQuantity = this.productsOrdered.get(item) + quantity;
+//            this.productsOrdered.put(item.toString(), newQuantity);
+//        }
+//    }
+
+//    /*
+//        Method that receives a Set<Product> and a List<Integer>, checks if they have the same number
+//        of elements and then sets them to this.products and this.quantities, respectively.
+//     */
+//    public void addItemsToOrder(List<Product> products, List<Integer> quantities) {
+//
+//        if(!this.validateOrderProducts()) {
+//            throw new QuantitiesMismatchException("Set of products and list of quantities have different sizes or repeated products.");
+//        }
+//
+//        this.setProductsOrdered(products);
+//        this.setQuantitiesOrdered(quantities);
+//    }
+
+    public boolean validateOrderProducts() {
+
+        if(this.getProductsOrdered().size() != this.getQuantitiesOrdered().size()) {
+            return false;
         }
 
-        //if item is not in the list, add it
-        if(!this.productsOrdered.containsKey(item)) {
-            this.productsOrdered.put(item, quantity);
+        for (int i = 0; i < this.getProductsOrdered().size(); i++) {
+            for(int j = i + 1; j < this.getProductsOrdered().size(); j++) {
+                if (this.getProductsOrdered().get(i).equals(this.getProductsOrdered().get(j))) {
+                    return false;
+                }
+            }
         }
-        else {
-            //increment what's already there
-            int newQuantity = this.productsOrdered.get(item) + quantity;
-            this.productsOrdered.put(item, newQuantity);
-        }
+        return true;
     }
 
-    public void removeItemFromOrder(Product item) {
-        this.productsOrdered.remove(item);
-    }
+//    public void removeItemFromOrder(Product item) {
+//        this.productsOrdered.remove(item);
+//    }
+//
+//    public void decrementItemInOrder(Product item, int quantity) {
+//
+//        //check if item exists and if available amount is >= than quantity
+//        if(this.productsOrdered.containsKey(item) && this.productsOrdered.get(item) >= 0) {
+//            int newQuantity = this.productsOrdered.get(item) - quantity;
+//            this.productsOrdered.put(item.toString(), newQuantity);
+//        }
+//    }
 
-    public void decrementItemInOrder(Product item, int quantity) {
-
-        //check if item exists and if available amount is >= than quantity
-        if(this.productsOrdered.containsKey(item) && this.productsOrdered.get(item) >= 0) {
-            int newQuantity = this.productsOrdered.get(item) - quantity;
-            this.productsOrdered.put(item, newQuantity);
-        }
-    }
+//    public double computeTotalCost() {
+//        double totalCost = 0;
+//
+//        for (String product : this.productsOrdered.keySet()) {
+//            //split the product string, obtain price string and convert it to double
+//            totalCost += Double.parseDouble(product.split("|")[1]) * this.productsOrdered.get(product);
+//        }
+//
+//        return totalCost;
+//    }
 
     public double computeTotalCost() {
         double totalCost = 0;
 
-        for (Product product : this.productsOrdered.keySet()) {
-            totalCost += product.getUnitPrice() * this.productsOrdered.get(product);
+        for(int i = 0; i < this.productsOrdered.size(); i++) {
+            totalCost += this.getQuantitiesOrdered().get(i) * this.productsOrdered.get(i).getUnitPrice();
         }
 
         return totalCost;

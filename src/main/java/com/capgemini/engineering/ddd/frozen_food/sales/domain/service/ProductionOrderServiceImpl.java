@@ -74,10 +74,10 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
     Products with <= 0 quantities ordered are removed from the map.
     Returns false if empty. Otherwise, returns true.
      */
-    private boolean validateItemsOrderedMap(Map<Product, Integer> itemsOrdered) {
+    private boolean validateItemsOrderedMap(Map<String, Integer> itemsOrdered) {
 
         //remove products with non-positive quantities
-        for (Product product : itemsOrdered.keySet()) {
+        for (String product : itemsOrdered.keySet()) {
             if (itemsOrdered.get(product) <= 0) {
                 itemsOrdered.remove(product);
             }

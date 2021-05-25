@@ -4,17 +4,21 @@ import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.List;
 
 public class OrderDTO {
 
     @NotNull
     private OrderID orderID;
 
-    @NotNull
-    private Map<ProductDTO, Integer> productsOrdered;
+    @NotEmpty
+    private List<ProductDTO> products;
+
+    @NotEmpty
+    private List<Integer> quantities;
 
     @NotNull
     private CustomerID orderedBy;
@@ -29,14 +33,6 @@ public class OrderDTO {
 
     }
 
-    public OrderDTO(OrderID orderID, Map<ProductDTO, Integer> productsOrdered, CustomerID orderedBy, OrderDeliveryState orderDeliveryState, LocalDate date) {
-        this.orderID = orderID;
-        this.productsOrdered = productsOrdered;
-        this.orderedBy = orderedBy;
-        this.orderDeliveryState = orderDeliveryState;
-        this.deliveryDate = date;
-    }
-
     public OrderID getOrderID() {
         return orderID;
     }
@@ -45,12 +41,20 @@ public class OrderDTO {
         this.orderID = orderID;
     }
 
-    public Map<ProductDTO, Integer> getProductsOrdered() {
-        return productsOrdered;
+    public List<ProductDTO> getProducts() {
+        return products;
     }
 
-    public void setProductsOrdered(Map<ProductDTO, Integer> productsOrdered) {
-        this.productsOrdered = productsOrdered;
+    public void setProducts(List<ProductDTO> products) {
+        this.products = products;
+    }
+
+    public List<Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(List<Integer> quantities) {
+        this.quantities = quantities;
     }
 
     public CustomerID getOrderedBy() {
@@ -76,6 +80,4 @@ public class OrderDTO {
     public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
-
-
 }

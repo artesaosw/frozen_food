@@ -3,11 +3,9 @@ package com.capgemini.engineering.ddd.frozen_food.sales.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.DomainIndependentIDMismatchException;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyCancelled;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderAlreadyExistsException;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
+import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.*;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.BillingInfoAlreadyExistsException;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.CustomerService;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.OrderService;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.service.ProductService;
@@ -73,7 +71,7 @@ public class SalesController {
             return new ResponseEntity<Customer>(this.customerService.createNewCustomer(newCustomer),
                 HttpStatus.CREATED);
         }
-        catch(BillingInfoAlreadyExistsException e) {
+        catch(InfoAlreadyExistsException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -92,9 +90,16 @@ public class SalesController {
     @PostMapping("/orders")
     public ResponseEntity<?> registerNewOrder(@Valid @RequestBody Order order) {
 
+        if (order.validateOrderProducts()) {
+            return new ResponseEntity<String>("Product list mismatch. Either there are repeat products" +
+                    "or the lists' sizes don't match.", HttpStatus.BAD_REQUEST);
+        }
+
         try {
             return new ResponseEntity<Order>(this.orderService.registerNewOrder(order), HttpStatus.CREATED);
         } catch (OrderAlreadyExistsException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CustomerDoesNotExistException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (CloneNotSupportedException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);

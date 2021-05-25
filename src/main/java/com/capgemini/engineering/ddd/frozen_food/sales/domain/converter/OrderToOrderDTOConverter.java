@@ -2,12 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.OrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.ProductDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderToOrderDTOConverter {
 
@@ -16,9 +15,14 @@ public class OrderToOrderDTOConverter {
      */
     public static OrderDTO convertOrderToOrderDTO(Order order) throws CloneNotSupportedException {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrderID(Identificator.clone(order.getOrderID()));
 
-        Map<ProductDTO, Integer> productsOrdered = convertProductList(order.getProductsOrdered());
+        //clone OrderID (or maybe not)
+        //orderDTO.setOrderID(Identificator.clone(order.getOrderID()));
+        orderDTO.setOrderID(order.getOrderID());
+
+        List<ProductDTO> productsOrdered = convertProductList(order.getProductsOrdered());
+        orderDTO.setProducts(productsOrdered);
+        orderDTO.setQuantities(order.getQuantitiesOrdered());
 
         orderDTO.setOrderDeliveryState(order.getOrderDeliveryState());
         orderDTO.setDeliveryDate(order.getDeliveryDate());
@@ -27,17 +31,17 @@ public class OrderToOrderDTOConverter {
     }
 
     /*
-    Returns a Map<ProductDTO, Integer> based on the Map<Product, Integer> passed as argument.
+    Returns a List<ProductDTO> based on the List<Product> passed as argument.
+    The string keys will be the product names.
      */
-    private static Map<ProductDTO, Integer> convertProductList(Map<Product, Integer> originalMap) throws CloneNotSupportedException {
+    private static List<ProductDTO> convertProductList(List<Product> originalList) throws CloneNotSupportedException {
 
-        Map<ProductDTO, Integer> productsOrdered = new HashMap<>();
+        List<ProductDTO> listProductDTO = new ArrayList<>();
 
-        for(Product product : originalMap.keySet()) {
-            ProductDTO productDTO = ProductToProductDTOConverter.ConvertProductToProductDTO(product);
-            productsOrdered.put(productDTO, originalMap.get(product));
+        for(Product product : originalList) {
+            listProductDTO.add(ProductToProductDTOConverter.ConvertProductToProductDTO(product));
         }
 
-        return productsOrdered;
+        return listProductDTO;
     }
 }

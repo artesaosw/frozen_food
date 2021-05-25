@@ -9,6 +9,8 @@ public interface CustomerRepository extends MongoRepository<Customer, String>, C
 
     public boolean existsCustomerByNif(NIF nif);
 
+    public boolean existsCustomerByEmail(String email);
+
     //public boolean existsCustomerByCustomerid(CustomerID customerId);
 
 }

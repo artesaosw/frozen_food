@@ -70,7 +70,7 @@ public class FrozenFoodApplication implements CommandLineRunner {
 		customer1.setName("CustomerTeste 1");
 		customer1.setNif(new NIF("136532489"));
 		customer1.setEmail("customer1_Teste@gmail.com");
-		customer1.setCellphoneNumber("91 91 91 999");
+		customer1.setCellphoneNumber("919191999");
 		customer1.setAddress(new Address("Street 1", "5º D", "5000-333", "note1"));
 
 		Customer customer2 = new Customer();
@@ -78,7 +78,7 @@ public class FrozenFoodApplication implements CommandLineRunner {
 		customer2.setName("CustomerTeste 2");
 		customer2.setNif(new NIF("181320886"));
 		customer2.setEmail("customer2_Teste2@gmail.com");
-		customer2.setCellphoneNumber("93 91 91 777");
+		customer2.setCellphoneNumber("939191777");
 		customer2.setAddress(new Address("Street 2", "1º D", "4000-111", "note_2"));
 
 		customer1 = this.customerRepository.save(customer1);
@@ -89,15 +89,15 @@ public class FrozenFoodApplication implements CommandLineRunner {
 		order1.setOrderedBy(customer1);
 		order1.setOrderDeliveryState(OrderDeliveryState.PROCESSING);
 		order1.setCreationDate(LocalDate.now());
-		order1.getProductsOrdered().put(product1, 200);
+		order1.getProductsOrdered().put(product1.toString(), 200);
 
 		Order order2 = new Order();
 		order2.setOrderID(Identificator.newInstance(OrderID.class));
 		order2.setOrderedBy(customer2);
 		order2.setOrderDeliveryState(OrderDeliveryState.CONFIRMED);
 		order2.setCreationDate(LocalDate.now());
-		order2.getProductsOrdered().put(product1, 50);
-		order2.getProductsOrdered().put(product2, 110);
+		order2.getProductsOrdered().put(product1.toString(), 50);
+		order2.getProductsOrdered().put(product2.toString(), 110);
 
 		this.orderRepository.save(order1);
 		this.orderRepository.save(order2);

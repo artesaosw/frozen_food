@@ -29,8 +29,20 @@ public class OrderID implements Identificator, Serializable {
         return id;
     }
 
+//    @Override
+//    public String toString() {
+//        return id.toString();
+//    }
+
+//    @Override
+//    public String toString() {
+//        return id + "";
+//    }
+
     @Override
     public String toString() {
-        return id + "";
+        return "OrderID{" +
+                "id=" + id +
+                '}';
     }
 }

@@ -6,6 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class Product implements AggregateRoot, Serializable {
     private Dimensions dimensions;
 
     @NotBlank
+    //@Indexed(unique=true)
     private String name;
 
     //shelf life of the product, defined in numbers of days
@@ -119,11 +121,24 @@ public class Product implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
+//    @Override
+//    @JsonValue
+//    public String toString() {
+//        return this.name + "|" + this.getUnitPrice();
+//
+//    }
+
     @Override
-    @JsonValue
     public String toString() {
-        return this.name + "-" + this.getId();
-        //return this.name;
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", productID=" + productID +
+                ", unitPrice=" + unitPrice +
+                ", dimensions=" + dimensions +
+                ", name='" + name + '\'' +
+                ", shelfLife=" + shelfLife +
+                ", available=" + available +
+                '}';
     }
 
     @Override

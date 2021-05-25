@@ -2,24 +2,23 @@ package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
+import java.util.List;
 
 public class ProductionOrderDTO {
 
     @NotNull
     private ProductionOrderID productionOrderID;
 
-    @NotNull
-    private Map<RecipeDTO, Integer> products;
+    @NotEmpty
+    private List<RecipeDTO> recipes;
+
+    @NotEmpty
+    private List<Integer> quantities;
 
     public ProductionOrderDTO() {
 
-    }
-
-    public ProductionOrderDTO(ProductionOrderID productionOrderID, Map<RecipeDTO, Integer> products) {
-        this.productionOrderID = productionOrderID;
-        this.products = products;
     }
 
     public ProductionOrderID getProductionOrderID() {
@@ -30,12 +29,19 @@ public class ProductionOrderDTO {
         this.productionOrderID = productionOrderID;
     }
 
-    public Map<RecipeDTO, Integer> getProducts() {
-        return products;
+    public List<RecipeDTO> getRecipes() {
+        return recipes;
     }
 
-    public void setProducts(Map<RecipeDTO, Integer> products) {
-        this.products = products;
+    public void setRecipes(List<RecipeDTO> recipes) {
+        this.recipes = recipes;
     }
 
+    public List<Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(List<Integer> quantities) {
+        this.quantities = quantities;
+    }
 }
