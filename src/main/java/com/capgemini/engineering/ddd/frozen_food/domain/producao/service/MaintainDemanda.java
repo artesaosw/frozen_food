@@ -2,7 +2,6 @@ package com.capgemini.engineering.ddd.frozen_food.domain.producao.service;
 
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
-import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderState;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Demanda;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Ingredient;
@@ -12,11 +11,11 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.Dema
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+//falta usar DTO e reportar evento
 public class MaintainDemanda implements DomainServices {
 
     @Autowired
