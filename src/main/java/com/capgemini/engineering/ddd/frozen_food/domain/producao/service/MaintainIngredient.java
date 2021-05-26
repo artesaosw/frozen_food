@@ -38,24 +38,22 @@ public class MaintainIngredient implements DomainServices {
         if (ingredients.existsByDescription(ingredient.getDescription())) {
             throw new AlreadyExistentEntityException("There Already exists and Ingredient name" + ingredient.getDescription());
         }
-
-        Ingredients.save(ingredient);
+        ingredients.save(ingredient);
     }
 
     public void updateIngredient(@NotNull Ingredient ingredient) throws NonExistentEntityException{
-        if (!ingredients.existsByID(ingredient.getId())) {
+        if (!ingredients.existsById(ingredient.getId())) {
             throw new NonExistentEntityException("There is no ingredient with name = " + ingredient.getDescription());
         }
-
-        Ingredients.save(ingredient);
+        ingredients.save(ingredient);
     };
 
-    public void deleteIngredient(IngredientID ingredientID) throws NonExistentEntityException{
-        if (!ingredients.existsByID(ingredientID)) {
+    public void deleteIngredient(IngredientID id) throws NonExistentEntityException{
+        if (!ingredients.existsById(id)) {
             throw new NonExistentEntityException("There is no ingredient with this id");
         }
-        Ingredient ingredient = ingredients.findById(ingredientID);
-        Ingredient.delete(ingredient);
+        Ingredient ingredient = ingredients.findById(id).get();
+        ingredients.delete(ingredient);
     };
 
 }
