@@ -1,6 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.menu.events;
+package com.capgemini.engineering.ddd.frozen_food._shared.event.menu_production;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production.RecipeDTO;
 import org.springframework.context.ApplicationEvent;
 
 public class RecipeCatalogUpdatedEvent extends ApplicationEvent {

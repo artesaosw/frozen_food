@@ -4,9 +4,8 @@ import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.RecipeID;
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production.RecipeDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.RecipeConverter;
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.RecipeCatalogUpdatedPublisher;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.RecipeUpdated;
@@ -41,12 +40,12 @@ public class MantainRecipes implements DomainServices {
         //reports event
         RecipeDTO recipeDTO = RecipeConverter.recipe2RecipeDTO(recipe);
 
-        if(integratesCatalog){
-            RecipeCatalogUpdatedPublisher eventPublisher = new
-                    RecipeCatalogUpdatedPublisher();
-
-            eventPublisher.publishEvent(recipeDTO);
-        }
+//        if(integratesCatalog){
+//            RecipeCatalogUpdatedPublisher eventPublisher = new
+//                    RecipeCatalogUpdatedPublisher();
+//
+//            eventPublisher.publishEvent(recipeDTO);
+//        }
     }
 
     public void updatePortion(@NotNull RecipeID recipeID, @NotNull Portion portion, boolean majorUpdate){

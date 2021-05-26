@@ -4,10 +4,8 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.StockOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.OrderConverter;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
@@ -46,7 +44,7 @@ public class MantainOrders implements DomainServices {
     }
 
 
-    public void registerNew(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> articles) throws DuplicatedEntityException {
+    public void registerNew(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> articles) throws DuplicatedEntityException {
 
         //Validation
         if(orderDAO.existsByOrderReference(orderReference)){

@@ -22,11 +22,11 @@ public class Order implements AggregateRoot, Serializable {
     private String orderReference;
 
     @Setter
-    private Map<Ingredient, Integer> orders;
+    private Map<String, Integer> orders;
 
 
     @JsonCreator
-    public Order(String orderReference, Map<Ingredient, Integer> orders) {
+    public Order(String orderReference, Map<String, Integer> orders) {
         this.orderReference = orderReference;
         this.orders = orders;
     }
