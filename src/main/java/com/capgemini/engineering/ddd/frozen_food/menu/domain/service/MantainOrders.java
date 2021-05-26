@@ -2,6 +2,8 @@ package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderIngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderIngredientUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
@@ -87,7 +89,13 @@ public class MantainOrders implements DomainServices {
             throw new NonExistentEntityException("There is no order with id = " + order.getId());
         }
         orderDAO.save(order);
-    }                    //---------------> criar evento de update order?
+
+        //converts order to chefOrderIngredientDTO
+        ChefOrderIngredientDTO chefOrderIngredientDTO = OrderConverter.order2ChefOrderIngredientDTO(order);
+
+        //reports event
+        applicationEventPublisher.publishEvent( new ChefOrderIngredientUpdatedEvent(this, chefOrderIngredientDTO));
+    }
 
     public void deleteOrder(ChefOrderID id) throws NonExistentEntityException {
         if(!orderDAO.existsById(id)){
