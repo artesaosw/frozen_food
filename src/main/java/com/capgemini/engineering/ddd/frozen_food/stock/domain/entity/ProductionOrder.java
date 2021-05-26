@@ -56,8 +56,13 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     }
 
     public ProductionOrder(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
-        this.id = Identificator.clone(id);
+        this.id = id;
         this.orderStatus = orderStatus;
+    }
+
+    public ProductionOrder(@NotNull ProductionOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
+        this.id = id;
+        this.orders = new HashMap<>(orders);
     }
 
     @Override

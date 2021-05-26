@@ -57,8 +57,13 @@ public class ChefOrder implements AggregateRoot, Serializable {
     }
 
     public ChefOrder (@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
-        this.id = Identificator.clone(id);
+        this.id = id;
         this.orderStatus = orderStatus;
+    }
+
+    public ChefOrder(@NotNull ChefOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
+        this.id = id;
+        this.orders = new HashMap<>(orders);
     }
 
     @Override

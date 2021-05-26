@@ -1,7 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.event_listener;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderIngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderIngredientUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
@@ -12,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderConverter.chefOrderDTO2ChefOrder;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderIngredientConverter.chefOrderIngredientDTO2ChefOrder;
 
 @Service
 public class ChefOrderListener {
@@ -39,6 +42,14 @@ public class ChefOrderListener {
         ChefOrderStatusDTO chefOrderStatusDTO = chefOrderStatusUpdatedEvent.getChefOrderStatusDTO();
         ChefOrder chefOrder = chefOrderDAO.findById(chefOrderStatusDTO.getId()).get();
         chefOrder.setOrderStatus(chefOrderStatusDTO.getOrderStatus());
+        chefOrderDAO.save(chefOrder);
+    }
+
+    @EventListener
+    public void updateChefOrderIngredients(ChefOrderIngredientUpdatedEvent chefOrderIngredientUpdatedEvent) {
+        ChefOrderIngredientDTO chefOrderIngredientDTO = chefOrderIngredientUpdatedEvent.getChefOrderIngredientDTO();
+        ChefOrder chefOrder = chefOrderDAO.findById(chefOrderIngredientDTO.getId()).get();
+        chefOrder.setOrders(chefOrderIngredientDTO2ChefOrder(chefOrderIngredientDTO).getOrders());
         chefOrderDAO.save(chefOrder);
     }
 }

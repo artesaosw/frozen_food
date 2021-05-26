@@ -1,7 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.event_listener;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderIngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderIngredientUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
@@ -12,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderConverter.productionOrderDTO2ProductionOrder;
+import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ProductionOrderIngredientConverter.productionOrderIngredientDTO2ProductionOrder;
 
 @Service
 public class ProductionOrderListener {
@@ -38,7 +41,15 @@ public class ProductionOrderListener {
     public void updateProductionOrderStatus(ProductionOrderStatusUpdatedEvent productionOrderStatusUpdatedEvent) {
         ProductionOrderStatusDTO productionOrderStatusDTO = productionOrderStatusUpdatedEvent.getProductionOrderStatusDTO();
         ProductionOrder productionOrder = productionOrderDAO.findById(productionOrderStatusDTO.getId()).get();
-        productionOrderStatusDTO.setOrderStatus(productionOrderStatusDTO.getOrderStatus());
+        productionOrder.setOrderStatus(productionOrderStatusDTO.getOrderStatus());
+        productionOrderDAO.save(productionOrder);
+    }
+
+    @EventListener
+    public void updateProductionOrderIngredients(ProductionOrderIngredientUpdatedEvent productionOrderIngredientUpdatedEvent) {
+        ProductionOrderIngredientDTO productionOrderIngredientDTO = productionOrderIngredientUpdatedEvent.getProductionOrderIngredientDTO();
+        ProductionOrder productionOrder = productionOrderDAO.findById(productionOrderIngredientDTO.getId()).get();
+        productionOrder.setOrders(productionOrderIngredientDTO2ProductionOrder(productionOrderIngredientDTO).getOrders());
         productionOrderDAO.save(productionOrder);
     }
 }
