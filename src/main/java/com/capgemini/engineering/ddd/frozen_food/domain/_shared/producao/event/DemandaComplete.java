@@ -5,12 +5,12 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
 import lombok.Getter;
 
 @Getter
-public class DemandaClosed extends DomainEvent {
+public class DemandaComplete extends DomainEvent {
 
     private DemandaID demandaID;
 
 
-        public DemandaClosed(DemandaID demandaID){
+        public DemandaComplete(DemandaID demandaID){
             super();
             this.demandaID = demandaID;
         }

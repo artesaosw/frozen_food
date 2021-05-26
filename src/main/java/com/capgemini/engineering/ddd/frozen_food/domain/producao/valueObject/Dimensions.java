@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @AllArgsConstructor
-public class PackageCharacteristics implements AggregateRoot, Serializable {
+public class Dimensions implements AggregateRoot, Serializable {
 
     @Getter @Setter @NotNull
     private short length;
