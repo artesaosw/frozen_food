@@ -42,7 +42,6 @@ public class MaintainIngredient implements DomainServices {
         Ingredients.save(ingredient);
     }
 
-    //mongoDB tem metodo update?
     public void updateIngredient(@NotNull Ingredient ingredient) throws NonExistentEntityException{
         if (!ingredients.existsByID(ingredient.getId())) {
             throw new NonExistentEntityException("There is no ingredient with name = " + ingredient.getDescription());

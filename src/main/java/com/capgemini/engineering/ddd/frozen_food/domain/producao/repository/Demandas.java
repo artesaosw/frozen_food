@@ -13,4 +13,6 @@ public interface Demandas extends MongoRepository<Demanda, DemandaID>{
     public List<Demanda> getAllByStatus(ProductionOrderState status);
 
     public List<Demanda> getAllByDate(LocalDate date);
+
+    public boolean existsWithStatus(ProductionOrderState status);
 }
