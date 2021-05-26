@@ -5,6 +5,7 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimens
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class ProductDTO {
 
@@ -16,6 +17,9 @@ public class ProductDTO {
 
     @NotBlank
     private String name;
+
+    @Positive
+    private int quantity;
 
     public ProductDTO() {
 
@@ -43,5 +47,13 @@ public class ProductDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

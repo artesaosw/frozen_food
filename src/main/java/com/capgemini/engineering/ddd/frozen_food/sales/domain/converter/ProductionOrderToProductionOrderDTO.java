@@ -6,7 +6,9 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductionOrderToProductionOrderDTO {
 
@@ -17,24 +19,23 @@ public class ProductionOrderToProductionOrderDTO {
         //pOrderDTO.setProductionOrderID(Identificator.clone(pOrder.getProductionOrderID()));
         pOrderDTO.setProductionOrderID(pOrder.getProductionOrderID());
 
-        List<RecipeDTO> recipes = convertProductList(pOrder.getProducts());
+        Map<String, Integer> recipes = convertProductList(pOrder);
         pOrderDTO.setRecipes(recipes);
-        pOrderDTO.setQuantities(pOrder.getQuantities());
 
         return pOrderDTO;
     }
 
     /*
-    Returns a List<RecipeDTO> based on the List<Product> passed as argument.
+    Returns a Map<String, Integer> based on the ProductionOrder passed as argument.
      */
-    private static List<RecipeDTO> convertProductList(List<Product> originalList) {
+    private static Map<String, Integer> convertProductList(ProductionOrder pOrder) {
 
-        List<RecipeDTO> listRecipeDTO = new ArrayList<>();
+        Map<String, Integer> recipes = new HashMap<>();
 
-        for(Product product : originalList) {
-            listRecipeDTO.add(ProductToRecipeDTOConverter.convertProductToRecipeDTO(product));
+        //use the GlobalID of a product as a String key in the map
+        for (int i = 0; i < pOrder.getProducts().size(); i++) {
+            recipes.put(pOrder.getProducts().get(i).getId(), pOrder.getQuantities().get(i));
         }
-
-        return listRecipeDTO;
+        return recipes;
     }
 }

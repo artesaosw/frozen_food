@@ -6,7 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimens
 
 public class ProductToProductDTOConverter {
 
-    public static ProductDTO ConvertProductToProductDTO(Product product) throws CloneNotSupportedException {
+    public static ProductDTO ConvertProductToProductDTO(Product product, int quantity) throws CloneNotSupportedException {
         ProductDTO productDTO = new ProductDTO();
 
         //clone the ProductID (or maybe not)
@@ -15,6 +15,7 @@ public class ProductToProductDTOConverter {
 
         productDTO.setDimensions( (Dimensions) product.getDimensions().clone());
         productDTO.setName(product.getName());
+        productDTO.setQuantity(quantity);
 
         return productDTO;
     }

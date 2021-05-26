@@ -17,11 +17,14 @@ public class OrderDTO {
     @NotEmpty
     private List<ProductDTO> products;
 
-    @NotEmpty
-    private List<Integer> quantities;
+//    @NotEmpty
+//    private List<Integer> quantities;
+
+//    @NotNull
+//    private CustomerID orderedBy;
 
     @NotNull
-    private CustomerID orderedBy;
+    private CustomerDTO orderedBy;
 
     @NotNull
     private OrderDeliveryState orderDeliveryState;
@@ -49,19 +52,27 @@ public class OrderDTO {
         this.products = products;
     }
 
-    public List<Integer> getQuantities() {
-        return quantities;
-    }
+//    public List<Integer> getQuantities() {
+//        return quantities;
+//    }
+//
+//    public void setQuantities(List<Integer> quantities) {
+//        this.quantities = quantities;
+//    }
 
-    public void setQuantities(List<Integer> quantities) {
-        this.quantities = quantities;
-    }
+//    public CustomerID getOrderedBy() {
+//        return orderedBy;
+//    }
+//
+//    public void setOrderedBy(CustomerID orderedBy) {
+//        this.orderedBy = orderedBy;
+//    }
 
-    public CustomerID getOrderedBy() {
+    public CustomerDTO getOrderedBy() {
         return orderedBy;
     }
 
-    public void setOrderedBy(CustomerID orderedBy) {
+    public void setOrderedBy(CustomerDTO orderedBy) {
         this.orderedBy = orderedBy;
     }
 

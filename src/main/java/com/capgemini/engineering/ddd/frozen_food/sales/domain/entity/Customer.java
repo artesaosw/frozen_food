@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Document(collection = "customer_sales")
 public class Customer implements AggregateRoot, Serializable {
@@ -131,5 +132,25 @@ public class Customer implements AggregateRoot, Serializable {
     @Override
     public int hashcode() {
         return AggregateRoot.super.hashcode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return activated == customer.activated &&
+                Objects.equals(id, customer.id) &&
+                Objects.equals(customerID, customer.customerID) &&
+                Objects.equals(name, customer.name) &&
+                Objects.equals(nif, customer.nif) &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(cellphoneNumber, customer.cellphoneNumber) &&
+                Objects.equals(address, customer.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, customerID, name, nif, email, cellphoneNumber, address, activated);
     }
 }

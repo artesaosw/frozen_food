@@ -2,13 +2,13 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
+import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderState;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,6 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     @Id
     private String id;
 
-    @NotNull
     private ProductionOrderID productionOrderID;
 
     @NotEmpty
@@ -28,8 +27,7 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     @NotEmpty
     private List<Integer> quantities;
 
-    @NotNull
-    private OrderDeliveryState orderDeliveryState;
+    private ProductionOrderState productionOrderState;
 
     private LocalDate productionDate;
 
@@ -69,12 +67,12 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.id = id;
     }
 
-    public OrderDeliveryState getOrderDeliveryState() {
-        return orderDeliveryState;
+    public ProductionOrderState getProductionOrderState() {
+        return productionOrderState;
     }
 
-    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
-        this.orderDeliveryState = orderDeliveryState;
+    public void setProductionOrderState (ProductionOrderState productionOrderState) {
+        this.productionOrderState = productionOrderState;
     }
 
     public LocalDate getProductionDate() {
@@ -98,5 +96,29 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     @Override
     public int hashcode() {
         return AggregateRoot.super.hashcode();
+    }
+
+    /*
+    Check if List<Product> does not contain duplicates and has the same size as List<Integer>.
+    Used to validate if order is well-formed.
+     */
+    public boolean validateOrder() {
+
+        if(this.products.size() == 0 || this.quantities.size() == 0) {
+            return false;
+        }
+
+        if(this.products.size() != this.quantities.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.products.size(); i++) {
+            for(int j = i + 1; j < this.products.size(); j++) {
+                if (this.products.get(i).equals(this.products.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

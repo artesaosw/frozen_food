@@ -20,9 +20,10 @@ public class OrderToOrderDTOConverter {
         //orderDTO.setOrderID(Identificator.clone(order.getOrderID()));
         orderDTO.setOrderID(order.getOrderID());
 
-        List<ProductDTO> productsOrdered = convertProductList(order.getProductsOrdered());
+        List<ProductDTO> productsOrdered = convertProductList(order);
         orderDTO.setProducts(productsOrdered);
-        orderDTO.setQuantities(order.getQuantitiesOrdered());
+
+        orderDTO.setOrderedBy(CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(order.getOrderedBy()));
 
         orderDTO.setOrderDeliveryState(order.getOrderDeliveryState());
         orderDTO.setDeliveryDate(order.getDeliveryDate());
@@ -31,17 +32,17 @@ public class OrderToOrderDTOConverter {
     }
 
     /*
-    Returns a List<ProductDTO> based on the List<Product> passed as argument.
-    The string keys will be the product names.
+    Returns a List<ProductDTO> based on the Order object passed as argument.
      */
-    private static List<ProductDTO> convertProductList(List<Product> originalList) throws CloneNotSupportedException {
+    private static List<ProductDTO> convertProductList(Order order) throws CloneNotSupportedException {
 
         List<ProductDTO> listProductDTO = new ArrayList<>();
 
-        for(Product product : originalList) {
-            listProductDTO.add(ProductToProductDTOConverter.ConvertProductToProductDTO(product));
+        for (int i = 0; i < order.getProductsOrdered().size(); i++) {
+            listProductDTO.add(
+                    ProductToProductDTOConverter.ConvertProductToProductDTO(order.getProductsOrdered().get(i),
+                            order.getQuantitiesOrdered().get(i)));
         }
-
         return listProductDTO;
     }
 }

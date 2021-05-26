@@ -89,15 +89,15 @@ public class FrozenFoodApplication implements CommandLineRunner {
 		order1.setOrderedBy(customer1);
 		order1.setOrderDeliveryState(OrderDeliveryState.PROCESSING);
 		order1.setCreationDate(LocalDate.now());
-		order1.getProductsOrdered().put(product1.toString(), 200);
+		order1.addProduct(product1, 100);
 
 		Order order2 = new Order();
 		order2.setOrderID(Identificator.newInstance(OrderID.class));
 		order2.setOrderedBy(customer2);
 		order2.setOrderDeliveryState(OrderDeliveryState.CONFIRMED);
 		order2.setCreationDate(LocalDate.now());
-		order2.getProductsOrdered().put(product1.toString(), 50);
-		order2.getProductsOrdered().put(product2.toString(), 110);
+		order2.addProduct(product1, 500);
+		order2.addProduct(product2, 1250);
 
 		this.orderRepository.save(order1);
 		this.orderRepository.save(order2);

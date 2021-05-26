@@ -55,17 +55,15 @@ public class OrderServiceImpl implements DomainServices, OrderService {
         if (order.getId() == null || order.getId().isBlank()) {
 
             //If order doesn't exist, make sure the customer is already registered
-            //Also make sure the email of the customer associated with the order actually
-            //matches with the that customer's email in the Customer collection
             //Can't place orders before registering the customer that places it
             Optional<Customer> customer = this.customerRepository.findById(order.getOrderedBy().getId());
 
-            if( customer.isEmpty() ||
-                !customer.get().equals(order.getOrderedBy()) ) {
+            if( customer.isEmpty() ) {
                 throw new CustomerDoesNotExistException("Customer associated with order doesn't exist. Please register before proceeding.");
             }
 
             //fill up the remaining attributes of the order object
+            order.setOrderedBy(customer.get());
             order.setOrderID(Identificator.newInstance(OrderID.class));
             order.setOrderDeliveryState(OrderDeliveryState.PROCESSING);
             order.setCreationDate(LocalDate.now());
@@ -93,6 +91,7 @@ public class OrderServiceImpl implements DomainServices, OrderService {
 
         if(order.getOrderDeliveryState() != OrderDeliveryState.CANCELLED) {
             order.setOrderDeliveryState(OrderDeliveryState.CANCELLED);
+            this.orderRepository.save(order);
 
             //let's assume we must keep every order in the db and can't delete them for good
 //            this.orderRepository.delete(order);

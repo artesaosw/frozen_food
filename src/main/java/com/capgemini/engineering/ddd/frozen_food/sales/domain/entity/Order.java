@@ -79,14 +79,6 @@ public class Order implements AggregateRoot, Serializable {
         this.quantitiesOrdered = quantitiesOrdered;
     }
 
-    //    public Map<String, Integer> getProductsOrdered() {
-//        return productsOrdered;
-//    }
-//
-//    public void setProductsOrdered(Map<String, Integer> productsOrdered) {
-//        this.productsOrdered = productsOrdered;
-//    }
-
     public Customer getOrderedBy() {
         return orderedBy;
     }
@@ -129,38 +121,22 @@ public class Order implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-//    public void addItemToOrder(Product item, int quantity) {
-//        //check for null quantities
-//        if(quantity <= 0) {
-//            return;
-//        }
-//
-//        //if item is not in the list, add it
-//        if(!this.productsOrdered.containsKey(item)) {
-//            this.productsOrdered.put(item.toString(), quantity);
-//        }
-//        else {
-//            //increment what's already there
-//            int newQuantity = this.productsOrdered.get(item) + quantity;
-//            this.productsOrdered.put(item.toString(), newQuantity);
-//        }
-//    }
+    public boolean addProduct(Product product, Integer quantity) {
 
-//    /*
-//        Method that receives a Set<Product> and a List<Integer>, checks if they have the same number
-//        of elements and then sets them to this.products and this.quantities, respectively.
-//     */
-//    public void addItemsToOrder(List<Product> products, List<Integer> quantities) {
-//
-//        if(!this.validateOrderProducts()) {
-//            throw new QuantitiesMismatchException("Set of products and list of quantities have different sizes or repeated products.");
-//        }
-//
-//        this.setProductsOrdered(products);
-//        this.setQuantitiesOrdered(quantities);
-//    }
+        if (!this.productsOrdered.contains(product)) {
+            this.productsOrdered.add(product);
+            this.quantitiesOrdered.add(quantity);
+
+            return true;
+        }
+        return false;
+    }
 
     public boolean validateOrderProducts() {
+
+        if(this.getProductsOrdered().size() == 0 || this.getQuantitiesOrdered().size() == 0) {
+            return false;
+        }
 
         if(this.getProductsOrdered().size() != this.getQuantitiesOrdered().size()) {
             return false;
@@ -176,30 +152,6 @@ public class Order implements AggregateRoot, Serializable {
         return true;
     }
 
-//    public void removeItemFromOrder(Product item) {
-//        this.productsOrdered.remove(item);
-//    }
-//
-//    public void decrementItemInOrder(Product item, int quantity) {
-//
-//        //check if item exists and if available amount is >= than quantity
-//        if(this.productsOrdered.containsKey(item) && this.productsOrdered.get(item) >= 0) {
-//            int newQuantity = this.productsOrdered.get(item) - quantity;
-//            this.productsOrdered.put(item.toString(), newQuantity);
-//        }
-//    }
-
-//    public double computeTotalCost() {
-//        double totalCost = 0;
-//
-//        for (String product : this.productsOrdered.keySet()) {
-//            //split the product string, obtain price string and convert it to double
-//            totalCost += Double.parseDouble(product.split("|")[1]) * this.productsOrdered.get(product);
-//        }
-//
-//        return totalCost;
-//    }
-
     public double computeTotalCost() {
         double totalCost = 0;
 
@@ -208,5 +160,19 @@ public class Order implements AggregateRoot, Serializable {
         }
 
         return totalCost;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", orderID=" + orderID +
+                ", productsOrdered=" + productsOrdered +
+                ", quantitiesOrdered=" + quantitiesOrdered +
+                ", orderedBy=" + orderedBy +
+                ", orderDeliveryState=" + orderDeliveryState +
+                ", creationDate=" + creationDate +
+                ", deliveryDate=" + deliveryDate +
+                '}';
     }
 }
