@@ -4,8 +4,9 @@ import com.capgemini.engineering.ddd.frozen_food.domain.producao.entity.Ingredie
 
 public class DTOIngredientConverter {
 
-    public Ingredient ingredientDTO2ingredient(ingredientDTO){
-
-        return ingredient;
-    }
+    //public Ingredient ingredientDTO2ingredient(IngredientDTO ingredienteDTO){
+    //
+    //    return ingredient;
+    //}
 }
+

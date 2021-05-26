@@ -1,9 +1,9 @@
 package com.capgemini.engineering.ddd.frozen_food.domain;
 
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Ingredients;
-import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipes;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.Demandas;
-import com.capgemini.engineering.ddd.frozen_food.domain.producao.repository.ProductionOrders;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.DAO.DemandaDAO;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.DAO.IngredientDAO;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.DAO.ProductionOrderDAO;
+import com.capgemini.engineering.ddd.frozen_food.domain.producao.DAO.RecipeDAO;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -12,17 +12,17 @@ public class Producao implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-    public static Recipes recipes(){
-        return applicationContext.getBean(Recipes.class);
+    public static RecipeDAO recipeDAO(){
+        return applicationContext.getBean(RecipeDAO.class);
     }
 
-    public static Ingredients ingredients(){
-        return applicationContext.getBean(Ingredients.class);
+    public static IngredientDAO ingredientDAO(){
+        return applicationContext.getBean(IngredientDAO.class);
     }
 
-    public static ProductionOrders productionOrders() { return applicationContext.getBean(ProductionOrders.class);}
+    public static ProductionOrderDAO productionOrderDAO() { return applicationContext.getBean(ProductionOrderDAO.class);}
 
-    public static Demandas demandas() { return applicationContext.getBean(Demandas.class);}
+    public static DemandaDAO demandaDAO() { return applicationContext.getBean(DemandaDAO.class);}
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

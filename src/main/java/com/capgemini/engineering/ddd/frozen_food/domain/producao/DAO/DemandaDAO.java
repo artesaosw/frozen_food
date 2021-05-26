@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food.domain.producao.repository;
+package com.capgemini.engineering.ddd.frozen_food.domain.producao.DAO;
 
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.DemandaID;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderState;
@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface Demandas extends MongoRepository<Demanda, DemandaID>{
+public interface DemandaDAO extends MongoRepository<Demanda, DemandaID>{
 
-    public List<Demanda> getAllByStatus(ProductionOrderState status);
+    public List<Demanda> getAllByProductionOrderState(ProductionOrderState status);
 
-    public List<Demanda> getAllByDate(LocalDate date);
+    public List<Demanda> getAllByLocalDate(LocalDate date);
 
-    public boolean existsWithStatus(ProductionOrderState status);
+    public boolean existsWithProductionOrderState(ProductionOrderState status);
 }

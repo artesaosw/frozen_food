@@ -8,6 +8,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.ProductionOrderS
 import com.capgemini.engineering.ddd.frozen_food.domain.menu.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.domain.producao.valueObject.Dimensions;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Document(collection= "productionOrder_producao")
 public class ProductionOrder implements Serializable, AggregateRoot {
 
     @NotNull @Id

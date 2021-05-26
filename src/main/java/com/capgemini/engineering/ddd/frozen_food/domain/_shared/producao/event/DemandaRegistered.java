@@ -7,7 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.domain._shared.producao.dto.Dem
 //faltam metodos get
 public class DemandaRegistered extends DomainEvent {
 
-    private DemandaDTO demandaDTO
+    private DemandaDTO demandaDTO;
 
 
     public DemandaRegistered(DemandaDTO demandaDTO){

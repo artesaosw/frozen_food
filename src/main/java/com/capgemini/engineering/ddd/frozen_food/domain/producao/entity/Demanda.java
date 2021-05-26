@@ -9,23 +9,25 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@Document(collection= "demanda_producao")
 public class Demanda implements Serializable, AggregateRoot {
 
     @Id
     private DemandaID id;
 
-    @NotEmpty
     @Setter
-    private Map<Ingredient, Integer> articles;
+    private Map<String, Integer> articles;
 
     @NotNull
     @Setter

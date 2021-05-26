@@ -3,16 +3,20 @@ package com.capgemini.engineering.ddd.frozen_food.domain.producao.entity;
 import com.capgemini.engineering.ddd.frozen_food.domain.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.domain._shared.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.domain._shared.Unit;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 //Class que recebe Ingrediente do Menu e Suporta o Handler
-@Getter
-@Setter
+@Data
+@Document(collection= "ingredient_producao")
 public class Ingredient implements AggregateRoot, Serializable, RecipeItem {
 
     @Id
@@ -20,12 +24,15 @@ public class Ingredient implements AggregateRoot, Serializable, RecipeItem {
 
     private String description;
 
+    private Unit unit;
+
     //Just to support ORM frameworks
     protected Ingredient() {}
 
-    public Ingredient(@NotBlank IngredientID id, @NotBlank String description) {
-        this.id = Identificator.newInstance(IngredientID.class);;
+    public Ingredient(@NotBlank IngredientID id, @NotBlank String description,@NotNull Unit unit) {
+        this.id = Identificator.newInstance(IngredientID.class);
         this.description = description;
+        this.unit = unit;
     }
 
     @Override
@@ -45,6 +52,6 @@ public class Ingredient implements AggregateRoot, Serializable, RecipeItem {
 
     @Override
     public Identificator id() {
-        return null;
+        return this.id;
     }
 }

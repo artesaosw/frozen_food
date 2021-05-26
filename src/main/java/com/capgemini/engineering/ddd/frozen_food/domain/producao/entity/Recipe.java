@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
-//Class que recebe Receita do Menu e Suporta o Handler
+@Document(collection= "recipe_producao")
 public class Recipe implements AggregateRoot, Serializable {
 
     @Id
@@ -56,6 +57,6 @@ public class Recipe implements AggregateRoot, Serializable {
 
     @Override
     public Identificator id() {
-        return null;
+        return this.id;
     }
 }
