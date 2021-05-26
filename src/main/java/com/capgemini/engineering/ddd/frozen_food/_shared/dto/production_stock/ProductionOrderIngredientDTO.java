@@ -1,6 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import lombok.Data;
 
@@ -11,7 +10,8 @@ import java.util.Map;
 public class ProductionOrderIngredientDTO {
 
     private ProductionOrderID id;
-    private Map<IngredientDTO, Integer> orders;
+    // String represents IngredientID
+    private Map<String, Integer> orders;
 
     public ProductionOrderIngredientDTO() {
         this.orders = new HashMap<>();

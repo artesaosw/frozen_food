@@ -3,24 +3,29 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.utils.MapIngredientIDSerializer;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@NoArgsConstructor
+@Validated
 @Document(collection = "chef_order_stock")
 public class ChefOrder implements AggregateRoot, Serializable {
 
@@ -31,28 +36,29 @@ public class ChefOrder implements AggregateRoot, Serializable {
     private String orderReference;
 
     @Setter
-    private Map<Ingredient, Integer> orders;
+    @JsonSerialize(using = MapIngredientIDSerializer.class)
+    private Map<String, Integer> orders;
 
     @Setter
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
 
     @Setter
     private OrderStatus orderStatus;
 
     @JsonCreator
-    public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
-        this.id = Identificator.newInstance(ProductionOrderID.class);
+    public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+        this.id = Identificator.newInstance(ChefOrderID.class);
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
-        this.orderDate = LocalDate.now();
+        this.orderDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
     }
 
-    public ChefOrder (@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
+    public ChefOrder (@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
-        this.orderDate = LocalDate.now();
+        this.orderDate = LocalDateTime.now();
         this.orderStatus = OrderStatus.UNDELIVERED;
     }
 
@@ -61,7 +67,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderStatus = orderStatus;
     }
 
-    public ChefOrder(@NotNull ChefOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
+    public ChefOrder(@NotNull ChefOrderID id, @NotEmpty Map<String, Integer> orders) {
         this.id = id;
         this.orders = new HashMap<>(orders);
     }
@@ -81,23 +87,23 @@ public class ChefOrder implements AggregateRoot, Serializable {
         return AggregateRoot.super.hashcode();
     }
 
-    public void addIngredientToOrder(@NotNull Ingredient ingredient, @Positive Integer quantity) {
-        if (this.orders.containsKey(ingredient)) {
+    public void addIngredientToOrder(@NotNull String ingredientID, @Positive Integer quantity) {
+        if (this.orders.containsKey(ingredientID)) {
             throw new InvalidElementException("The ingredient already exists in the order!");
         } else {
-            this.orders.put(ingredient, quantity);
+            this.orders.put(ingredientID, quantity);
         }
     }
 
-    public void removeIngredientFromOrder(@NotNull Ingredient ingredient) {
-        this.orders.remove(ingredient);
+    public void removeIngredientFromOrder(@NotNull String ingredientID) {
+        this.orders.remove(ingredientID);
     }
 
-    public void updateIngredientQuantityInOrder(@NotNull Ingredient ingredient, @NotNull Integer quantity) {
-        if (!this.orders.containsKey(ingredient)) {
+    public void updateIngredientQuantityInOrder(@NotNull String ingredientID, @NotNull Integer quantity) {
+        if (!this.orders.containsKey(ingredientID)) {
             throw new InvalidElementException("The ingredient does not exists in the order!");
         } else {
-            this.orders.put(ingredient, this.orders.get(ingredient) + quantity);
+            this.orders.put(ingredientID, this.orders.get(ingredientID) + quantity);
         }
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderConverter.chefOrderDTO2ChefOrder;
-import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.ChefOrderIngredientConverter.chefOrderIngredientDTO2ChefOrder;
 
 @Service
 public class ChefOrderListener {
@@ -49,7 +48,7 @@ public class ChefOrderListener {
     public void updateChefOrderIngredients(ChefOrderIngredientUpdatedEvent chefOrderIngredientUpdatedEvent) {
         ChefOrderIngredientDTO chefOrderIngredientDTO = chefOrderIngredientUpdatedEvent.getChefOrderIngredientDTO();
         ChefOrder chefOrder = chefOrderDAO.findById(chefOrderIngredientDTO.getId()).get();
-        chefOrder.setOrders(chefOrderIngredientDTO2ChefOrder(chefOrderIngredientDTO).getOrders());
+        chefOrder.setOrders(chefOrderIngredientDTO.getOrders());
         chefOrderDAO.save(chefOrder);
     }
 }

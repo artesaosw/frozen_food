@@ -7,7 +7,6 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.Suppli
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -52,7 +51,7 @@ public class SupplierOrderService implements DomainServices {
         supplierOrderDAO.save(supplierOrder);
     }
 
-    public void registerNewSupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders, @NotNull SupplierID id, @NotNull Integer purchaseValue) {
+    public void registerNewSupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders, @NotNull SupplierID id, @NotNull Integer purchaseValue) {
         if (supplierOrderDAO.existsByOrderReference(orderReference)) {
             throw new DuplicatedEntityException("Already exists another order with the same order reference.");
         }

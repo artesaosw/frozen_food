@@ -7,7 +7,6 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.Duplicat
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ChefOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -67,7 +66,7 @@ public class ChefOrderService {
         chefOrderDAO.save(chefOrder);
     }
 
-    public void registerNewChefOrder(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> orders) {
+    public void registerNewChefOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         if (chefOrderDAO.existsByOrderReference(orderReference)) {
             throw new DuplicatedEntityException("Already exists another order with the same order reference.");
         }
@@ -89,7 +88,7 @@ public class ChefOrderService {
         applicationEventPublisher.publishEvent(new ChefOrderStatusUpdatedEvent(this, chefOrderStatusDTO));
     }
 
-    public void updateChefOrderIngredients(@NotNull ChefOrderID id, @NotEmpty Map<Ingredient, Integer> orders) {
+    public void updateChefOrderIngredients(@NotNull ChefOrderID id, @NotEmpty Map<String, Integer> orders) {
         if (!chefOrderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }

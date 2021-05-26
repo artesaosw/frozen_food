@@ -6,6 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,8 +20,9 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Getter
-@Document(collection = "supplier_stock")
+@NoArgsConstructor
 @Validated
+@Document(collection = "supplier_stock")
 public class Supplier implements AggregateRoot, Serializable {
 
     @Id
