@@ -1,18 +1,20 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.StockOrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.dto.OrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.OrderConverter;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
-import com.capgemini.engineering.ddd.frozen_food._shared.menu.events.StockOrderRegisteredPublisher;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Orders;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.OrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -24,12 +26,15 @@ import java.util.Map;
 public class MantainOrders implements DomainServices {
 
     @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
     OrderDAO orderDAO;
 
     private Orders orders() { return Menu.orders();}
 
 
-    public Order getOrderById(OrderID id) throws NonExistentEntityException {
+    public Order getOrderById(ChefOrderID id) throws NonExistentEntityException {
         if(!orderDAO.existsById(id)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
@@ -44,11 +49,6 @@ public class MantainOrders implements DomainServices {
     public void registerNew(@NotEmpty String orderReference, @NotEmpty Map<Ingredient, Integer> articles) throws DuplicatedEntityException {
 
         //Validation
-        //if (orders().existsWithOrderReference(orderReference)){
-        //    throw new IllegalArgumentException("There is already an order with this reference");
-        //}
-
-        //Validation
         if(orderDAO.existsByOrderReference(orderReference)){
             throw new DuplicatedEntityException("There is already an order with this reference");
         }
@@ -61,13 +61,11 @@ public class MantainOrders implements DomainServices {
         orderDAO.save(order);
 
         //converts order to orderDTO
-        OrderDTO orderDTO = OrderConverter.order2orderDTO(order);
+        ChefOrderDTO chefOrderDTO = OrderConverter.order2chefOrderDTO(order);
 
         //reports event
-        StockOrderRegisteredPublisher eventPublisher = new
-                StockOrderRegisteredPublisher();
+        applicationEventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
 
-        eventPublisher.publishEvent(orderDTO);
     }
 
     public void registerNew(@NotNull Order order) throws DuplicatedEntityException {
@@ -76,26 +74,24 @@ public class MantainOrders implements DomainServices {
         if(orderDAO.existsByOrderReference(order.getOrderReference())){
             throw new DuplicatedEntityException("There is already an order with this reference");
         }
-
         orderDAO.save(order);
 
         //converts order to orderDTO
-        OrderDTO orderDTO = OrderConverter.order2orderDTO(order);
-        //reports event
-        StockOrderRegisteredPublisher eventPublisher = new
-                StockOrderRegisteredPublisher();
+        ChefOrderDTO chefOrderDTO = OrderConverter.order2chefOrderDTO(order);
 
-        eventPublisher.publishEvent(orderDTO);
+        //reports event
+        applicationEventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
+
     }
 
     public void updateOrder(Order order) throws NonExistentEntityException {
-        if (!orderDAO.existsById(order.getId())) {
+        if (!orderDAO.existsByOrderReference(order.getOrderReference())) {
             throw new NonExistentEntityException("There is no order with id = " + order.getId());
         }
         orderDAO.save(order);
     }                    //---------------> criar evento de update order?
 
-    public void deleteOrder(OrderID id) throws NonExistentEntityException {
+    public void deleteOrder(ChefOrderID id) throws NonExistentEntityException {
         if(!orderDAO.existsById(id)){
             throw new NonExistentEntityException("There is no order with id = " + id);
         }

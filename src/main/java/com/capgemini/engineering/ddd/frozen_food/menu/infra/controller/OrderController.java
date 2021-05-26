@@ -1,5 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.infra.controller;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
@@ -69,8 +70,8 @@ public class OrderController {
     @GetMapping(path = "/stock/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getOrderById(@PathVariable @Valid String id) throws NonExistentEntityException {
         try {
-            OrderID orderID = Identificator.newInstance(OrderID.class, id);
-            var stockOrder = orderService.getOrderById(orderID);
+            ChefOrderID chefOrderID = Identificator.newInstance(OrderID.class, id);
+            var stockOrder = orderService.getOrderById(chefOrderID);
             return ResponseEntity.ok(stockOrder);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
@@ -113,8 +114,8 @@ public class OrderController {
     @DeleteMapping(path = "/chef/{id}")
     public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid String id) {
         try {
-           OrderID orderID = Identificator.newInstance(OrderID.class, id);
-            orderService.deleteOrder(orderID);
+           ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
+            orderService.deleteOrder(chefOrderID);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

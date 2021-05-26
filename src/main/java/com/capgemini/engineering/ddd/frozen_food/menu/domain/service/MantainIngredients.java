@@ -1,16 +1,18 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
-import com.capgemini.engineering.ddd.frozen_food.Events;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food.menu.domain.IngredientRegistered;
+import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.IngredientConverter;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Ingredients;
 import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.IngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -19,6 +21,9 @@ import java.util.List;
 
 @Service
 public class MantainIngredients implements DomainServices {
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     IngredientDAO ingredientDAO;
@@ -51,10 +56,13 @@ public class MantainIngredients implements DomainServices {
         Ingredient ingredient = new Ingredient(description);
 
         //persists
-        //ingredients().registerNew(ingredient);        --> já não é necessário?
         ingredientDAO.save(ingredient);
 
-        Events.report(new IngredientRegistered (ingredient.getId()));
+        //converts ingredient to ingredientDTO
+        IngredientDTO ingredientDTO = IngredientConverter.ingredient2IngredientDTO(ingredient);
+
+        //reports event
+        applicationEventPublisher.publishEvent(new NewIngredientRegisteredEvent(this, ingredientDTO));
     }
 
     public void registerNew(@NotNull Ingredient ingredient) throws DuplicatedEntityException {
@@ -65,6 +73,12 @@ public class MantainIngredients implements DomainServices {
             throw new DuplicatedEntityException("Already exists another ingredient with the same name.");
         }
         ingredientDAO.save(ingredient);
+
+        //converts ingredient to ingredientDTO
+        IngredientDTO ingredientDTO = IngredientConverter.ingredient2IngredientDTO(ingredient);
+
+        //reports event
+        applicationEventPublisher.publishEvent(new NewIngredientRegisteredEvent(this, ingredientDTO));
     }
 
     public void updateIngredient(Ingredient ingredient) throws NonExistentEntityException {

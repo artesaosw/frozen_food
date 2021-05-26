@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.Unit;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,6 +23,9 @@ public class Ingredient implements AggregateRoot, RecipeItem , Serializable {
 
     @Setter(AccessLevel.PROTECTED)
     private String description;
+
+    @Setter
+    private Unit unit;
 
     //Just to support ORM frameworks
     protected Ingredient() {}
