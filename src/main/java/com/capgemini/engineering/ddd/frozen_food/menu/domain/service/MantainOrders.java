@@ -1,11 +1,15 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderIngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderIngredientUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.OrderConverter;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Order;
@@ -84,7 +88,7 @@ public class MantainOrders implements DomainServices {
 
     }
 
-    public void updateOrder(Order order) throws NonExistentEntityException {
+    public void updateOrderIngredient(Order order) throws NonExistentEntityException {
         if (!orderDAO.existsByOrderReference(order.getOrderReference())) {
             throw new NonExistentEntityException("There is no order with id = " + order.getId());
         }
@@ -95,6 +99,19 @@ public class MantainOrders implements DomainServices {
 
         //reports event
         applicationEventPublisher.publishEvent( new ChefOrderIngredientUpdatedEvent(this, chefOrderIngredientDTO));
+    }
+
+    public void updateOrderStatus(ChefOrderID id) throws NonExistentEntityException {
+        if (!orderDAO.existsById(id)) {
+            throw new NonExistentEntityException("There is no order with id = " + id);
+        }
+        Order order = orderDAO.findById(id).get();
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        orderDAO.save(order);
+        //converts order to chefOrderIngredientDTO
+        ChefOrderStatusDTO chefOrderStatusDTO = OrderConverter.order2ChefOrderStatus(order);
+        //reports event
+        applicationEventPublisher.publishEvent( new ChefOrderStatusUpdatedEvent(this, chefOrderStatusDTO));
     }
 
     public void deleteOrder(ChefOrderID id) throws NonExistentEntityException {

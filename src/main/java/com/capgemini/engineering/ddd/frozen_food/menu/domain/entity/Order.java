@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
@@ -24,11 +25,14 @@ public class Order implements AggregateRoot, Serializable {
     @Setter
     private Map<String, Integer> orders;
 
+    @Setter
+    private OrderStatus orderStatus;
 
     @JsonCreator
     public Order(String orderReference, Map<String, Integer> orders) {
         this.orderReference = orderReference;
         this.orders = orders;
+        this.orderStatus = OrderStatus.ORDERED;
     }
 
     @Override

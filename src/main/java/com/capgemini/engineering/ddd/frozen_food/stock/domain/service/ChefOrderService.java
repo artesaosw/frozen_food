@@ -1,11 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ChefOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;

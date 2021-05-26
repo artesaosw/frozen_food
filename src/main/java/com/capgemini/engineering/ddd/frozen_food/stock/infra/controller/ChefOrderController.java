@@ -1,10 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;

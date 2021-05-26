@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.dao;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

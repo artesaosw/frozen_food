@@ -102,7 +102,7 @@ public class OrderController {
     @PutMapping(path = "/stock", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateOrder(@RequestBody @Valid @NotNull Order order) {
         try {
-            orderService.updateOrder(order);
+            orderService.updateOrderIngredient(order);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

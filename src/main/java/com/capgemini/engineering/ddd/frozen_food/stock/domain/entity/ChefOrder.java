@@ -1,11 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.MapIngredientIDSerializer;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
