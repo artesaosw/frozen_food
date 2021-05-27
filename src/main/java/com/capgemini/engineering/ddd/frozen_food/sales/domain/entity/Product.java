@@ -4,9 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -26,10 +24,6 @@ public class Product implements AggregateRoot, Serializable {
 
     @Positive
     private double unitPrice;
-
-//    //NAO VAI SER NECESSARIO PARA CONTEXTO DE VENDAS
-//    @NotNull
-//    private Unit unit;
 
     @NotNull
     private Dimensions dimensions;
@@ -120,13 +114,6 @@ public class Product implements AggregateRoot, Serializable {
     public int hashcode() {
         return AggregateRoot.super.hashcode();
     }
-
-//    @Override
-//    @JsonValue
-//    public String toString() {
-//        return this.name + "|" + this.getUnitPrice();
-//
-//    }
 
     @Override
     public String toString() {

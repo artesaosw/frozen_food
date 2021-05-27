@@ -2,7 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.OrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.DeliveryOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.OrderCancelledEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.OrderRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.PaymentReturnedEvent;
@@ -18,7 +18,9 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.OrderDoe
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.CustomerRepository;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -70,8 +72,8 @@ public class OrderServiceImpl implements DomainServices, OrderService {
             this.orderRepository.save(order);
 
             //issue OrderRegisteredEvent
-            OrderDTO orderDTO = OrderToOrderDTOConverter.convertOrderToOrderDTO(order);
-            this.eventPublisher.publishEvent(new OrderRegisteredEvent(this, orderDTO));
+            DeliveryOrderDTO deliveryOrderDTO = OrderToOrderDTOConverter.convertOrderToOrderDTO(order);
+            this.eventPublisher.publishEvent(new OrderRegisteredEvent(this, deliveryOrderDTO));
         }
         else {
             throw new OrderAlreadyExistsException("The order specified may already exist, or it may contain and invalid ID. If you wish to modify an existing order, delete it" +
@@ -93,7 +95,7 @@ public class OrderServiceImpl implements DomainServices, OrderService {
             order.setOrderDeliveryState(OrderDeliveryState.CANCELLED);
             this.orderRepository.save(order);
 
-            //let's assume we must keep every order in the db and can't delete them for good
+            //TODO: can assume we must keep every order in the db and can't delete them for good ?
 //            this.orderRepository.delete(order);
 
             //time to return the money
@@ -102,8 +104,8 @@ public class OrderServiceImpl implements DomainServices, OrderService {
             this.eventPublisher.publishEvent(new PaymentReturnedEvent(this, order));
 
             //publish an OrderCancelledEvent
-            OrderDTO orderDTO = OrderToOrderDTOConverter.convertOrderToOrderDTO(order);
-            this.eventPublisher.publishEvent(new OrderCancelledEvent(this, orderDTO));
+            DeliveryOrderDTO deliveryOrderDTO = OrderToOrderDTOConverter.convertOrderToOrderDTO(order);
+            this.eventPublisher.publishEvent(new OrderCancelledEvent(this, deliveryOrderDTO));
         }
         else {
             throw new OrderAlreadyCancelled("Order with id " + id + " is already cancelled.");
@@ -128,4 +130,27 @@ public class OrderServiceImpl implements DomainServices, OrderService {
     public OrderRepository getOrderRepository() {
         return orderRepository;
     }
+
+    //TODO: REPLACE THE EVENT IN THE SIGNATURE WITH EVENT
+    //THE DELIVERY CONTEXT ISSUES WHENEVER AN ORDER IS UPDATED
+    @EventListener
+    public void handleDeliveryOrderUpdatedEvent(ApplicationEvent event) {
+        // convert entity sent by the Delivery context into a Product (if it's not converted already)
+        // then update it into the database by calling the method
+
+        //I'm assuming the event sent wraps an DeliverOrderDTO
+        DeliveryOrderDTO deliveryOrderDTO = event.DeliveryOrderDTO();
+
+        //find the order in the db based on the OrderID of deliveryOrderDTO
+        Order order = this.orderRepository.findByOrderID(deliveryOrderDTO.getOrderID()).get();
+
+        //update the order object with values from deliveryOrderDTO
+        //Obviously, the ID and OrderID are immutable and can't be changed
+        order.setOrderDeliveryState(deliveryOrderDTO.getOrderDeliveryState());
+        order.setDeliveryDate(deliveryOrderDTO.getDeliveryDate());
+
+        //persis the updated order object
+        this.orderRepository.save(order);
+    }
+
 }

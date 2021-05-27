@@ -9,19 +9,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-public class OrderDTO {
+public class DeliveryOrderDTO {
 
     @NotNull
     private OrderID orderID;
 
     @NotEmpty
     private List<ProductDTO> products;
-
-//    @NotEmpty
-//    private List<Integer> quantities;
-
-//    @NotNull
-//    private CustomerID orderedBy;
 
     @NotNull
     private CustomerDTO orderedBy;
@@ -32,7 +26,7 @@ public class OrderDTO {
     //to be set by the Delivery context
     private LocalDate deliveryDate;
 
-    public OrderDTO() {
+    public DeliveryOrderDTO() {
 
     }
 
@@ -51,22 +45,6 @@ public class OrderDTO {
     public void setProducts(List<ProductDTO> products) {
         this.products = products;
     }
-
-//    public List<Integer> getQuantities() {
-//        return quantities;
-//    }
-//
-//    public void setQuantities(List<Integer> quantities) {
-//        this.quantities = quantities;
-//    }
-
-//    public CustomerID getOrderedBy() {
-//        return orderedBy;
-//    }
-//
-//    public void setOrderedBy(CustomerID orderedBy) {
-//        this.orderedBy = orderedBy;
-//    }
 
     public CustomerDTO getOrderedBy() {
         return orderedBy;
@@ -91,4 +69,5 @@ public class OrderDTO {
     public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
+
 }

@@ -4,6 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderState;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductCreatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductionOrderCancelledEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductionOrderIssuedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
@@ -12,7 +13,9 @@ import com.capgemini.engineering.ddd.frozen_food.sales.domain.converter.Producti
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.ProductionOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -75,8 +78,11 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
         //make sure the new order does not change the ID and ProductionOrderID fields
         //of the order already existing in the db
         if (orderFromDB.getId().equals(productionOrder.getId())
-                && orderFromDB.getProductionOrderID().equals(productionOrder.getProductionOrderID())) {
+                && orderFromDB.getProductionOrderID().isEqualsTo(productionOrder.getProductionOrderID())) {
             return this.productionOrderRepository.save(orderFromDB);
+
+            //TODO: Should this method launch a ProductionOrderUpdatedEvent ?
+            //Only sales cares about those, maybe it doesn't matter
         }
 
         throw new IllegalArgumentException("Production order update is trying to change immutable fields.");
@@ -84,6 +90,31 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
 
     public ProductionOrderRepository getProductionOrderRepository() {
         return productionOrderRepository;
+    }
+
+    //check https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2
+    //for more information about the @EventListener annotation
+
+    //TODO:  REPLACE THE EVENT IN THE SIGNATURE WITH EVENT THAT PRODUCTION SENDS
+    //method to listen to ProductionOrders sent back from the Production context
+    //Might trigger methods in this context
+    @EventListener
+    public void handlePOrderSentFromProduction(ApplicationEvent event) {
+
+        //I assume the event sent by production wraps a ProductionOrderDTO object
+        //With the ProductionOrderID from that object, we get the POrder from the sales db
+        //and then update the productionOrderState and productionDate fields,
+        //since those are the only fields Production can change
+        //then we persist the updated entity in the db
+        ProductionOrderDTO productionOrderDTO = event.getProductionOrderDTO;
+
+        ProductionOrder pOrder = this.productionOrderRepository.
+                findByProductionOrderID(productionOrderDTO.getProductionOrderID()).get();
+        pOrder.setProductionOrderState(productionOrderDTO.getProductionOrderState());
+        pOrder.setProductionDate(productionOrderDTO.getProductionDate());
+
+        //persist the entity after updating it
+        this.productionOrderRepository.save(pOrder);
     }
 
 }

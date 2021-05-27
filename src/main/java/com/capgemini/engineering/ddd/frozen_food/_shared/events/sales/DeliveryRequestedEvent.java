@@ -1,18 +1,18 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.events.sales;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.OrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.DeliveryOrderDTO;
 import org.springframework.context.ApplicationEvent;
 
 public class DeliveryRequestedEvent extends ApplicationEvent {
 
-    private OrderDTO orderDTO;
+    private DeliveryOrderDTO deliveryOrderDTO;
 
-    public DeliveryRequestedEvent(Object source, OrderDTO orderDTO) {
+    public DeliveryRequestedEvent(Object source, DeliveryOrderDTO deliveryOrderDTO) {
         super(source);
-        this.orderDTO = orderDTO;
+        this.deliveryOrderDTO = deliveryOrderDTO;
     }
 
-    public OrderDTO getOrderDTO() {
-        return this.orderDTO;
+    public DeliveryOrderDTO getDeliveryOrderDTO() {
+        return this.deliveryOrderDTO;
     }
 }

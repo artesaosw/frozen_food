@@ -8,7 +8,7 @@ public class ProductID implements Identificator, Serializable {
 
     private UUID id;
 
-    ProductID(@NotNull UUID id){
+    public ProductID(@NotNull UUID id){
         this.id = id;
     }
 
@@ -39,8 +39,15 @@ public class ProductID implements Identificator, Serializable {
         return Identificator.super.hashcode();
     }
 
+//    @Override
+//    public String toString() {
+//        return "ProductID{" +
+//                "id=" + id +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return id + "";
+        return this.id + "";
     }
 }
