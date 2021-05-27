@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.production.dto;
+package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.production.entity.Recipe;

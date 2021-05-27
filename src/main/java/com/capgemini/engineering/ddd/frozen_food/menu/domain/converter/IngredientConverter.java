@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production_stock.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 
 public class IngredientConverter {

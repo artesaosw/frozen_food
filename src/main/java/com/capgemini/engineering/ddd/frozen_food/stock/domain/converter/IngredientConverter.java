@@ -1,11 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production_stock.IngredientDTO;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IngredientConverter {
 

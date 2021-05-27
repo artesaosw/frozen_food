@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.production.converter;
 
 
-import com.capgemini.engineering.ddd.frozen_food._shared.production.dto.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.ProductionOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.production.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.production.valueObject.Dimensions;
 

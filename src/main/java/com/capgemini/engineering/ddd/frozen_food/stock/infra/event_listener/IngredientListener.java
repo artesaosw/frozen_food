@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.event_listener;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.IngredientDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.NewIngredientRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production_stock.IngredientDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_production_stock.NewIngredientRegisteredEvent;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;

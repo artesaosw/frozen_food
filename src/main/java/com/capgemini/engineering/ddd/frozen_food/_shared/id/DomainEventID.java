@@ -17,8 +17,17 @@ public class DomainEventID implements Identificator {
         this.id = UUID.randomUUID();
     }
 
+    public DomainEventID(String id) {
+        this.id = UUID.fromString(id);
+    }
+
     @Override
     public UUID id() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return id + "";
     }
 }

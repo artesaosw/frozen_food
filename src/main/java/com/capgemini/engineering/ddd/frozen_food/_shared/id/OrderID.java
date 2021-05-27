@@ -15,9 +15,17 @@ public class OrderID implements Identificator {
         this.id = UUID.randomUUID();
     }
 
+    public OrderID(String id) {
+        this.id = UUID.fromString(id);
+    }
+
     @Override
     public UUID id() {
         return this.id;
     }
 
+    @Override
+    public String toString() {
+        return id + "";
+    }
 }

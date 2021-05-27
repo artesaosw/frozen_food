@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.production.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.DemandaID;
 import com.capgemini.engineering.ddd.frozen_food.production.DAO.DemandaDAO;
 import com.capgemini.engineering.ddd.frozen_food.production.entity.Demanda;
@@ -34,7 +35,7 @@ public class MaintainDemanda implements DomainServices {
     }
 
 
-    public void registerNew(DemandaID id, Map<String, Integer> articles, ProductionOrderState status) throws AlreadyExistentEntityException {
+    public void registerNew(DemandaID id, Map<String, Integer> articles, OrderStatus status) throws AlreadyExistentEntityException {
         if(demandaDAO.existsById(id)){
             throw new AlreadyExistentEntityException("A demanda com o id:"+id+" já existe");
         }
@@ -57,7 +58,7 @@ public class MaintainDemanda implements DomainServices {
         demandaDAO.save(demanda);
     }
 
-    public void updateStatus(DemandaID id, ProductionOrderState status) throws NonExistentEntityException{
+    public void updateStatus(DemandaID id, OrderStatus status) throws NonExistentEntityException{
         if(!demandaDAO.existsById(id)){
             throw new NonExistentEntityException("A demanda com o id:"+id+" não existe");
         }

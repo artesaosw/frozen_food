@@ -1,10 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.production.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.DemandaID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 
-import com.capgemini.engineering.ddd.frozen_food.production.valueObject.ProductionOrderState;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -28,7 +28,7 @@ public class Demanda implements Serializable, AggregateRoot {
 
     @NotNull
     @Setter
-    private ProductionOrderState status;
+    private OrderStatus status;
 
     @NotNull
     private LocalDate dataDemanda;
