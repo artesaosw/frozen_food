@@ -17,13 +17,17 @@ public class RecipeDTO {
 
     private Map<RecipeItem, Portion> items;
 
+    private String procedure;
+
+
     public RecipeDTO() {
     }
 
-    public RecipeDTO(RecipeID id, String name, Set<Portion> items) {
+    public RecipeDTO(RecipeID id, String name, Set<Portion> items, String procedure) {
         this.id = id;
         this.name = name;
         this.items = mapOf(items);
+        this.procedure = procedure;
     }
 
     private Map<RecipeItem, Portion> mapOf(Set<Portion> items) {
@@ -33,31 +37,6 @@ public class RecipeDTO {
                         Collectors.toMap(
                                 a -> a.getItem(),
                                 Function.identity()));
-    }
-
-
-    public RecipeID getId() {
-        return id;
-    }
-
-    public void setId(RecipeID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<RecipeItem, Portion> getItems() {
-        return items;
-    }
-
-    public void setItems(Map<RecipeItem, Portion> items) {
-        this.items = items;
     }
 
 }
