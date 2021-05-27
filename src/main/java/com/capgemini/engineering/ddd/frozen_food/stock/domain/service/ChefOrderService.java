@@ -84,11 +84,11 @@ public class ChefOrderService {
             } else {
                 Map<String, Integer> orderMap = chefOrder.getOrders();
                 for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
-                    String s = map.getKey();
-                    Integer value = map.getValue();
-                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, s);
+                    String ingredienID = map.getKey();
+                    Integer quantity = map.getValue();
+                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, ingredienID);
                     Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
-                    ingredient.decreaseIngredientStock(value);
+                    ingredient.decreaseIngredientStock(quantity);
                     stockIngredientDAO.save(ingredient);
                 }
             }

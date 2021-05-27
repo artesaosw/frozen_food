@@ -77,11 +77,11 @@ public class SupplierOrderService implements DomainServices {
             } else {
                 Map<String, Integer> orderMap = supplierOrder.getOrders();
                 for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
-                    String s = map.getKey();
-                    Integer value = map.getValue();
-                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, s);
+                    String ingredienID = map.getKey();
+                    Integer quantity = map.getValue();
+                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, ingredienID);
                     Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
-                    ingredient.increaseIngredientStock(value);
+                    ingredient.increaseIngredientStock(quantity);
                     stockIngredientDAO.save(ingredient);
                 }
             }

@@ -8,7 +8,7 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.Ingred
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.IngredientService;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.StockIngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class StockIngredientController {
     static final String MISSING_PARAMETER_VALUE_ERROR_MSG = "MISSING PARAMETER VALUE ERROR";
 
     @Autowired
-    private IngredientService ingredientService;
+    private StockIngredientService stockIngredientService;
 
     public StockIngredientController() {
     }
@@ -71,7 +71,7 @@ public class StockIngredientController {
     public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            var ingredient = ingredientService.getIngredientById(ingredientID);
+            var ingredient = stockIngredientService.getIngredientById(ingredientID);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
@@ -81,7 +81,7 @@ public class StockIngredientController {
     @GetMapping(path = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIngredientByName(@PathVariable @Valid String name) {
         try {
-            var ingredient = ingredientService.getIngredientByName(name);
+            var ingredient = stockIngredientService.getIngredientByName(name);
             return ResponseEntity.ok(ingredient);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
@@ -91,7 +91,7 @@ public class StockIngredientController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredients() {
         try {
-            return ResponseEntity.ok(ingredientService.getAllIngredients());
+            return ResponseEntity.ok(stockIngredientService.getAllIngredients());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -100,7 +100,7 @@ public class StockIngredientController {
     @GetMapping(path = "/in_use", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsInUse() {
         try {
-            return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_USE));
+            return ResponseEntity.ok(stockIngredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_USE));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -109,7 +109,7 @@ public class StockIngredientController {
     @GetMapping(path = "/not_in_use", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsNotInUse() {
         try {
-            return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.NOT_IN_USE));
+            return ResponseEntity.ok(stockIngredientService.getAllIngredientsByIngredientStatus(IngredientStatus.NOT_IN_USE));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -118,7 +118,7 @@ public class StockIngredientController {
     @GetMapping(path = "/in_test", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsInTest() {
         try {
-            return ResponseEntity.ok(ingredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_TEST));
+            return ResponseEntity.ok(stockIngredientService.getAllIngredientsByIngredientStatus(IngredientStatus.IN_TEST));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -127,7 +127,7 @@ public class StockIngredientController {
     @GetMapping(path = "/below_minimum_stock", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIngredientsBelowMinimumStock() {
         try {
-            return ResponseEntity.ok(ingredientService.getAllIngredientsByBelowMinimumStock());
+            return ResponseEntity.ok(stockIngredientService.getAllIngredientsByBelowMinimumStock());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -136,7 +136,7 @@ public class StockIngredientController {
     @PostMapping()
     public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
-            ingredientService.registerNewIngredient(ingredient);
+            stockIngredientService.registerNewIngredient(ingredient);
             return ResponseEntity.created(URI.create("/ingredient/" + ingredient.id())).body(new Message(ADD_SUCCESS_MSG));
         } catch (DuplicatedEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(e));
@@ -148,7 +148,7 @@ public class StockIngredientController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
-            ingredientService.updateIngredient(ingredient);
+            stockIngredientService.updateIngredient(ingredient);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -161,7 +161,7 @@ public class StockIngredientController {
     public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotBlank String id, @RequestParam @NotBlank String ingredientStatus) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            ingredientService.updateIngredientUseStatus(ingredientID, IngredientStatus.valueOf(ingredientStatus));
+            stockIngredientService.updateIngredientUseStatus(ingredientID, IngredientStatus.valueOf(ingredientStatus));
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -174,7 +174,7 @@ public class StockIngredientController {
     public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            ingredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
+            stockIngredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -187,7 +187,7 @@ public class StockIngredientController {
     public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            ingredientService.increaseIngredientStock(ingredientID, quantity);
+            stockIngredientService.increaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -200,7 +200,7 @@ public class StockIngredientController {
     public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            ingredientService.decreaseIngredientStock(ingredientID, quantity);
+            stockIngredientService.decreaseIngredientStock(ingredientID, quantity);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -213,7 +213,7 @@ public class StockIngredientController {
     public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            ingredientService.deleteIngredient(ingredientID);
+            stockIngredientService.deleteIngredient(ingredientID);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
