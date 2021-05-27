@@ -3,12 +3,14 @@ package com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.RecipeItem;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
+import lombok.Data;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Data
 public class RecipeDTO {
 
     private RecipeID id;
