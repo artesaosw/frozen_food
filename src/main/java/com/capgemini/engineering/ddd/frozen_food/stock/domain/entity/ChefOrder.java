@@ -51,7 +51,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDateTime.now();
-        this.orderStatus = OrderStatus.UNDELIVERED;
+        this.orderStatus = OrderStatus.ORDERED;
     }
 
     public ChefOrder (@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
@@ -59,7 +59,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDateTime.now();
-        this.orderStatus = OrderStatus.UNDELIVERED;
+        this.orderStatus = OrderStatus.ORDERED;
     }
 
     public ChefOrder (@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {

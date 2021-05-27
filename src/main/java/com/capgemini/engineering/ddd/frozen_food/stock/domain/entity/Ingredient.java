@@ -83,12 +83,10 @@ public class Ingredient implements AggregateRoot, Serializable {
     }
 
     public void decreaseIngredientStock(@NotNull @Positive Integer quantity) {
-        if (quantity > this.ingredientStock) {
+        if (quantity < this.ingredientStock) {
             setIngredientStock(this.ingredientStock - quantity);
         } else {
             setIngredientStock(0);
         }
     }
-
-    // TODO criar método para verificar o minimumStockValue contra o ingredientStock
 }

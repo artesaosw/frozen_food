@@ -4,10 +4,14 @@ import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_stock.ChefOrderStatusDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_stock.ChefOrderStatusUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ChefOrderDAO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -22,19 +26,11 @@ import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.C
 @Service
 public class ChefOrderService {
 
-//        código para a Isabel implemetar
-//        @Autowired
-//        private final ApplicationEventPublisher applicationEventPublisher;
-
-//        dentro do método
-//        ChefOrderDTO chefOrderDTO = chefOrder2ChefOrderDTO(chefOrder); ** usa o converter dela;
-//        em vez de chefOrder, usa o nome da entidade dela
-//        applicationEventPublisher.publishEvent(new ChefOrderRegisteredEvent(this, chefOrderDTO));
-
-//        para o ingrediente faz a mesma coisa
-
     @Autowired
     ChefOrderDAO chefOrderDAO;
+
+    @Autowired
+    StockIngredientDAO stockIngredientDAO;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -81,6 +77,21 @@ public class ChefOrderService {
         ChefOrder chefOrder = chefOrderDAO.findById(id).get();
         if (chefOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
+        }
+        if (orderStatus.equals(OrderStatus.ON_DELIVERY)) {
+            if (chefOrder.getOrderStatus().equals(OrderStatus.ON_DELIVERY)) {
+                throw new IllegalArgumentException("Order already on delivery.");
+            } else {
+                Map<String, Integer> orderMap = chefOrder.getOrders();
+                for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
+                    String s = map.getKey();
+                    Integer value = map.getValue();
+                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, s);
+                    Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
+                    ingredient.decreaseIngredientStock(value);
+                    stockIngredientDAO.save(ingredient);
+                }
+            }
         }
         chefOrder.setOrderStatus(orderStatus);
         chefOrderDAO.save(chefOrder);

@@ -124,6 +124,15 @@ public class StockIngredientController {
         }
     }
 
+    @GetMapping(path = "/below_minimum_stock", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllIngredientsBelowMinimumStock() {
+        try {
+            return ResponseEntity.ok(ingredientService.getAllIngredientsByBelowMinimumStock());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<?> addIngredient(@RequestBody @Valid @NotNull Ingredient ingredient) {
         try {
@@ -161,7 +170,7 @@ public class StockIngredientController {
         }
     }
 
-    @PutMapping(path = "/stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/stock/{id}")
     public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
@@ -174,7 +183,7 @@ public class StockIngredientController {
         }
     }
 
-    @PutMapping(path = "/increase_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/increase_stock/{id}")
     public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
@@ -187,7 +196,7 @@ public class StockIngredientController {
         }
     }
 
-    @PutMapping(path = "/decrease_stock/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/decrease_stock/{id}")
     public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
         try {
             IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);

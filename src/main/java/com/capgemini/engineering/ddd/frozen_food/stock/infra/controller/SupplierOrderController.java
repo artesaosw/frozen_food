@@ -134,7 +134,7 @@ public class SupplierOrderController {
         }
     }
 
-    @PutMapping(path = "/supplier", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/supplier")
     public ResponseEntity<?> updateSupplierOrder(@RequestBody @Valid @NotNull SupplierOrder supplierOrder) {
         try {
             supplierOrderService.updateSupplierOrder(supplierOrder);
@@ -146,7 +146,7 @@ public class SupplierOrderController {
         }
     }
 
-    @PutMapping(path = "/supplier/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/supplier/{id}")
     public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
         try {
             SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);

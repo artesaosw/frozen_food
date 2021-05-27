@@ -2,11 +2,15 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierOrderDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,6 +26,9 @@ public class SupplierOrderService implements DomainServices {
 
     @Autowired
     SupplierOrderDAO supplierOrderDAO;
+
+    @Autowired
+    StockIngredientDAO stockIngredientDAO;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -64,8 +71,20 @@ public class SupplierOrderService implements DomainServices {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
         SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
-        if (supplierOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
-            throw new IllegalArgumentException("Order already delivered.");
+        if (orderStatus.equals(OrderStatus.DELIVERED)) {
+            if (supplierOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
+                throw new IllegalArgumentException("Order already delivered.");
+            } else {
+                Map<String, Integer> orderMap = supplierOrder.getOrders();
+                for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
+                    String s = map.getKey();
+                    Integer value = map.getValue();
+                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, s);
+                    Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
+                    ingredient.increaseIngredientStock(value);
+                    stockIngredientDAO.save(ingredient);
+                }
+            }
         }
         supplierOrder.setOrderStatus(orderStatus);
         supplierOrderDAO.save(supplierOrder);

@@ -9,11 +9,17 @@ import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +51,10 @@ public class IngredientService implements DomainServices {
 
     public List<Ingredient> getAllIngredientsByIngredientStatus(@NotNull IngredientStatus ingredientStatus) {
         return ingredientDAO.findAllByIngredientStatus(ingredientStatus);
+    }
+
+    public List<Ingredient> getAllIngredientsByBelowMinimumStock() {
+        return ingredientDAO.findAllBelowMinimumStock();
     }
 
     public void registerNewIngredient(@NotNull Ingredient ingredient) {

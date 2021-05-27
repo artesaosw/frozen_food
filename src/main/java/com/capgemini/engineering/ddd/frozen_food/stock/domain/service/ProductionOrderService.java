@@ -3,11 +3,15 @@ package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_stock.ProductionOrderStatusDTO;
 import com.capgemini.engineering.ddd.frozen_food._shared.event.production_stock.ProductionOrderStatusUpdatedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
+import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.ProductionOrderDAO;
+import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ public class ProductionOrderService {
 
     @Autowired
     ProductionOrderDAO productionOrderDAO;
+
+    @Autowired
+    StockIngredientDAO stockIngredientDAO;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -71,10 +78,25 @@ public class ProductionOrderService {
         if (productionOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalArgumentException("Order already delivered.");
         }
+        if (orderStatus.equals(OrderStatus.ON_DELIVERY)) {
+            if (productionOrder.getOrderStatus().equals(OrderStatus.ON_DELIVERY)) {
+                throw new IllegalArgumentException("Order already on delivery.");
+            } else {
+                Map<String, Integer> orderMap = productionOrder.getOrders();
+                for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
+                    String s = map.getKey();
+                    Integer value = map.getValue();
+                    IngredientID ingredientID = Identificator.newInstance(IngredientID.class, s);
+                    Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
+                    ingredient.decreaseIngredientStock(value);
+                    stockIngredientDAO.save(ingredient);
+                }
+            }
+        }
         productionOrder.setOrderStatus(orderStatus);
         productionOrderDAO.save(productionOrder);
-        ProductionOrderStatusDTO productionOrderStatusDTO = productionOrder2ProductionOrderStatusDTO(productionOrder);
-        applicationEventPublisher.publishEvent(new ProductionOrderStatusUpdatedEvent(this, productionOrderStatusDTO));
+//        ProductionOrderStatusDTO productionOrderStatusDTO = productionOrder2ProductionOrderStatusDTO(productionOrder);
+//        applicationEventPublisher.publishEvent(new ProductionOrderStatusUpdatedEvent(this, productionOrderStatusDTO));
     }
 
     public void updateProductionOrderIngredients(@NotNull ProductionOrderID id, @NotEmpty Map<String, Integer> orders) {

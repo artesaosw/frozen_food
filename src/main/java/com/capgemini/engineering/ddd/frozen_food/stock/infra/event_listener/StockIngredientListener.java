@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import static com.capgemini.engineering.ddd.frozen_food.stock.domain.converter.IngredientConverter.ingredientDTO2Ingredient;
 
 @Service
-public class IngredientListener {
+public class StockIngredientListener {
 
     @Autowired
     StockIngredientDAO stockIngredientDAO;

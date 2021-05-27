@@ -146,7 +146,7 @@ public class ChefOrderController {
         }
     }
 
-    @PutMapping(path = "/chef/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/chef/{id}")
     public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
         try {
             ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
