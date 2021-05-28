@@ -1,12 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderState;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.ProductionOrderDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductCreatedEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductionOrderCancelledEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductionOrderIssuedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production.ProductionOrderCancelledEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production.ProductionOrderIssuedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.converter.ProductionOrderToProductionOrderDTO;
@@ -18,7 +16,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Service
@@ -106,15 +103,18 @@ public class ProductionOrderServiceImpl implements DomainServices, ProductionOrd
         //and then update the productionOrderState and productionDate fields,
         //since those are the only fields Production can change
         //then we persist the updated entity in the db
-        ProductionOrderDTO productionOrderDTO = event.getProductionOrderDTO;
+        //TODO: UNCOMMENT WHEN THE CORRECT EVENT IS ADDED
 
-        ProductionOrder pOrder = this.productionOrderRepository.
-                findByProductionOrderID(productionOrderDTO.getProductionOrderID()).get();
-        pOrder.setProductionOrderState(productionOrderDTO.getProductionOrderState());
-        pOrder.setProductionDate(productionOrderDTO.getProductionDate());
 
-        //persist the entity after updating it
-        this.productionOrderRepository.save(pOrder);
+//        ProductionOrderDTO productionOrderDTO = event.getProductionOrderDTO;
+//
+//        ProductionOrder pOrder = this.productionOrderRepository.
+//                findByProductionOrderID(productionOrderDTO.getProductionOrderID()).get();
+//        pOrder.setProductionOrderState(productionOrderDTO.getProductionOrderState());
+//        pOrder.setProductionDate(productionOrderDTO.getProductionDate());
+//
+//        //persist the entity after updating it
+//        this.productionOrderRepository.save(pOrder);
     }
 
 }

@@ -1,10 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.RecipeDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductCreatedEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductRemovedEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.ProductUpdatedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production.ProductCreatedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production.ProductRemovedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production.ProductUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.exception.ProductNameAlreadyExistsException;
@@ -115,7 +115,10 @@ public class ProductServiceImpl implements DomainServices, ProductService {
         // convert entity sent by the production context into a Product (if it's not converted already)
         // then persist it into the database by calling the method
         // this.createNewProduct(Product product)
-        this.productRepository.save(event.getProduct());
+
+        //TODO: UNCOMMENT WHEN THE CORRECT EVENT IS ADDED
+
+        //this.productRepository.save(event.getProduct());
     }
 
     //TODO: REPLACE THE EVENT IN THE SIGNATURE WITH EVENT
@@ -127,16 +130,18 @@ public class ProductServiceImpl implements DomainServices, ProductService {
         // this.updateProduct(Product product)
         //Obviously, the ID and ProductID are immutable and can't be changed
 
-        RecipeDTO recipeDTO = event.getRecipeDTO();
+        //TODO: UNCOMMENT WHEN THE CORRECT EVENT IS ADDED
 
-        Product product = this.productRepository.findByProductID(recipeDTO.getProductID()).get();
-        product.setDimensions(recipeDTO.getDimensions());
-        product.setName(recipeDTO.getName());
-        product.setShelfLife(recipeDTO.getShelfLife());
-        product.setAvailable(recipeDTO.isAvailable());
-
-        //persis the updated entity
-        this.productRepository.save(product);
+//        RecipeDTO recipeDTO = event.getRecipeDTO();
+//
+//        Product product = this.productRepository.findByProductID(recipeDTO.getProductID()).get();
+//        product.setDimensions(recipeDTO.getDimensions());
+//        product.setName(recipeDTO.getName());
+//        product.setShelfLife(recipeDTO.getShelfLife());
+//        product.setAvailable(recipeDTO.isAvailable());
+//
+//        //persis the updated entity
+//        this.productRepository.save(product);
     }
 
     //TODO: REPLACE THE EVENT IN THE SIGNATURE WITH EVENT
@@ -147,7 +152,9 @@ public class ProductServiceImpl implements DomainServices, ProductService {
         // then remove it from database
 
         //here I'm assuming the event wraps a ProductID we can use to delete the entity
-        this.productRepository.deleteByProductID(event.getProductID());
+
+        //TODO: UNCOMMENT WHEN THE CORRECT EVENT IS ADDED
+        //this.productRepository.deleteByProductID(event.getProductID());
     }
 
 }

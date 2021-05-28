@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface ProductionOrderRepository extends MongoRepository<ProductionOrder, String>, ProductionOrders {
+public interface ProductionOrderRepository extends MongoRepository<ProductionOrder, String> {
 
     public Optional<ProductionOrder> findByProductionOrderID(ProductionOrderID productionOrderID);
 }

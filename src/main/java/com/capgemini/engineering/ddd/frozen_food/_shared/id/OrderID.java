@@ -1,14 +1,13 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.id;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.UUID;
 
-public class OrderID implements Identificator, Serializable {
+public class OrderID implements Identificator {
 
     private UUID id;
 
-    public OrderID(@NotNull UUID id){
+    OrderID(@NotNull UUID id) {
         this.id = id;
     }
 
@@ -16,33 +15,17 @@ public class OrderID implements Identificator, Serializable {
         this.id = UUID.randomUUID();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public OrderID(String id) {
+        this.id = UUID.fromString(id);
     }
 
     @Override
     public UUID id() {
-        return id;
+        return this.id;
     }
-
-//    @Override
-//    public String toString() {
-//        return id.toString();
-//    }
-
-//    @Override
-//    public String toString() {
-//        return id + "";
-//    }
 
     @Override
     public String toString() {
-        return "OrderID{" +
-                "id=" + id +
-                '}';
+        return id + "";
     }
 }

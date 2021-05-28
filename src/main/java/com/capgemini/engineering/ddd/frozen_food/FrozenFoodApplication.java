@@ -1,25 +1,12 @@
 package com.capgemini.engineering.ddd.frozen_food;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Order;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.CustomerRepository;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.OrderRepository;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.repository.ProductRepository;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Address;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.NIF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
 
 //ATTENTION: DO NOT UPLOAD THIS CLASS FILE !!!!!!!!!!
 @SpringBootApplication

@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales;
+package com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.valueObject.Dimensions;

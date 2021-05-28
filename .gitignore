@@ -5,6 +5,9 @@ target/
 !**/src/test/**/target/
 pom.xml
 
+### don't push the main class ###
+.\src\main\java\com\capgemini\engineering\ddd\frozen_food\FrozenFoodApplication.java
+
 ### STS ###
 .apt_generated
 .classpath

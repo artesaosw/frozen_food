@@ -1,7 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import org.springframework.data.annotation.Id;
@@ -30,7 +30,7 @@ public class Order implements AggregateRoot, Serializable {
     @NotNull
     private Customer orderedBy;
 
-    private OrderDeliveryState orderDeliveryState;
+    private OrderStatus orderStatus;
 
     //a class in the Sales context containing business logic is responsible for initializing the date for an Order object
     private LocalDate creationDate;
@@ -87,12 +87,12 @@ public class Order implements AggregateRoot, Serializable {
         this.orderedBy = orderedBy;
     }
 
-    public OrderDeliveryState getOrderDeliveryState() {
-        return orderDeliveryState;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
-        this.orderDeliveryState = orderDeliveryState;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public LocalDate getCreationDate() {
@@ -170,7 +170,7 @@ public class Order implements AggregateRoot, Serializable {
                 ", productsOrdered=" + productsOrdered +
                 ", quantitiesOrdered=" + quantitiesOrdered +
                 ", orderedBy=" + orderedBy +
-                ", orderDeliveryState=" + orderDeliveryState +
+                ", orderDeliveryState=" + orderStatus +
                 ", creationDate=" + creationDate +
                 ", deliveryDate=" + deliveryDate +
                 '}';

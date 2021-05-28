@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.ProductionOrderDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production.ProductionOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.ProductionOrder;
 
 import java.util.HashMap;

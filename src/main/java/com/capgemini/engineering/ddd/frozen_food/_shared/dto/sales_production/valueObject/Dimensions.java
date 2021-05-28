@@ -1,4 +1,4 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.valueObject;
+package com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production.valueObject;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.ValueObject;
 

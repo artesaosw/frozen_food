@@ -1,8 +1,6 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.events.sales;
+package com.capgemini.engineering.ddd.frozen_food._shared.event.sales_delivery;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.CustomerDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Customer;
 import org.springframework.context.ApplicationEvent;
 
 public class CustomerUpdatedEvent extends ApplicationEvent {

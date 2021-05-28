@@ -1,14 +1,13 @@
-package com.capgemini.engineering.ddd.frozen_food._shared.events.sales;
+package com.capgemini.engineering.ddd.frozen_food._shared.event.sales_production;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductID;
-import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 import org.springframework.context.ApplicationEvent;
 
-public class ProductCreatedEvent extends ApplicationEvent {
+public class ProductUpdatedEvent extends ApplicationEvent {
 
     private ProductID productID;
 
-    public ProductCreatedEvent(Object source, ProductID productID) {
+    public ProductUpdatedEvent(Object source, ProductID productID) {
         super(source);
         this.productID = productID;
     }

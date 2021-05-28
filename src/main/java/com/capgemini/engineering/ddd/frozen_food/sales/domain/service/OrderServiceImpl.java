@@ -1,11 +1,11 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery.DeliveryOrderDTO;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.OrderCancelledEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.OrderRegisteredEvent;
-import com.capgemini.engineering.ddd.frozen_food._shared.events.sales.PaymentReturnedEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_delivery.OrderCancelledEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_delivery.OrderRegisteredEvent;
+import com.capgemini.engineering.ddd.frozen_food._shared.event.sales_delivery.PaymentReturnedEvent;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.converter.OrderToOrderDTOConverter;
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements DomainServices, OrderService {
             //fill up the remaining attributes of the order object
             order.setOrderedBy(customer.get());
             order.setOrderID(Identificator.newInstance(OrderID.class));
-            order.setOrderDeliveryState(OrderDeliveryState.PROCESSING);
+            order.setOrderStatus(OrderStatus.PROCESSING);
             order.setCreationDate(LocalDate.now());
             this.orderRepository.save(order);
 
@@ -91,8 +91,8 @@ public class OrderServiceImpl implements DomainServices, OrderService {
         //must first fetch the order to change it's OrderDeliveryState
         Order order = this.orderRepository.findById(id).get();
 
-        if(order.getOrderDeliveryState() != OrderDeliveryState.CANCELLED) {
-            order.setOrderDeliveryState(OrderDeliveryState.CANCELLED);
+        if(order.getOrderStatus() != OrderStatus.CANCELED) {
+            order.setOrderStatus(OrderStatus.CANCELED);
             this.orderRepository.save(order);
 
             //TODO: can assume we must keep every order in the db and can't delete them for good ?
@@ -138,19 +138,21 @@ public class OrderServiceImpl implements DomainServices, OrderService {
         // convert entity sent by the Delivery context into a Product (if it's not converted already)
         // then update it into the database by calling the method
 
-        //I'm assuming the event sent wraps an DeliverOrderDTO
-        DeliveryOrderDTO deliveryOrderDTO = event.DeliveryOrderDTO();
+        //TODO: UNCOMMENT WHEN THE CORRECT EVENT IS ADDED
 
-        //find the order in the db based on the OrderID of deliveryOrderDTO
-        Order order = this.orderRepository.findByOrderID(deliveryOrderDTO.getOrderID()).get();
-
-        //update the order object with values from deliveryOrderDTO
-        //Obviously, the ID and OrderID are immutable and can't be changed
-        order.setOrderDeliveryState(deliveryOrderDTO.getOrderDeliveryState());
-        order.setDeliveryDate(deliveryOrderDTO.getDeliveryDate());
-
-        //persis the updated order object
-        this.orderRepository.save(order);
+//        //I'm assuming the event sent wraps an DeliverOrderDTO
+//        DeliveryOrderDTO deliveryOrderDTO = event.DeliveryOrderDTO();
+//
+//        //find the order in the db based on the OrderID of deliveryOrderDTO
+//        Order order = this.orderRepository.findByOrderID(deliveryOrderDTO.getOrderID()).get();
+//
+//        //update the order object with values from deliveryOrderDTO
+//        //Obviously, the ID and OrderID are immutable and can't be changed
+//        order.setOrderStatus(deliveryOrderDTO.getOrderStatus());
+//        order.setDeliveryDate(deliveryOrderDTO.getDeliveryDate());
+//
+//        //persis the updated order object
+//        this.orderRepository.save(order);
     }
 
 }

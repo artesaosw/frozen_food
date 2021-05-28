@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.entity;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
 import com.capgemini.engineering.ddd.frozen_food._shared.ProductionOrderState;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;

@@ -1,7 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_delivery;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.OrderDeliveryState;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.OrderID;
 
 import javax.validation.constraints.NotEmpty;
@@ -21,7 +20,7 @@ public class DeliveryOrderDTO {
     private CustomerDTO orderedBy;
 
     @NotNull
-    private OrderDeliveryState orderDeliveryState;
+    private OrderStatus orderStatus;
 
     //to be set by the Delivery context
     private LocalDate deliveryDate;
@@ -54,12 +53,12 @@ public class DeliveryOrderDTO {
         this.orderedBy = orderedBy;
     }
 
-    public OrderDeliveryState getOrderDeliveryState() {
-        return orderDeliveryState;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderDeliveryState(OrderDeliveryState orderDeliveryState) {
-        this.orderDeliveryState = orderDeliveryState;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public LocalDate getDeliveryDate() {

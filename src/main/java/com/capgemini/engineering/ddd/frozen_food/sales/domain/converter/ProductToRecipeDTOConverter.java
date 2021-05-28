@@ -1,6 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.sales.domain.converter;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.dto.production_sales.RecipeDTO;
+import com.capgemini.engineering.ddd.frozen_food._shared.dto.sales_production.RecipeDTO;
 import com.capgemini.engineering.ddd.frozen_food.sales.domain.entity.Product;
 
 public class ProductToRecipeDTOConverter {

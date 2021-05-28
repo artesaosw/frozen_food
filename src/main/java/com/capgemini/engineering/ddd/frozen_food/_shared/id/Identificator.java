@@ -3,6 +3,7 @@ package com.capgemini.engineering.ddd.frozen_food._shared.id;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.Entity;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.MetadataException;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
@@ -34,6 +35,19 @@ public interface Identificator {
             return (T) clazz
                     .getConstructor()
                     .newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new MetadataException(e);
+        }
+    }
+
+    static <T extends Identificator> T newInstance(@NotNull Class clazz, @NotBlank String id){
+        if (!Identificator.class.isAssignableFrom(clazz)){
+            throw new IllegalArgumentException("Argument \"clazz\" does not extend Identificator");
+        }
+        try {
+            return (T) clazz
+                    .getConstructor(new Class[]{String.class})
+                    .newInstance(id);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new MetadataException(e);
         }

@@ -24,7 +24,7 @@ public class OrderToOrderDTOConverter {
 
         deliveryOrderDTO.setOrderedBy(CustomerToCustomerDTOConverter.convertCustomerToCustomerDTO(order.getOrderedBy()));
 
-        deliveryOrderDTO.setOrderDeliveryState(order.getOrderDeliveryState());
+        deliveryOrderDTO.setOrderStatus(order.getOrderStatus());
         deliveryOrderDTO.setDeliveryDate(order.getDeliveryDate());
 
         return deliveryOrderDTO;
