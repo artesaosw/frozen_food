@@ -30,6 +30,10 @@ public class Recipe implements AggregateRoot, RecipeItem, Serializable {
 
     private Map<RecipeItem, Portion> items;
 
+
+    //String temp = Ingredient.getId().toString + ';' + class.toString;
+
+
     private String procedure;
 
     private RecipeVersion version;

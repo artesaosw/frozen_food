@@ -1,15 +1,20 @@
 package com.capgemini.engineering.ddd.frozen_food.menu.domain.service;
 
+import com.capgemini.engineering.ddd.frozen_food._shared.event.menu_production.RecipeCatalogUpdatedEvent;
 import com.capgemini.engineering.ddd.frozen_food.menu.Menu;
 import com.capgemini.engineering.ddd.frozen_food.Events;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.RecipeID;
 import com.capgemini.engineering.ddd.frozen_food._shared.dto.menu_production.RecipeDTO;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.converter.RecipeConverter;
+import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Ingredient;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.valueObject.Portion;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.entity.Recipe;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.RecipeUpdated;
 import com.capgemini.engineering.ddd.frozen_food.menu.domain.repository.Recipes;
+import com.capgemini.engineering.ddd.frozen_food.menu.infra.dao.RecipeDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -20,9 +25,17 @@ import java.util.Set;
 @Service
 public class MantainRecipes implements DomainServices {
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    RecipeDAO recipeDAO;
+
     private Recipes recipes(){
         return Menu.recipes();
     }
+
+    public Recipe getRecipeById(@NotNull RecipeID id) { return recipeDAO.findById(id).get(); }
 
     public void registerNew(@NotBlank String name, @NotEmpty Set<Portion> items, @NotBlank String procedure, boolean integratesCatalog){
 
@@ -40,12 +53,9 @@ public class MantainRecipes implements DomainServices {
         //reports event
         RecipeDTO recipeDTO = RecipeConverter.recipe2RecipeDTO(recipe);
 
-//        if(integratesCatalog){
-//            RecipeCatalogUpdatedPublisher eventPublisher = new
-//                    RecipeCatalogUpdatedPublisher();
-//
-//            eventPublisher.publishEvent(recipeDTO);
-//        }
+        if(integratesCatalog){
+            applicationEventPublisher.publishEvent(new RecipeCatalogUpdatedEvent(this, recipeDTO));
+        }
     }
 
     public void updatePortion(@NotNull RecipeID recipeID, @NotNull Portion portion, boolean majorUpdate){
