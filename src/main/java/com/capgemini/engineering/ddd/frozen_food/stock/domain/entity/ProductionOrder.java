@@ -52,7 +52,7 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
-        this.orderStatus = OrderStatus.UNDELIVERED;
+        this.orderStatus = OrderStatus.ORDERED;
     }
 
     public ProductionOrder (@NotNull ProductionOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
@@ -60,7 +60,7 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
         this.orderDate = LocalDate.now();
-        this.orderStatus = OrderStatus.UNDELIVERED;
+        this.orderStatus = OrderStatus.ORDERED;
     }
 
     public ProductionOrder(@NotNull ProductionOrderID id, @NotNull OrderStatus orderStatus) {
