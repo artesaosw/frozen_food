@@ -1,11 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject;
 
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Product;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.SaleOrderReplicaRepository;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository.SaleOrderRepo;
 import lombok.Getter;
-
-import java.util.Map;
 
 public class OrderDimensions {
 
@@ -30,7 +27,7 @@ public class OrderDimensions {
     @Getter
     private SaleOrderID saleOrderID;
 
-    private SaleOrderReplicaRepository saleOrderReplicaRepository;
+    private SaleOrderRepo saleOrderRepo;
 
     public OrderDimensions (SaleOrderID saleOrderID){
 

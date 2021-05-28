@@ -7,7 +7,7 @@ import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
-public interface CustomerDatabase extends MongoRepository<Customer, CustomerID> {
+public interface CustomerRepository extends MongoRepository<Customer, CustomerID> {
 
     boolean existsByNif(NIF nif);
 

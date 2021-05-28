@@ -3,14 +3,18 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity;
 import com.capgemini.engineering.ddd.frozen_food.__metadata.AggregateRoot;
 import com.capgemini.engineering.ddd.frozen_food._shared.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.TransportLimits;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.TransportReservation;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.TransportStatus;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.TransportID;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
+import java.util.List;
 
+@Entity
 public class Transport implements AggregateRoot, Serializable {
 
     @Id @Getter
@@ -24,6 +28,8 @@ public class Transport implements AggregateRoot, Serializable {
 
     @Getter @Setter
     private TransportStatus transportStatus;
+
+    private List<TransportReservation> reservationsList;
 
     @Getter
     private float weightTransported;

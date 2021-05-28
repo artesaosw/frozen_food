@@ -20,7 +20,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderFromSales implements AggregateRoot, Serializable {
+public class SaleOrder implements AggregateRoot, Serializable {
 
     @Id @Getter @Setter
     private SaleOrderID saleOrderID;

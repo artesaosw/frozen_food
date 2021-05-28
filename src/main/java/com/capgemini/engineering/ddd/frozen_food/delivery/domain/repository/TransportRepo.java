@@ -6,7 +6,7 @@ import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids
 
 import java.util.List;
 
-public interface TransportRepository extends Repository<Transport, TransportID> {
+public interface TransportRepo extends Repository<Transport, TransportID> {
 
     public List<Transport> availableTransport();
 }

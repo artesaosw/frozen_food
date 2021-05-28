@@ -2,8 +2,7 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter;
 
 import com.capgemini.engineering.ddd.frozen_food.delivery.external.SaleOrderDTO;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Product;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.OrderFromSales;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrder;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.SaleOrderID;
 
 import java.util.ArrayList;
@@ -13,9 +12,9 @@ public class SaleOrderDTOConverter {
 
     private ProductDTOConverter productDTOConverter;
 
-    public OrderFromSales saleOrderDTOtoSaleOrderReplica(SaleOrderDTO saleOrderDTO){
-        OrderFromSales orderFromSales = new OrderFromSales();
-        orderFromSales.setSaleOrderID(new SaleOrderID(saleOrderDTO.getSaleOrderID()));
+    public SaleOrder saleOrderDTOtoSaleOrderReplica(SaleOrderDTO saleOrderDTO){
+        SaleOrder saleOrder = new SaleOrder();
+        saleOrder.setSaleOrderID(new SaleOrderID(saleOrderDTO.getSaleOrderID()));
         //orderFromSales.setCustomerID(new CustomerID(saleOrderDTO.getCustomerDTO().getCustomerID()));
         List<Product> productList = new ArrayList<>();
         for(int i = 0; i < saleOrderDTO.getProductDTOList().size(); i++){
@@ -23,6 +22,6 @@ public class SaleOrderDTOConverter {
         }
        // saleOrderReplica.setSaleOrderProductReplicas(productReplicaList);
         /*orderFromSales.setSaleOrderDate(saleOrderDTO.getSaleOrderDate());*/
-        return orderFromSales;
+        return saleOrder;
     }
 }

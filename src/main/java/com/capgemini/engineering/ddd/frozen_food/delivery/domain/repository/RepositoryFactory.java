@@ -2,11 +2,11 @@ package com.capgemini.engineering.ddd.frozen_food.delivery.domain.repository;
 
 public interface RepositoryFactory {
 
-    CustomerRepository getCustomerRepository();
+    CustomerRepo getCustomerRepository();
     DeliveryPackageRepository getDeliveryPackageRepository();
-    ProductRepository getProductRepository();
-    RouteRepository getRouteRepository();
-    SaleOrderReplicaRepository getSaleOrderReplicaRepository();
-    TransportRepository getTransportRepository();
+    ProductRepo getProductRepository();
+    RouteRepo getRouteRepository();
+    SaleOrderRepo getSaleOrderReplicaRepository();
+    TransportRepo getTransportRepository();
     
 }

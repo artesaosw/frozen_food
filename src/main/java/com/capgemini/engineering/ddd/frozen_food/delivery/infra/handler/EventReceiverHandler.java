@@ -4,7 +4,7 @@ import com.capgemini.engineering.ddd.frozen_food.delivery.external.SaleOrderEven
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter.CustomerDTOConverter;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.converter.SaleOrderDTOConverter;
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Customer;
-import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.OrderFromSales;
+import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.SaleOrder;
 
 public class EventReceiverHandler {
 
@@ -14,7 +14,7 @@ public class EventReceiverHandler {
     public void processSaleOrderReceived(SaleOrderEvent event){
         Customer customer = new Customer();
        // customer = customerDTOConverter.customerDTOtoCustomer(event.getSaleOrderDTO().getCustomerDTO());
-        OrderFromSales orderFromSales = new OrderFromSales();
-        orderFromSales = saleOrderDTOConverter.saleOrderDTOtoSaleOrderReplica(event.getSaleOrderDTO());
+        SaleOrder saleOrder = new SaleOrder();
+        saleOrder = saleOrderDTOConverter.saleOrderDTOtoSaleOrderReplica(event.getSaleOrderDTO());
     }
 }

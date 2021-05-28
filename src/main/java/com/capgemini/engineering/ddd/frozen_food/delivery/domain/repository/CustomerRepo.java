@@ -6,5 +6,5 @@ import com.capgemini.engineering.ddd.frozen_food.delivery.domain.entity.Customer
 import com.capgemini.engineering.ddd.frozen_food.delivery.domain.valueObject.ids.CustomerID;
 ;
 
-public interface CustomerRepository extends Repository<Customer, CustomerID> {
+public interface CustomerRepo extends Repository<Customer, CustomerID> {
 }
