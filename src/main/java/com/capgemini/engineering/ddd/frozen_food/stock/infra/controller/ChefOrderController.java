@@ -1,8 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ChefOrderID;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ChefOrder;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
@@ -67,11 +66,9 @@ public class ChefOrderController {
     }
 
     @GetMapping(path = "/chef/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @NotBlank String id) {
         try {
-            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
-            var chefOrder = chefOrderService.getChefOrderById(chefOrderID);
-            return ResponseEntity.ok(chefOrder);
+            return ResponseEntity.ok(chefOrderService.getChefOrderById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -147,10 +144,9 @@ public class ChefOrderController {
     }
 
     @PutMapping(path = "/chef/{id}")
-    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
+    public ResponseEntity<?> updateChefOrderStatus(@PathVariable @NotBlank String id, @RequestParam @Valid @NotNull String orderStatus) {
         try {
-            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
-            chefOrderService.updateChefOrderStatus(chefOrderID, OrderStatus.valueOf(orderStatus));
+            chefOrderService.updateChefOrderStatus(id, OrderStatus.valueOf(orderStatus));
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -160,10 +156,9 @@ public class ChefOrderController {
     }
 
     @DeleteMapping(path = "/chef/{id}")
-    public ResponseEntity<?> deleteChefOrder(@PathVariable @Valid String id) {
+    public ResponseEntity<?> deleteChefOrder(@PathVariable @NotBlank String id) {
         try {
-            ChefOrderID chefOrderID = Identificator.newInstance(ChefOrderID.class, id);
-            chefOrderService.deleteChefOrder(chefOrderID);
+            chefOrderService.deleteChefOrder(id);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

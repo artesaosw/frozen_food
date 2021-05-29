@@ -15,13 +15,16 @@ import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.SupplierOrderDA
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Validated
 public class SupplierOrderService implements DomainServices {
 
     @Autowired
@@ -33,18 +36,19 @@ public class SupplierOrderService implements DomainServices {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public SupplierOrder getSupplierOrderById(SupplierOrderID id) {
-        if (!supplierOrderDAO.existsById(id)) {
+    public SupplierOrder getSupplierOrderById(@NotBlank String id) {
+        SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
+        if (!supplierOrderDAO.existsById(supplierOrderID)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        return supplierOrderDAO.findById(id).get();
+        return supplierOrderDAO.findById(supplierOrderID).get();
     }
 
     public List<SupplierOrder> getAllSuppliersOrders() {
         return supplierOrderDAO.findAll();
     }
 
-    public List<SupplierOrder> getAllSuppliersOrdersByOrderStatus(OrderStatus orderStatus) {
+    public List<SupplierOrder> getAllSuppliersOrdersByOrderStatus(@NotNull OrderStatus orderStatus) {
         return supplierOrderDAO.findAllByOrderStatus(orderStatus);
     }
 
@@ -58,7 +62,7 @@ public class SupplierOrderService implements DomainServices {
         supplierOrderDAO.save(supplierOrder);
     }
 
-    public void registerNewSupplierOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders, @NotNull SupplierID id, @NotNull Integer purchaseValue) {
+    public void registerNewSupplierOrder(@NotBlank String orderReference, @NotEmpty Map<String, Integer> orders, @NotNull SupplierID id, @NotNull Integer purchaseValue) {
         if (supplierOrderDAO.existsByOrderReference(orderReference)) {
             throw new DuplicatedEntityException("Already exists another order with the same order reference.");
         }
@@ -66,11 +70,12 @@ public class SupplierOrderService implements DomainServices {
         supplierOrderDAO.save(supplierOrder);
     }
 
-    public void updateSupplierOrderStatus(@NotNull SupplierOrderID id, @NotNull OrderStatus orderStatus) {
-        if (!supplierOrderDAO.existsById(id)) {
+    public void updateSupplierOrderStatus(@NotBlank String id, @NotNull OrderStatus orderStatus) {
+        SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
+        if (!supplierOrderDAO.existsById(supplierOrderID)) {
             throw new NonExistentEntityException("There is no order with id = " + id);
         }
-        SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
+        SupplierOrder supplierOrder = supplierOrderDAO.findById(supplierOrderID).get();
         if (orderStatus.equals(OrderStatus.DELIVERED)) {
             if (supplierOrder.getOrderStatus().equals(OrderStatus.DELIVERED)) {
                 throw new IllegalArgumentException("Order already delivered.");
@@ -90,18 +95,20 @@ public class SupplierOrderService implements DomainServices {
         supplierOrderDAO.save(supplierOrder);
     }
 
-    public void updateSupplierOrder(SupplierOrder supplierOrder) {
+    public void updateSupplierOrder(@NotNull SupplierOrder supplierOrder) {
         if (!supplierOrderDAO.existsById(supplierOrder.id())) {
             throw new NonExistentEntityException("There is no supplier order with id = " + supplierOrder.id());
         }
         supplierOrderDAO.save(supplierOrder);
     }
 
-    public void deleteSupplierOrder(SupplierOrderID id) {
-        if (!supplierOrderDAO.existsById(id)) {
+    public void deleteSupplierOrder(@NotBlank String id) {
+
+        SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
+        if (!supplierOrderDAO.existsById(supplierOrderID)) {
             throw new NonExistentEntityException("There is no supplier order with id = " + id);
         }
-        SupplierOrder supplierOrder = supplierOrderDAO.findById(id).get();
+        SupplierOrder supplierOrder = supplierOrderDAO.findById(supplierOrderID).get();
         supplierOrderDAO.delete(supplierOrder);
     }
 }

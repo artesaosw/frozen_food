@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
@@ -26,11 +27,12 @@ public class SupplierService implements DomainServices {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public Supplier getSupplierById(@NotNull SupplierID id) {
-        if (!supplierDAO.existsById(id)) {
+    public Supplier getSupplierById(@NotBlank String id) {
+        SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
+        if (!supplierDAO.existsById(supplierID)) {
             throw new DuplicatedEntityException("There is no supplier with SupplierID = " + id);
         }
-        return supplierDAO.findById(id).get();
+        return supplierDAO.findById(supplierID).get();
     }
 
     public Supplier getSupplierByName(@NotBlank String name) {
@@ -40,7 +42,7 @@ public class SupplierService implements DomainServices {
         return supplierDAO.findByName(name);
     }
 
-    public Supplier getSupplierByNif(@NotBlank NIF nif) {
+    public Supplier getSupplierByNif(@NotNull NIF nif) {
         if (!supplierDAO.existsByNif(nif)) {
             throw new DuplicatedEntityException("There is no supplier with NIF = " + nif);
         }
@@ -76,11 +78,12 @@ public class SupplierService implements DomainServices {
         supplierDAO.save(supplier);
     }
 
-    public void deleteSupplier(@NotNull SupplierID id) {
-        if (!supplierDAO.existsById(id)) {
+    public void deleteSupplier(@NotBlank String id) {
+        SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
+        if (!supplierDAO.existsById(supplierID)) {
             throw new NonExistentEntityException("There is no supplier with id = " + id);
         }
-        Supplier supplier = supplierDAO.findById(id).get();
+        Supplier supplier = supplierDAO.findById(supplierID).get();
         supplierDAO.delete(supplier);
     }
 }

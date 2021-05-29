@@ -1,8 +1,6 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.ProductionOrderID;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.ProductionOrder;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
@@ -67,11 +66,9 @@ public class ProductionOrderController {
     }
 
     @GetMapping(path = "/production/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @NotBlank String id) {
         try {
-            ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
-            var productionOrder = productionOrderService.getProductionOrderById(productionOrderID);
-            return ResponseEntity.ok(productionOrder);
+            return ResponseEntity.ok(productionOrderService.getProductionOrderById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -141,29 +138,27 @@ public class ProductionOrderController {
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @PutMapping(path = "/production/{id}")
-    public ResponseEntity<?> updateProductionOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
+    public ResponseEntity<?> updateProductionOrderStatus(@PathVariable @NotBlank String id, @RequestParam @NotBlank String orderStatus) {
         try {
-            ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
-            productionOrderService.updateProductionOrderStatus(productionOrderID, OrderStatus.valueOf(orderStatus));
+            productionOrderService.updateProductionOrderStatus(id, OrderStatus.valueOf(orderStatus));
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @DeleteMapping(path = "/production/{id}")
-    public ResponseEntity<?> deleteProductionOrder(@PathVariable @Valid String id) {
+    public ResponseEntity<?> deleteProductionOrder(@PathVariable @NotBlank String id) {
         try {
-            ProductionOrderID productionOrderID = Identificator.newInstance(ProductionOrderID.class, id);
-            productionOrderService.deleteProductionOrder(productionOrderID);
+            productionOrderService.deleteProductionOrder(id);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

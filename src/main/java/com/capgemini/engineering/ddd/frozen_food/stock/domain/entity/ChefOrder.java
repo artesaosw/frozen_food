@@ -46,7 +46,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
     private OrderStatus orderStatus;
 
     @JsonCreator
-    public ChefOrder (@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ChefOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = Identificator.newInstance(ChefOrderID.class);
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
@@ -54,7 +54,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderStatus = OrderStatus.ORDERED;
     }
 
-    public ChefOrder (@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ChefOrder(@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
@@ -62,7 +62,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderStatus = OrderStatus.ORDERED;
     }
 
-    public ChefOrder (@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
+    public ChefOrder(@NotNull ChefOrderID id, @NotNull OrderStatus orderStatus) {
         this.id = id;
         this.orderStatus = orderStatus;
     }

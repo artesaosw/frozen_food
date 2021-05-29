@@ -47,7 +47,7 @@ public class ProductionOrder implements AggregateRoot, Serializable {
     private OrderStatus orderStatus;
 
     @JsonCreator
-    public ProductionOrder (@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ProductionOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = Identificator.newInstance(ProductionOrderID.class);
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
@@ -55,7 +55,7 @@ public class ProductionOrder implements AggregateRoot, Serializable {
         this.orderStatus = OrderStatus.ORDERED;
     }
 
-    public ProductionOrder (@NotNull ProductionOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ProductionOrder(@NotNull ProductionOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);

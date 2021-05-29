@@ -12,14 +12,12 @@ public class ChefOrderConverter {
         ChefOrderDTO chefOrderDTO = new ChefOrderDTO();
         chefOrderDTO.setId(chefOrder.getId());
         chefOrderDTO.setOrderReference(chefOrder.getOrderReference());
-        Map<String, Integer> ordersDTO = new HashMap<>(chefOrder.getOrders());
-        chefOrderDTO.setOrders(ordersDTO);
+        chefOrderDTO.setOrders(chefOrder.getOrders());
         return chefOrderDTO;
     }
 
     public static ChefOrder chefOrderDTO2ChefOrder(ChefOrderDTO chefOrderDTO) throws NullPointerException {
-        Map<String, Integer> orders = new HashMap<>(chefOrderDTO.getOrders());
-        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getId(), chefOrderDTO.getOrderReference(), orders);
+        ChefOrder chefOrder = new ChefOrder(chefOrderDTO.getId(), chefOrderDTO.getOrderReference(), chefOrderDTO.getOrders());
         return chefOrder;
     }
 }

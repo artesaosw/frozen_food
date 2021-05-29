@@ -1,6 +1,7 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.domain.service;
 
 import com.capgemini.engineering.ddd.frozen_food.__metadata.DomainServices;
+import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
@@ -10,13 +11,16 @@ import com.capgemini.engineering.ddd.frozen_food.stock.infra.dao.StockIngredient
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Service
+@Validated
 public class StockIngredientService implements DomainServices {
 
     @Autowired
@@ -25,11 +29,12 @@ public class StockIngredientService implements DomainServices {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public Ingredient getIngredientById(@NotNull IngredientID id) {
-        if (!ingredientDAO.existsById(id)) {
+    public Ingredient getIngredientById(@NotBlank String id) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        return ingredientDAO.findById(id).get();
+        return ingredientDAO.findById(ingredientID).get();
     }
 
     public Ingredient getIngredientByName(@NotBlank String name) {
@@ -63,54 +68,59 @@ public class StockIngredientService implements DomainServices {
         ingredientDAO.save(ingredient);
     }
 
-    public void updateIngredient(@NotNull Ingredient ingredient){
+    public void updateIngredient(@NotNull Ingredient ingredient) {
         if (!ingredientDAO.existsById(ingredient.id())) {
             throw new NonExistentEntityException("There is no ingredient with id = " + ingredient.id());
         }
         ingredientDAO.save(ingredient);
     }
 
-    public void updateIngredientUseStatus(@NotNull IngredientID id, @NotNull IngredientStatus ingredientStatus) {
-        if (!ingredientDAO.existsById(id)) {
+    public void updateIngredientUseStatus(@NotBlank String id, @NotNull IngredientStatus ingredientStatus) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findById(id).get();
+        Ingredient ingredient = ingredientDAO.findById(ingredientID).get();
         ingredient.setIngredientStatus(ingredientStatus);
         ingredientDAO.save(ingredient);
     }
 
-    public void updateIngredientMinimumStockValue(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer minimumStockValue) {
-        if (!ingredientDAO.existsById(id)) {
+    public void updateIngredientMinimumStockValue(@NotBlank String id, @NotNull @PositiveOrZero Integer minimumStockValue) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findById(id).get();
+        Ingredient ingredient = ingredientDAO.findById(ingredientID).get();
         ingredient.setMinimumStockValue(minimumStockValue);
         ingredientDAO.save(ingredient);
     }
 
-    public void increaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
-        if (!ingredientDAO.existsById(id)) {
+    public void increaseIngredientStock(@NotBlank String id, @NotNull @Positive Integer quantity) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findById(id).get();
+        Ingredient ingredient = ingredientDAO.findById(ingredientID).get();
         ingredient.increaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
     }
 
-    public void decreaseIngredientStock(@NotNull IngredientID id, @NotNull @PositiveOrZero Integer quantity) {
-        if (!ingredientDAO.existsById(id)) {
+    public void decreaseIngredientStock(@NotBlank String id, @NotNull @Positive Integer quantity) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findById(id).get();
+        Ingredient ingredient = ingredientDAO.findById(ingredientID).get();
         ingredient.decreaseIngredientStock(quantity);
         ingredientDAO.save(ingredient);
     }
 
-    public void deleteIngredient(@NotNull IngredientID id) {
-        if (!ingredientDAO.existsById(id)) {
+    public void deleteIngredient(@NotBlank String id) {
+        IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
+        if (!ingredientDAO.existsById(ingredientID)) {
             throw new NonExistentEntityException("There is no ingredient with id = " + id);
         }
-        Ingredient ingredient = ingredientDAO.findById(id).get();
+        Ingredient ingredient = ingredientDAO.findById(ingredientID).get();
         ingredientDAO.delete(ingredient);
     }
 }

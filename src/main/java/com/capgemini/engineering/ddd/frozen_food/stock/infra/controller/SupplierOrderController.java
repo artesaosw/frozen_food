@@ -1,10 +1,8 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
 import com.capgemini.engineering.ddd.frozen_food._shared.OrderStatus;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierOrderID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.SupplierOrder;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
@@ -67,11 +66,9 @@ public class SupplierOrderController {
     }
 
     @GetMapping(path = "/supplier/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getChefOrderById(@PathVariable @Valid String id) {
+    public ResponseEntity<?> getChefOrderById(@PathVariable @NotBlank String id) {
         try {
-            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
-            var supplierOrder = supplierOrderService.getSupplierOrderById(supplierOrderID);
-            return ResponseEntity.ok(supplierOrder);
+            return ResponseEntity.ok(supplierOrderService.getSupplierOrderById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -141,29 +138,27 @@ public class SupplierOrderController {
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @PutMapping(path = "/supplier/{id}")
-    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull String orderStatus) {
+    public ResponseEntity<?> updateSupplierOrderStatus(@PathVariable @NotBlank String id, @RequestParam @NotBlank String orderStatus) {
         try {
-            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
-            supplierOrderService.updateSupplierOrderStatus(supplierOrderID, OrderStatus.valueOf(orderStatus));
+            supplierOrderService.updateSupplierOrderStatus(id, OrderStatus.valueOf(orderStatus));
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @DeleteMapping(path = "/supplier/{id}")
-    public ResponseEntity<?> deleteSupplierOrder(@PathVariable @Valid String id) {
+    public ResponseEntity<?> deleteSupplierOrder(@PathVariable @NotBlank String id) {
         try {
-            SupplierOrderID supplierOrderID = Identificator.newInstance(SupplierOrderID.class, id);
-            supplierOrderService.deleteSupplierOrder(supplierOrderID);
+            supplierOrderService.deleteSupplierOrder(id);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

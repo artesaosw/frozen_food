@@ -12,7 +12,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -38,7 +37,7 @@ public class Supplier implements AggregateRoot, Serializable {
     @Email(message = "Email invalid!")
     private String email;
 
-    @Pattern(regexp="[9][0-9]{8}",message = "Invalid cellphone number!")
+    @Pattern(regexp = "[9][0-9]{8}", message = "Invalid cellphone number!")
     @Setter
     private String cellPhone;
 

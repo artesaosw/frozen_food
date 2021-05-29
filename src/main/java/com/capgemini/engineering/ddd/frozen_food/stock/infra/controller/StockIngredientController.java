@@ -1,7 +1,5 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
-import com.capgemini.engineering.ddd.frozen_food._shared.id.IngredientID;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.IngredientStatus;
@@ -24,6 +22,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,21 +68,18 @@ public class StockIngredientController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getIngredientById(@PathVariable @Valid String id) {
+    public ResponseEntity<?> getIngredientById(@PathVariable @NotBlank String id) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            var ingredient = stockIngredientService.getIngredientById(ingredientID);
-            return ResponseEntity.ok(ingredient);
+            return ResponseEntity.ok(stockIngredientService.getIngredientById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @GetMapping(path = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getIngredientByName(@PathVariable @Valid String name) {
+    public ResponseEntity<?> getIngredientByName(@PathVariable @NotBlank String name) {
         try {
-            var ingredient = stockIngredientService.getIngredientByName(name);
-            return ResponseEntity.ok(ingredient);
+            return ResponseEntity.ok(stockIngredientService.getIngredientByName(name));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -158,10 +155,9 @@ public class StockIngredientController {
     }
 
     @PutMapping(path = "/status/{id}")
-    public ResponseEntity<?> updateIngredientStatus(@PathVariable @Valid @NotBlank String id, @RequestParam @NotBlank String ingredientStatus) {
+    public ResponseEntity<?> updateIngredientStatus(@PathVariable @NotBlank String id, @RequestParam @NotBlank String ingredientStatus) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            stockIngredientService.updateIngredientUseStatus(ingredientID, IngredientStatus.valueOf(ingredientStatus));
+            stockIngredientService.updateIngredientUseStatus(id, IngredientStatus.valueOf(ingredientStatus));
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -171,10 +167,9 @@ public class StockIngredientController {
     }
 
     @PutMapping(path = "/stock/{id}")
-    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer minimumStockValue) {
+    public ResponseEntity<?> updateIngredientMinimumStockValue(@PathVariable @NotBlank String id, @RequestParam @Valid @PositiveOrZero Integer minimumStockValue) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            stockIngredientService.updateIngredientMinimumStockValue(ingredientID, minimumStockValue);
+            stockIngredientService.updateIngredientMinimumStockValue(id, minimumStockValue);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -184,10 +179,9 @@ public class StockIngredientController {
     }
 
     @PutMapping(path = "/increase_stock/{id}")
-    public ResponseEntity<?> increaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
+    public ResponseEntity<?> increaseIngredientStock(@PathVariable @NotBlank String id, @RequestParam @Valid @Positive Integer quantity) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            stockIngredientService.increaseIngredientStock(ingredientID, quantity);
+            stockIngredientService.increaseIngredientStock(id, quantity);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -197,10 +191,9 @@ public class StockIngredientController {
     }
 
     @PutMapping(path = "/decrease_stock/{id}")
-    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @Valid @NotNull String id, @RequestParam @Valid @NotNull Integer quantity) {
+    public ResponseEntity<?> decreaseIngredientStock(@PathVariable @NotBlank String id, @RequestParam @Valid @Positive Integer quantity) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            stockIngredientService.decreaseIngredientStock(ingredientID, quantity);
+            stockIngredientService.decreaseIngredientStock(id, quantity);
             return ResponseEntity.ok(new Message(UPDATE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
@@ -210,10 +203,9 @@ public class StockIngredientController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteIngredient(@PathVariable @Valid String id) {
+    public ResponseEntity<?> deleteIngredient(@PathVariable @NotBlank String id) {
         try {
-            IngredientID ingredientID = Identificator.newInstance(IngredientID.class, id);
-            stockIngredientService.deleteIngredient(ingredientID);
+            stockIngredientService.deleteIngredient(id);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));

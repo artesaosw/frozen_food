@@ -1,12 +1,10 @@
 package com.capgemini.engineering.ddd.frozen_food.stock.infra.controller;
 
-import com.capgemini.engineering.ddd.frozen_food._shared.id.Identificator;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Error;
 import com.capgemini.engineering.ddd.frozen_food._shared.utils.Message;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.InvalidElementException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.NonExistentEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.NIF;
-import com.capgemini.engineering.ddd.frozen_food.stock.domain.valueObject.SupplierID;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.entity.Supplier;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.exception.DuplicatedEntityException;
 import com.capgemini.engineering.ddd.frozen_food.stock.domain.service.SupplierService;
@@ -74,21 +72,18 @@ public class SupplierController {
     }
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> getSupplierById(@PathVariable @Valid @NotBlank String id) {
+    public ResponseEntity<?> getSupplierById(@PathVariable @NotBlank String id) {
         try {
-            SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
-            var supplier = supplierService.getSupplierById(supplierID);
-            return ResponseEntity.ok(supplier);
+            return ResponseEntity.ok(supplierService.getSupplierById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
     }
 
     @GetMapping(path = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getSupplierByName(@PathVariable @Valid @NotBlank String name) {
+    public ResponseEntity<?> getSupplierByName(@PathVariable @NotBlank String name) {
         try {
-            var supplier = supplierService.getSupplierByName(name);
-            return ResponseEntity.ok(supplier);
+            return ResponseEntity.ok(supplierService.getSupplierByName(name));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -97,8 +92,7 @@ public class SupplierController {
     @GetMapping(path = "/nif/{nif}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getSupplierByNif(@PathVariable @Valid @NotNull NIF nif) {
         try {
-            var supplier = supplierService.getSupplierByNif(nif);
-            return ResponseEntity.ok(supplier);
+            return ResponseEntity.ok(supplierService.getSupplierByNif(nif));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error(e));
         }
@@ -150,10 +144,9 @@ public class SupplierController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteSupplier(@PathVariable @Valid @NotBlank String id) {
+    public ResponseEntity<?> deleteSupplier(@PathVariable @NotBlank String id) {
         try {
-            SupplierID supplierID = Identificator.newInstance(SupplierID.class, id);
-            supplierService.deleteSupplier(supplierID);
+            supplierService.deleteSupplier(id);
             return ResponseEntity.ok(new Message(DELETE_SUCCESS_MSG));
         } catch (NonExistentEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(e));
