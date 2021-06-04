@@ -88,14 +88,12 @@ public class ProductionOrderService {
                 throw new IllegalArgumentException("Order already on delivery.");
             } else {
                 Map<String, Integer> orderMap = productionOrder.getOrders();
-                for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
-                    String ingredienID = map.getKey();
-                    Integer quantity = map.getValue();
+                orderMap.forEach((ingredienID, quantity) -> {
                     IngredientID ingredientID = Identificator.newInstance(IngredientID.class, ingredienID);
                     Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
                     ingredient.decreaseIngredientStock(quantity);
                     stockIngredientDAO.save(ingredient);
-                }
+                });
             }
         }
         productionOrder.setOrderStatus(orderStatus);

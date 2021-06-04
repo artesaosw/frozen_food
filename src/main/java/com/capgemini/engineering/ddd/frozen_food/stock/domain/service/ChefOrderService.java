@@ -88,14 +88,12 @@ public class ChefOrderService {
                 throw new IllegalArgumentException("Order already on delivery.");
             } else {
                 Map<String, Integer> orderMap = chefOrder.getOrders();
-                for (Map.Entry<String, Integer> map : orderMap.entrySet()) {
-                    String ingredienID = map.getKey();
-                    Integer quantity = map.getValue();
+                orderMap.forEach((ingredienID, quantity) -> {
                     IngredientID ingredientID = Identificator.newInstance(IngredientID.class, ingredienID);
                     Ingredient ingredient = stockIngredientDAO.findById(ingredientID).get();
                     ingredient.decreaseIngredientStock(quantity);
                     stockIngredientDAO.save(ingredient);
-                }
+                });
             }
         }
         chefOrder.setOrderStatus(orderStatus);
