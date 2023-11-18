@@ -15,6 +15,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -46,7 +47,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
     private OrderStatus orderStatus;
 
     @JsonCreator
-    public ChefOrder(@NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ChefOrder(@NotBlank String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = Identificator.newInstance(ChefOrderID.class);
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
@@ -54,7 +55,7 @@ public class ChefOrder implements AggregateRoot, Serializable {
         this.orderStatus = OrderStatus.ORDERED;
     }
 
-    public ChefOrder(@NotNull ChefOrderID id, @NotEmpty String orderReference, @NotEmpty Map<String, Integer> orders) {
+    public ChefOrder(@NotNull ChefOrderID id, @NotBlank String orderReference, @NotEmpty Map<String, Integer> orders) {
         this.id = id;
         this.orderReference = orderReference;
         this.orders = new HashMap<>(orders);
